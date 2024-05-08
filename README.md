@@ -1,4 +1,15 @@
-# `<name of application here>`
+# mod4-project
+
+## Database Schema Design
+
+![db-schema]
+
+<!-- [db-schema]: ./images/example.png -->
+
+## API Documentation
+
+
+#`<name of application here>`
 
 ## Database Schema Design
 
@@ -67,7 +78,7 @@ Returns the information about the current user that is logged in.
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
         "username": "JohnSmith"
-      } 
+      }
     }
     ```
 
@@ -117,7 +128,7 @@ information.
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
         "username": "JohnSmith"
-      } 
+      }
     }
     ```
 

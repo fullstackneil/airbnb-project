@@ -1,14 +1,14 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
-let options = {};
+let options = {db_schema_Users};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    return queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,

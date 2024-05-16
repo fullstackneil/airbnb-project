@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -8,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Spot.belongsTo(models.User, {foreignKey: 'ownerId'})
-      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId'})
-      Spot.belongsToMany(models.User, {through: models.Booking, foreignKey: 'spotId', otherKey: 'userId'})
-      Spot.belongsToMany(models.User, {through: models.Review, foreignKey: 'spotId', otherKey: 'userId'})
+      Spot.belongsTo(models.User, {foreignKey: 'ownerId', onDelete: 'CASCADE'});
+      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId'});
+      Spot.belongsToMany(models.User, {through: models.Booking, foreignKey: 'spotId', otherKey: 'userId'});
+      Spot.belongsToMany(models.User, {through: models.Review, foreignKey: 'spotId', otherKey: 'userId'});
     }
   }
   Spot.init({

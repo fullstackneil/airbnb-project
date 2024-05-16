@@ -5,7 +5,7 @@
 const { User } = require('../models');
 const bcrypt = require("bcryptjs");
 
-let options = {schema: 'db_schema_Seeders'};
+let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -23,17 +23,31 @@ module.exports = {
       },
       {
         firstName: 'Fake',
-        lastName: 'User',
+        lastName: 'Dog',
         email: 'user1@user.io',
-        username: 'FakeUser1',
+        username: 'FakeDog1',
         hashedPassword: bcrypt.hashSync('password2')
       },
       {
-        firstName: 'Fake',
-        lastName: 'User',
+        firstName: 'Tricky',
+        lastName: 'Cat',
         email: 'user2@user.io',
-        username: 'FakeUser2',
+        username: 'FakeCat2',
         hashedPassword: bcrypt.hashSync('password3')
+      },
+      {
+        firstName: 'Slow',
+        lastName: 'Turtle',
+        email: 'user3@user.io',
+        username: 'FakeTurtle3',
+        hashedPassword: bcrypt.hashSync('password4')
+      },
+      {
+        firstName: 'Fast',
+        lastName: 'Cheetah',
+        email: 'user4@user.io',
+        username: 'FakeCheetah4',
+        hashedPassword: bcrypt.hashSync('password5')
       }
     ], {});
   },
@@ -42,7 +56,7 @@ module.exports = {
     options.tableName = 'Users';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
+      username: { [Op.in]: ['Demo-lition', 'FakeDog1', 'FakeCat2', 'FakeTurtle3', 'FakeCheetah4'] }
     }, {});
   }
 };

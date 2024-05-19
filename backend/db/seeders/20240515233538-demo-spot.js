@@ -75,7 +75,7 @@ module.exports = {
         price: 65.00
       },
       {
-        ownerId: 1,
+        ownerId: 6,
         address: '1007 Mountain Drive',
         city: 'Gotham',
         state: 'NY',
@@ -87,7 +87,7 @@ module.exports = {
         price: 800.00
       },
       {
-        ownerId: 2,
+        ownerId: 7,
         address: '500 Elm Street',
         city: 'Springwood',
         state: 'OH',
@@ -99,7 +99,7 @@ module.exports = {
         price: 70.00
       },
       {
-        ownerId: 3,
+        ownerId: 8,
         address: '123 Mockingbird Lane',
         city: 'Mockingbird Heights',
         state: 'CA',
@@ -111,7 +111,7 @@ module.exports = {
         price: 85.00
       },
       {
-        ownerId: 4,
+        ownerId: 9,
         address: '21 Jump Street',
         city: 'Los Angeles',
         state: 'CA',
@@ -123,7 +123,7 @@ module.exports = {
         price: 120.00
       },
       {
-        ownerId: 5,
+        ownerId: 10,
         address: '1164 Morning Glory Circle',
         city: 'Westport',
         state: 'CT',
@@ -135,7 +135,7 @@ module.exports = {
         price: 110.00
       },
       {
-        ownerId: 1,
+        ownerId: 11,
         address: '4 Privet Drive',
         city: 'Little Whinging',
         state: 'Surrey',
@@ -147,7 +147,7 @@ module.exports = {
         price: 75.00
       },
       {
-        ownerId: 2,
+        ownerId: 12,
         address: '124 Conch Street',
         city: 'Bikini Bottom',
         state: 'Pacific Ocean',
@@ -159,7 +159,7 @@ module.exports = {
         price: 55.00
       },
       {
-        ownerId: 3,
+        ownerId: 13,
         address: '42 Wallaby Way',
         city: 'Sydney',
         state: 'NSW',
@@ -171,7 +171,7 @@ module.exports = {
         price: 90.00
       },
       {
-        ownerId: 4,
+        ownerId: 14,
         address: '1600 Pennsylvania Avenue NW',
         city: 'Washington',
         state: 'DC',
@@ -183,7 +183,7 @@ module.exports = {
         price: 1000.00
       },
       {
-        ownerId: 5,
+        ownerId: 15,
         address: '1313 Cemetery Lane',
         city: 'New York',
         state: 'NY',
@@ -195,7 +195,7 @@ module.exports = {
         price: 125.00
       },
       {
-        ownerId: 1,
+        ownerId: 16,
         address: '123 Hill Valley',
         city: 'Hill Valley',
         state: 'CA',
@@ -207,7 +207,7 @@ module.exports = {
         price: 95.00
       },
       {
-        ownerId: 2,
+        ownerId: 17,
         address: '12 Grimmauld Place',
         city: 'London',
         state: 'England',
@@ -219,7 +219,7 @@ module.exports = {
         price: 130.00
       },
       {
-        ownerId: 3,
+        ownerId: 18,
         address: '5 Jabba Drive',
         city: 'Tatooine',
         state: 'Outer Rim',
@@ -231,7 +231,7 @@ module.exports = {
         price: 150.00
       },
       {
-        ownerId: 4,
+        ownerId: 19,
         address: '1313 Webfoot Walk',
         city: 'Duckburg',
         state: 'Calisota',
@@ -243,7 +243,7 @@ module.exports = {
         price: 200.00
       },
       {
-        ownerId: 5,
+        ownerId: 20,
         address: '42 Cherry Tree Lane',
         city: 'London',
         state: 'England',

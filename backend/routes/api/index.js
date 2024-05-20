@@ -20,11 +20,11 @@ router.use('/users', usersRouter);
 
 router.use('/spots', spotsRouter);
 
-router.use('/spotimages', spotImagesRouter);
+router.use('/spot-images', spotImagesRouter);
 
 router.use('/reviews', reviewsRouter);
 
-router.use('/reviewimages', reviewImagesRouter);
+router.use('/review-images', reviewImagesRouter);
 
 router.use('/bookings', bookingsRouter);
 

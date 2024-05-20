@@ -18,18 +18,18 @@ const populateRatingAndImageColumn = async (query) => {
         preview: true,
       },
     });
-  
+
     const avgRatingArray = [];
-  
+
     for (let i = 0; i < spots.length; i++) {
       let ratingAmount = 0;
-  
+
       const reviewSpecificSpotId = await Review.findAll({
         where: {
           spotId: spots[i].id,
         },
       });
-  
+
       if (reviewSpecificSpotId.length > 0) {
         for (let j = 0; j < reviewSpecificSpotId.length; j++) {
           ratingAmount += reviewSpecificSpotId[j].stars;
@@ -39,32 +39,32 @@ const populateRatingAndImageColumn = async (query) => {
         avgRatingArray.push(null); // Or some default value
       }
     }
-  
+
     for (let k = 0; k < spots.length; k++) {
       const previewImage = previewImages.find(img => img.spotId === spots[k].id);
       spots[k].previewImage = previewImage ? previewImage.url : null; // Or some default value
       spots[k].avgRating = avgRatingArray[k];
-  
+
       await spots[k].save();
     }
-  
+
     return spots;
   };
-  
+
   router.get("/", async (req, res) => {
     const error = {
       message: {},
       errors: {},
     };
-  
+
     const query = {};
-  
+
     let { page, size } = req.query;
-  
+
     if (page && size) {
       page = +page;
       size = +size;
-  
+
       if (isNaN(page) || isNaN(size)) {
         res.status(400).json({
           message: "Bad Request",
@@ -75,7 +75,7 @@ const populateRatingAndImageColumn = async (query) => {
         });
         return;
       }
-  
+
       if ((page < 1 || page > 10) || (size < 1 || size > 20)) {
         res.status(400).json({
           message: "Bad Request",
@@ -86,11 +86,11 @@ const populateRatingAndImageColumn = async (query) => {
         });
         return;
       }
-  
+
       query.limit = size;
       query.offset = size * (page - 1);
     }
-  
+
     try {
       const spots = await populateRatingAndImageColumn(query);
       res.json({ spots, page, size });
@@ -98,15 +98,15 @@ const populateRatingAndImageColumn = async (query) => {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
-  
-  
+
+
   router.post("/", async (req, res) => {
     const { user } = req;
     const error = {
       message: {},
       errors: {},
     };
-  
+
     if (user) {
       const {
         address,
@@ -119,7 +119,7 @@ const populateRatingAndImageColumn = async (query) => {
         description,
         price,
       } = req.body;
-  
+
       if (
         address &&
         city &&
@@ -143,7 +143,7 @@ const populateRatingAndImageColumn = async (query) => {
           description,
           price,
         });
-  
+
         res.statusCode = 201;
         res.json(newSpot);
       } else {
@@ -158,16 +158,16 @@ const populateRatingAndImageColumn = async (query) => {
           description,
           price,
         };
-  
+
         res.statusCode = 400;
         error.message = "Bad Request";
-  
+
         for (let key in spotObj) {
           if (spotObj[key] === undefined || spotObj[key] === "") {
             error["errors"][key] = key + " is required";
           }
         }
-  
+
         return res.json(error);
       }
     } else {
@@ -175,17 +175,17 @@ const populateRatingAndImageColumn = async (query) => {
       res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.post("/:spotId/images", async (req, res) => {
     const { user } = req;
     const error = {
       message: {},
       errors: {},
     };
-  
+
     if (user) {
       const spot = await Spot.findByPk(req.params.spotId);
-  
+
       if (!spot) {
         res.statusCode = 404;
         res.json({ message: "Spot couldn't be found" });
@@ -196,55 +196,55 @@ const populateRatingAndImageColumn = async (query) => {
             ownerId: user.id,
           },
         });
-  
+
         if (!userSpot) {
           res.statusCode = 403;
           res.json({ message: "Forbidden" });
         }
-  
+
         const { url, preview } = req.body;
-  
+
         if (url && (preview === true || preview === false)) {
           const spotImages = await SpotImage.findAll({
             where: {
               spotId: spot.id,
             },
           });
-  
+
           if (preview === true && spotImages.length > 0) {
             for (let i = 0; i < spotImages.length; i++) {
               if (spotImages[i].preview === true) {
                 spotImages[i].preview = false;
-  
+
                 await spotImages[i].save();
               }
             }
           }
-  
+
           const spotImage = await SpotImage.create({
             spotId: spot.id,
             url,
             preview,
           });
-  
+
           const spots = await populateRatingAndImageColumn();
-  
+
           res.json(spotImage);
         } else {
           const spotImageObj = {
             url,
             preview,
           };
-  
+
           res.statusCode = 400;
           error.message = "Bad Request";
-  
+
           for (let key in spotImageObj) {
             if (spotImageObj[key] === undefined || spotImageObj[key] === "") {
               error["errors"][key] = key + " is required";
             }
           }
-  
+
           return res.json(error);
         }
       }
@@ -253,18 +253,18 @@ const populateRatingAndImageColumn = async (query) => {
       res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.get("/current", async (req, res) => {
     const spots = await populateRatingAndImageColumn();
     const { user } = req;
-  
+
     if (user) {
       const userSpots = await Spot.findAll({
         where: {
           ownerId: user.id,
         },
       });
-  
+
       return res.json({
         Spots: userSpots,
       });
@@ -273,31 +273,31 @@ const populateRatingAndImageColumn = async (query) => {
       return res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.get("/:spotId", async (req, res) => {
     const spots = await populateRatingAndImageColumn();
     const spot = await Spot.findByPk(req.params.spotId, {
       include: [{ model: SpotImage }, { model: User, as: "Owner" }],
     });
-  
+
     if (!spot) {
       res.statusCode = 404;
       res.json({ message: "Spot couldn't be found" });
     }
-  
+
     res.json(spot);
   });
-  
+
   router.put("/:spotId", async (req, res) => {
     const { user } = req;
     const error = {
       message: {},
       errors: {},
     };
-  
+
     if (user) {
       const spot = await Spot.findByPk(req.params.spotId);
-  
+
       if (!spot) {
         res.statusCode = 404;
         res.json({ message: "Spot couldn't be found" });
@@ -308,7 +308,7 @@ const populateRatingAndImageColumn = async (query) => {
             ownerId: user.id,
           },
         });
-  
+
         if (!userSpot) {
           res.statusCode = 403;
           res.json({ message: "Forbidden" });
@@ -324,7 +324,7 @@ const populateRatingAndImageColumn = async (query) => {
             description,
             price,
           } = req.body;
-  
+
           if (
             address &&
             city &&
@@ -345,9 +345,9 @@ const populateRatingAndImageColumn = async (query) => {
             spot.name = name;
             spot.description = description;
             spot.price = price;
-  
+
             await spot.save();
-  
+
             res.json(spot);
           } else {
             const spotObj = {
@@ -361,16 +361,16 @@ const populateRatingAndImageColumn = async (query) => {
               description,
               price,
             };
-  
+
             res.statusCode = 400;
             error.message = "Bad Request";
-  
+
             for (let key in spotObj) {
               if (spotObj[key] === undefined || spotObj[key] === "") {
                 error["errors"][key] = key + " is required";
               }
             }
-  
+
             return res.json(error);
           }
         }
@@ -380,13 +380,13 @@ const populateRatingAndImageColumn = async (query) => {
       res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.delete("/:spotId", async (req, res) => {
     const { user } = req;
-  
+
     if (user) {
       const spot = await Spot.findByPk(req.params.spotId);
-  
+
       if (!spot) {
         res.statusCode = 404;
         res.json({ message: "Spot couldn't be found" });
@@ -397,13 +397,13 @@ const populateRatingAndImageColumn = async (query) => {
             ownerId: user.id,
           },
         });
-  
+
         if (!userSpot) {
           res.statusCode = 403;
           res.json({ message: "Forbidden" });
         } else {
           await spot.destroy();
-  
+
           res.json({ message: "Successfully deleted" });
         }
       }
@@ -412,7 +412,7 @@ const populateRatingAndImageColumn = async (query) => {
       res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.post("/:spotId/reviews", async (req, res) => {
     const { user } = req;
     const reviewsSet = new Set();
@@ -420,13 +420,13 @@ const populateRatingAndImageColumn = async (query) => {
       message: {},
       errors: {},
     };
-  
+
     if (user) {
       const { review, stars } = req.body;
-  
+
       const spot = await Spot.findByPk(req.params.spotId);
       const reviews = await Review.findAll();
-  
+
       if (!spot) {
         res.statusCode = 404;
         res.json({ message: "Spot couldn't be found" });
@@ -434,7 +434,7 @@ const populateRatingAndImageColumn = async (query) => {
         for (let i = 0; i < reviews.length; i++) {
           reviewsSet.add(`${reviews[i].userId}, ${reviews[i].spotId}`);
         }
-  
+
         if (review && stars > 0 && stars < 6) {
           if (reviewsSet.has(`${user.id}, ${req.params.spotId}`)) {
             res.statusCode = 500;
@@ -446,7 +446,7 @@ const populateRatingAndImageColumn = async (query) => {
               review,
               stars,
             });
-  
+
             res.statusCode = 201;
             res.json(newReview);
           }
@@ -455,20 +455,20 @@ const populateRatingAndImageColumn = async (query) => {
             review,
             stars,
           };
-  
+
           res.statusCode = 400;
           error.message = "Bad Request";
-  
+
           for (let key in reviewObj) {
             if (reviewObj[key] === undefined || reviewObj[key] === "") {
               error["errors"][key] = key + " is required";
             }
-  
+
             if (stars < 1 || stars > 5) {
               error["errors"]["stars"] = "Stars must be an integer from 1 to 5";
             }
           }
-  
+
           res.json(error);
         }
       }
@@ -477,25 +477,25 @@ const populateRatingAndImageColumn = async (query) => {
       res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.get("/:spotId/reviews", async (req, res) => {
     const spot = await Spot.findByPk(req.params.spotId);
-  
+
     if (!spot) {
       res.statusCode = 404;
       res.json({ message: "Spot couldn't be found" });
     }
-  
+
     const reviews = await Review.findAll({
       where: {
         spotId: req.params.spotId,
       },
       include: [{ model: User }, { model: ReviewImage }],
     });
-  
+
     res.json({ Reviews: reviews });
   });
-  
+
   router.post("/:spotId/bookings", async (req, res) => {
     const { user } = req;
     const bookingSet = new Set();
@@ -506,21 +506,21 @@ const populateRatingAndImageColumn = async (query) => {
       message: {},
       errors: {},
     };
-  
+
     if (user) {
       let { startDate, endDate } = req.body;
-  
+
       const bookings = await Booking.findAll({
         where: {
           spotId: req.params.spotId,
         },
       });
-  
+
       const spot = await Spot.findByPk(req.params.spotId);
-  
+
       startDate = new Date(startDate);
       endDate = new Date(endDate);
-  
+
       if (startDate && endDate) {
         if (!spot) {
           res.statusCode = 404;
@@ -532,7 +532,7 @@ const populateRatingAndImageColumn = async (query) => {
               ownerId: user.id,
             },
           });
-  
+
           if (ownerSpot) {
             res.statusCode = 403;
             res.json({ message: "Forbidden" });
@@ -540,7 +540,7 @@ const populateRatingAndImageColumn = async (query) => {
             for (let i = 0; i < bookings.length; i++) {
               bookingSet.add(`startDate: ${bookings[i].startDate}`);
               bookingSet.add(`endDate: ${bookings[i].endDate}`);
-  
+
               if (
                 startDate.getTime() ===
                   new Date(bookings[i].startDate).getTime() &&
@@ -548,21 +548,21 @@ const populateRatingAndImageColumn = async (query) => {
               ) {
                 isConflictingBooking = true;
               }
-  
+
               if (
                 startDate > bookings[i].startDate &&
                 startDate < bookings[i].endDate
               ) {
                 isValidStartDate = false;
               }
-  
+
               if (
                 endDate > bookings[i].startDate &&
                 endDate < bookings[i].endDate
               ) {
                 isValidEndDate = false;
               }
-  
+
               if (
                 startDate > bookings[i].startDate &&
                 startDate < bookings[i].endDate &&
@@ -572,7 +572,7 @@ const populateRatingAndImageColumn = async (query) => {
                 isValidStartDate = "dates within";
                 isValidEndDate = "dates within";
               }
-  
+
               if (
                 startDate < bookings[i].startDate &&
                 endDate > bookings[i].endDate
@@ -581,7 +581,7 @@ const populateRatingAndImageColumn = async (query) => {
                 isValidEndDate = "dates surround";
               }
             }
-  
+
             if (new Date(startDate) < Date.now()) {
               res.statusCode = 403;
               error.message = "Dates cannot be in the past";
@@ -696,16 +696,16 @@ const populateRatingAndImageColumn = async (query) => {
           startDate,
           endDate,
         };
-  
+
         res.statusCode = 400;
         error.message = "Bad Request";
-  
+
         for (let key in bookingObj) {
           if (bookingObj[key] === undefined || bookingObj[key] === "") {
             error["errors"][key] = key + " is required";
           }
         }
-  
+
         return res.json(error);
       }
     } else {
@@ -713,18 +713,18 @@ const populateRatingAndImageColumn = async (query) => {
       res.json({ message: "Authentication required" });
     }
   });
-  
+
   router.get("/:spotId/bookings", async (req, res) => {
     const { user } = req;
-  
+
     if (user) {
       const spot = await Spot.findByPk(req.params.spotId);
-  
+
       if (!spot) {
         res.statusCode = 404;
         res.json({ message: "Spot couldn't be found" });
       }
-  
+
       if (user.id === spot.ownerId) {
         const bookings = await Booking.unscoped().findAll({
           where: {
@@ -732,7 +732,7 @@ const populateRatingAndImageColumn = async (query) => {
           },
           include: [{ model: User }],
         });
-  
+
         res.json({ Bookings: bookings });
       } else {
         const bookings = await Booking.findAll({
@@ -740,7 +740,7 @@ const populateRatingAndImageColumn = async (query) => {
             spotId: spot.id,
           },
         });
-  
+
         res.json({ Bookings: bookings });
       }
     } else {

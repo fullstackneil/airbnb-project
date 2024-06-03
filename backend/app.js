@@ -54,7 +54,11 @@ const routes = require('./routes');
 
 app.use(routes); // Connect all the routes
 
-
+app.get("/", (req, res) => {
+  res.json({
+    message: "API server is running",
+  });
+});
 
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {

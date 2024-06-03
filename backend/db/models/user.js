@@ -1,5 +1,5 @@
 'use strict';
-const { Model, Validator } = require('sequelize');
+const { Model, Validator, Op } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasMany(models.Spot, {foreignKey: 'ownerId'})
-      User.belongsToMany(models.Spot, {through: models.Booking, foreignKey: 'userId', otherKey: 'spotId'})
-      User.belongsToMany(models.Spot, {through: models.Review, foreignKey: 'userId', otherKey: 'spotId'})
+      User.hasMany(models.Spot, {foreignKey: 'ownerId', onDelete: 'CASCADE'})
+      User.hasMany(models.Booking, {foreignKey: 'userId'})
+      User.hasMany(models.Review, {foreignKey: 'userId', onDelete: 'CASCADE'})
     }
   }
   User.init({
@@ -18,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30]
+        len: [3, 15]
       }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30]
+        len: [3, 15]
       }
     },
     username: {
@@ -60,6 +60,29 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    defaultScope: {
+      attributes: {
+        exclude: [
+          "hashedPassword",
+          "email",
+          "username",
+          "createdAt",
+          "updatedAt",
+        ],
+      },
+    },
+    scopes: {
+      findUser(credential) {
+        return {
+          where: {
+            [Op.or]: {
+              email: credential,
+              username: credential,
+            },
+          },
+        };
+      },
+    },
   });
   return User;
 };

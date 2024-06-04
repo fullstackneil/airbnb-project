@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
+
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -39,7 +40,7 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
+        {/* <li>{user.username}</li> */}
         <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
         <li>
@@ -51,4 +52,3 @@ function ProfileButton({ user }) {
 }
 
 export default ProfileButton;
-

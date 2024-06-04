@@ -1,5 +1,77 @@
-.profile-dropdown {
-  position: absolute;
+.nav-bar {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-between;
+  margin-top: 25px;
+  margin-left: 50px;
+  margin-right: 50px;
+  align-items: center;
+}
+
+.nav-bar li {
+  list-style-type: none;
+}
+
+.nav-bar .logo {
+  width: 110px;
+}
+
+.search-box-container {
+  display: flex;
+  gap: 15px;
+  border-radius: 35px;
+  padding: 15px 20px;
+  margin: auto;
+  border: 0.5px solid gray;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.border-right {
+  display: flex;
+  gap: 20px;
+  border-right: 1px solid gray;
+}
+
+.circle-magnify-glass {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #ff385c;
+  padding: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.magnify-glass {
+  color: white;
+}
+
+.hamburger-menu {
+  display: flex;
+  gap: 20px;
+}
+
+.user-menu-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "row1"
+    "row2";
+}
+
+.three-links {
+  display: flex;
+  grid-area: row1;
+  gap: 25px;
+  align-items: center;
+  justify-content: end;
+}
+
+.drop-down-menu {
+  grid-area: row2;
+  text-align: right;
 }
 
 .hidden {

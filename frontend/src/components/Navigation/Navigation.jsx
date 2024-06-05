@@ -5,7 +5,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import logo from '../../../public/assets/logo.png'
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { CgProfile } from "react-icons/cg";
 import { MdAccountCircle } from "react-icons/md";
 import { useState } from "react";
 import './Navigation.css';
@@ -22,12 +22,12 @@ function Navigation({ isLoaded }) {
         <MdAccountCircle
           className="icon-nav-bar"
           onClick={() => {
-            visible ? setVisible(false) : setVisible(true);
-          }}
+            setVisible(!visible)}
+          }
         />
       </div>
       {visible && (
-        <li className="drop-down-menu">
+        <li className="dropdown-menu">
           <ProfileButton user={sessionUser} id="login-sign-up-button" />{" "}
         </li>
       )}
@@ -62,20 +62,26 @@ function Navigation({ isLoaded }) {
           className='logo"'
         />
       </NavLink>
-      <div className="search-box-container">
-        <p>Anywhere</p>
-        <div className="border-right"></div>
-        <p>Any week</p>
-        <div className="border-right"></div>
-        <p>Add guests</p>
-        <div className="circle-magnify-glass">
-          <FaMagnifyingGlass className="magnify-glass" />
-        </div>
-      </div>
-      <div
-        className='hamburger-menu'>{isLoaded && sessionLinks}
-      </div>
 
+      <div className='profile-container'>
+        <CgProfile className='profile-icon' onClick={() => {
+            visible ? setVisible(false) : setVisible(true);
+          }}/>
+        {visible && (
+          <div className="dropdown-menu">
+            <OpenModalButton
+              buttonText="Log In"
+              modalComponent={<LoginFormModal />}
+              className='dropdown-link transparent-button'
+            />
+            <OpenModalButton
+              buttonText="Sign Up"
+              modalComponent={<SignupFormModal />}
+              className='dropdown-link transparent-button'
+            />
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

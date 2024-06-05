@@ -1,6 +1,5 @@
 .nav-bar {
   display: flex;
-  list-style-type: none;
   justify-content: space-between;
   margin-top: 25px;
   margin-left: 50px;
@@ -48,9 +47,16 @@
   color: white;
 }
 
-.hamburger-menu {
-  display: flex;
-  gap: 20px;
+.profile-container {
+  position: relative;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: darkred
 }
 
 .user-menu-container {
@@ -69,10 +75,54 @@
   justify-content: end;
 }
 
-.drop-down-menu {
-  grid-area: row2;
-  text-align: right;
+.dropdown-menu {
+  display: flex;
+  position: absolute;
+  height: 75px;
+  width: 200px;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  border: 1px solid black; /* Thin black border */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 10px; /* Add padding to make it a big box */
 }
+
+.dropdown-link {
+  display: block;
+  border: none;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  background-color: transparent; /* Ensure background is transparent */
+}
+
+.dropdown-link {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  background-color: transparent; /* Ensure background is transparent */
+}
+
+.dropdown-link:last-child {
+  border-bottom: none; /* Remove border from last link */
+}
+
+.dropdown-link:hover {
+  background-color: #f7f7f7;
+}
+
+.modal-button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Add space between buttons */
+}
+
 
 .hidden {
   display: none;

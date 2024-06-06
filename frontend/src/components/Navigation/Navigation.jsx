@@ -4,84 +4,70 @@ import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import logo from '../../../public/assets/logo.png'
+import logo from '../../../public/assets/logo.png';
 import { CgProfile } from "react-icons/cg";
-import { MdAccountCircle } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 import './Navigation.css';
+import { BiBorderAll } from 'react-icons/bi';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
-  const [ visible, setVisible ] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const sessionLinks = sessionUser ?
-    (
-    <div className="user-menu-container">
-      <div className="three-links">
-        <Link to="/spots">Create a New spot</Link>
-        <MdAccountCircle
-          className="icon-nav-bar"
-          onClick={() => {
-            setVisible(!visible)}
-          }
-        />
-      </div>
-      {visible && (
-        <li className="dropdown-menu">
-          <ProfileButton user={sessionUser} id="login-sign-up-button" />{" "}
-        </li>
-      )}
-    </div>
-    ) : (
-      <>
-        <li>
-          <OpenModalButton
-            buttonText="Log In"
-            modalComponent={<LoginFormModal />}
-            className='login-sign-up-button'
-          />
-          {/* <NavLink to="/login">Log In</NavLink> */}
-        </li>
-        <li>
-          <OpenModalButton
-            buttonText="Sign Up"
-            modalComponent={<SignupFormModal />}
-            className='login-sign-up-button'
-          />
-          {/* <NavLink to="/signup">Sign Up</NavLink> */}
-        </li>
-      </>
-    );
+  const handleIconClick = () => {
+    setVisible(!visible);
+  };
 
   return (
     <nav className='nav-bar'>
       <NavLink to='/'>
         <img
           src={logo}
-          style={{ width: '100px', height: 'auto' }}
-          className='logo"'
+          style={{ width: '150px', height: 'auto' }}
+          className='logo'
         />
       </NavLink>
 
       <div className='profile-container'>
-        <CgProfile className='profile-icon' onClick={() => {
-            visible ? setVisible(false) : setVisible(true);
-          }}/>
+        <GiHamburgerMenu className="hamburger-menu"/>
+        <CgProfile
+          className='profile-icon'
+          onClick={handleIconClick}
+        />
         {visible && (
           <div className="dropdown-menu">
-            <OpenModalButton
-              buttonText="Log In"
-              modalComponent={<LoginFormModal />}
-              className='dropdown-link transparent-button'
-            />
-            <OpenModalButton
-              buttonText="Sign Up"
-              modalComponent={<SignupFormModal />}
-              className='dropdown-link transparent-button'
-            />
+            {sessionUser ? (
+              <ProfileButton user={sessionUser} className="profile-button-menu"/>
+            ) : (
+              <div className="dropdown-link-container">
+                <OpenModalButton
+                  buttonText="Sign Up"
+                  modalComponent={<SignupFormModal />}
+                  className='dropdown-link'
+                />
+                <OpenModalButton
+                  buttonText="Log In"
+                  modalComponent={<LoginFormModal />}
+                  className='dropdown-link'
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
+
+      {isLoaded && sessionUser && (
+        <div className="user-menu-container">
+          <div className="three-links">
+            <Link to="/spots">Create a New spot</Link>
+            <MdAccountCircle
+              className="icon-nav-bar"
+              onClick={handleIconClick}
+            />
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

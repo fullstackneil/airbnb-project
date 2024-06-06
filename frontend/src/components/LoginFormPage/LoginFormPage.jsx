@@ -27,7 +27,7 @@ function LoginFormPage() {
   return (
     <>
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-content">
         <label>
           Username or Email
           <input
@@ -35,6 +35,7 @@ function LoginFormPage() {
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
+            className="input-text"
           />
         </label>
         <label>
@@ -44,10 +45,11 @@ function LoginFormPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className='password-text'
           />
         </label>
         {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        <button type="submit" className="button-text">Log In</button>
       </form>
     </>
   );

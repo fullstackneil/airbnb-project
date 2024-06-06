@@ -1,7 +1,12 @@
+:root {
+  --star-wars-yellow: #FFE81F;
+  --primary-font: 'Nunito', sans-serif;
+}
+
 .nav-bar {
   display: flex;
   justify-content: space-between;
-  margin-top: 25px;
+  margin-top: 50px;
   margin-left: 50px;
   margin-right: 50px;
   align-items: center;
@@ -12,51 +17,31 @@
 }
 
 .nav-bar .logo {
-  width: 110px;
-}
-
-.search-box-container {
-  display: flex;
-  gap: 15px;
-  border-radius: 35px;
-  padding: 15px 20px;
-  margin: auto;
-  border: 0.5px solid gray;
-  cursor: pointer;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
-}
-
-.border-right {
-  display: flex;
-  gap: 20px;
-  border-right: 1px solid gray;
-}
-
-.circle-magnify-glass {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: #ff385c;
-  padding: 9px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.magnify-glass {
-  color: white;
+  width: 350px;
 }
 
 .profile-container {
+  display: flex;
+  flex-direction: row;
   position: relative;
 }
 
+.hamburger-menu {
+  color: var(--star-wars-yellow);
+  height: 50px;
+  width: 35px;
+  position: relative;
+  right: 50px;
+}
+
 .profile-icon {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   cursor: pointer;
-  color: darkred
+  color: var(--star-wars-yellow);
+  position: relative;
+  right: 50px;
 }
 
 .user-menu-container {
@@ -67,62 +52,55 @@
     "row2";
 }
 
-.three-links {
-  display: flex;
-  grid-area: row1;
-  gap: 25px;
-  align-items: center;
-  justify-content: end;
-}
-
 .dropdown-menu {
   display: flex;
-  position: absolute;
-  height: 75px;
-  width: 200px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 175px;
   top: 50px;
   right: 0;
   background-color: white;
   border: 1px solid black; /* Thin black border */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  padding: 10px; /* Add padding to make it a big box */
+  padding: 10px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+}
+
+.dropdown-link-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  height: 100%;
+  width: fit-content;
 }
 
 .dropdown-link {
+  font-family: var(--primary-font);
+  font-size: 14px;
+  color: black;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 10px 20px; /* Add padding to make it look like a button */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* Remove underline */
+  border-radius: 4px; /* Add rounded corners */
+  transition: background-color 0.3s ease; /* Add a transition effect */
+  width: 100%;
+}
+
+.dropdown-link:first-child::after {
   display: block;
-  border: none;
-  text-decoration: none;
-  color: black;
-  cursor: pointer;
-  background-color: transparent; /* Ensure background is transparent */
+  width: 80%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1); /* Adjust color as needed */
+  margin: 10px; /* Adjust spacing as needed */
 }
-
-.dropdown-link {
-  display: flex;
-  align-items: center;
-  border: none;
-  padding: 12px 16px;
-  text-decoration: none;
-  color: black;
-  cursor: pointer;
-  background-color: transparent; /* Ensure background is transparent */
-}
-
-.dropdown-link:last-child {
-  border-bottom: none; /* Remove border from last link */
-}
-
-.dropdown-link:hover {
-  background-color: #f7f7f7;
-}
-
-.modal-button-container {
-  display: flex;
-  flex-direction: row;
-  gap: 10px; /* Add space between buttons */
-}
-
 
 .hidden {
   display: none;

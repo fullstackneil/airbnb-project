@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createReview } from "../../store/reviewReducer";
 import { getSingleSpot } from "../../store/spotReducer";
@@ -7,21 +7,13 @@ import { useModal } from "../../context/Modal";
 import "./CreateReview.css";
 import { FaStar } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
-import SpotDetailsPage from "../Spots/SpotDetailsPage";
-import { Link, Navigate } from "react-router-dom";
 
-// import { useNavigate } from "react-router-dom";
-
-function CreateReview({ spot, user }) {
+function CreateReview({ spot }) {
   const [stars, setStars] = useState(0);
   const [review, setReview] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const dispatch = useDispatch();
-  const [activeRating, setActiveRating] = useState(5);
-  const [serverError, setServerError] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  // const navigate = useNavigate();
 
   useEffect(() => {
     let errors = {};
@@ -44,22 +36,20 @@ function CreateReview({ spot, user }) {
         review,
       };
 
-      dispatch(createReview(newReview, spotId)).then(closeModal);
-      dispatch(getAllReviewsForSpot(spotId));
-      dispatch(getSingleSpot(spotId));
+      dispatch(createReview(newReview, spotId))
+        .then(closeModal)
+        .then(() => dispatch(getAllReviewsForSpot(spotId)))
+        .then(() => dispatch(getSingleSpot(spotId)));
 
       setStars(0);
       setReview("");
       setErrors({});
-      setActiveRating(0);
     }
   };
 
   return (
     <form className="review-form" onSubmit={handleSubmit}>
       <h2 className="review-title">How was your stay?</h2>
-
-      {serverError && <p className="server-error">{serverError}</p>}
       <label className="review-label">
         Review:
         <textarea

@@ -1,6 +1,10 @@
 :root {
   --star-wars-yellow: #FFE81F;
+  --star-wars-gray: #9ba0a8;
+  --star-wars-orange: #ffab00;
+  --star-wars-lightsaber-green: #2FF923;
   --primary-font: 'Nunito', sans-serif;
+  --error-message-red: #FF0000;
 }
 
 .nav-bar {
@@ -24,6 +28,13 @@
   display: flex;
   flex-direction: row;
   position: relative;
+}
+
+.create-new-spot-button {
+  margin-top: 12px;
+  margin-right: 100px;
+  color: white;
+  font-size: 20px;
 }
 
 .hamburger-menu {
@@ -55,10 +66,10 @@
 .dropdown-menu {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  width: 175px;
+  width: 300px;
   top: 50px;
   right: 0;
+  color: black;
   background-color: white;
   border: 1px solid black; /* Thin black border */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -81,7 +92,7 @@
 
 .dropdown-link {
   font-family: var(--primary-font);
-  font-size: 14px;
+  font-size: 16px;
   color: black;
   cursor: pointer;
   background: transparent;
@@ -102,6 +113,23 @@
   margin: 10px; /* Adjust spacing as needed */
 }
 
-.hidden {
-  display: none;
+#profile-first-name {
+  font-weight: bold;
+}
+
+#profile-email {
+  font-weight: bold;
+  color: var(--star-wars-gray);
+}
+
+#profile-log-out {
+  border-radius: 15px;
+  background-color: var(--star-wars-yellow);
+  font-size: 16px;
+  font-family: var(--primary-font);
+  justify-content: center;
+}
+
+.profile-dropdown.hidden {
+  justify-content: left;
 }

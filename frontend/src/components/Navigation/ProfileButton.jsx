@@ -13,6 +13,18 @@ function ProfileButton({ user }) {
     setShowMenu(!showMenu);
   };
 
+  const root = document.getElementById("root");
+  root.addEventListener("click", () => {
+    setShowMenu(true);
+  });
+
+  const iconClick = document.querySelector(".icon-nav-bar");
+  if (iconClick) {
+    iconClick.addEventListener("click", () => {
+      setShowMenu(false);
+    });
+  }
+
   useEffect(() => {
     if (!showMenu) return;
 
@@ -36,17 +48,18 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
-      <ul className={ulClassName} ref={ulRef}>
-        {/* <li>{user.username}</li> */}
-        <li>{user.firstName} {user.lastName}</li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
-      </ul>
+      {showMenu === false ?  (
+        <ul className={ulClassName} ref={ulRef}>
+          {/* <li>{user.username}</li> */}
+          <li id='profile-first-name'>Hello, {user.firstName}</li>
+          <li id='profile-email'>{user.email}</li>
+          <li>
+            <button id='profile-log-out' onClick={logout}>Log Out</button>
+          </li>
+        </ul>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

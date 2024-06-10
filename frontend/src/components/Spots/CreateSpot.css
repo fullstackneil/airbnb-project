@@ -1,0 +1,85 @@
+:root {
+    --star-wars-yellow: #FFE81F;
+    --star-wars-gray: #9ba0a8;
+    --star-wars-orange: #ffab00;
+    --star-wars-lightsaber-green: #2FF923;
+    --primary-font: 'Nunito', sans-serif;
+    --error-message-red: #FF0000;
+  }
+
+.create-spot-container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    align-items: center;
+    margin-top: 50px;
+  }
+  .create-spot-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+  }
+
+  #form-title {
+    margin-bottom: 20px;
+    color: var(--star-wars-yellow);
+  }
+
+  .title {
+    margin-bottom: 5px;
+    color: var(--star-wars-yellow);
+  }
+
+  .subtitle {
+    color: var(--star-wars-gray);
+    font-size: 18px;
+  }
+
+  .error-message {
+    color: var(--error-message-red);
+  }
+
+  .form-info {
+    margin-bottom: 20px;
+  }
+
+  .input-area-spots {
+    background-color: white;
+    border-radius: 7px;
+    border: #51636d71 1px solid;
+    height: 25px;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+  }
+
+  .signup-label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-text-area {
+    background-color: white;
+    border-radius: 7px;
+    border: #51636d71 1px solid;
+    height: 70px;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+  }
+
+  .added-text {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .spot-button {
+    margin: auto;
+    width: 400px;
+    height: 50px;
+    box-shadow: 2px 2px 2px var(--star-wars-gray);
+    background-color: var(--star-wars-yellow);
+    font: var(--primary-font)
+  }

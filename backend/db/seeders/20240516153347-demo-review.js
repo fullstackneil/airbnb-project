@@ -14,18 +14,6 @@ module.exports = {
     options.tableName = "Reviews";
     return queryInterface.bulkInsert(options, [
       {
-        userId: 2,
-        spotId: 1,
-        review: "Fantastic location. Easily able to get all over with plenty of dining (and drinking) options! Can't wait to come back.",
-        stars: 5,
-      },
-      {
-        userId: 6,
-        spotId: 2,
-        review: "Excellent place to stay; surprisingly quiet considering it was on a busy street. Great view and kitchen and all the furniture and appliances were spotless.",
-        stars: 4,
-      },
-      {
         userId: 10,
         spotId: 3,
         review: "Very nice and modern furnished apartment in a good and central location. I was very satisfied.",
@@ -263,12 +251,6 @@ module.exports = {
         spotId: 2,
         review:
           "This Airbnb is probably one of my favorites. It was lovely. And perfect for our kiddos. Highly recommend and hope to be back.",
-        stars: 5,
-      },
-      {
-        userId: 30,
-        spotId: 1,
-        review: "Great stay will stay their everytime I come back.",
         stars: 5,
       },
     ], {});

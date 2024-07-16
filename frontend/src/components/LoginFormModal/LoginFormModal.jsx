@@ -8,76 +8,55 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [validations, setValidations] = useState({});
   const { closeModal } = useModal();
-  let isDemoUser = false;
 
   useEffect(() => {
-    const errorsObj = {};
+    const validationsObj = {};
 
     if (credential.length < 4) {
-      errorsObj.credential = "Username must be 4 characters or more";
+      validationsObj.credential = "Username must be 4 characters or more";
     }
 
     if (password.length < 6) {
-      errorsObj.password = "Password must be 6 characters or more";
+      validationsObj.password = "Password must be 6 characters or more";
     }
-    setErrors(errors);
+    setValidations(validationsObj);
   }, [credential, password]);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setErrors({});
-  //   return dispatch(sessionActions.login({ credential, password }))
-  //     .then(closeModal)
-  //     .catch(async (res) => {
-  //       const data = await res.json();
-  //       if (data && data.errors) {
-  //         setErrors(data.errors);
-  //       }
-  //     });
-  // };
-  const createDemoUser = () => {
-    isDemoUser = true;
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, isDemoUser = false) => {
     e.preventDefault();
+    setValidations({});
 
-    if (isDemoUser === true) {
-      const demoUser = {
-        credential: "demo.user@gmail.com",
+    if (isDemoUser) {
+      const demoCredentials = {
+        credential: "Demo-User",
         password: "password",
       };
+      return dispatch(sessionActions.login(demoCredentials))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.message) {
+          setValidations({error: data.message});
+        }
+      });
 
-      await dispatch(sessionActions.login(demoUser)).then(closeModal);
     } else {
-      setErrors({});
       return dispatch(sessionActions.login({ credential, password }))
-        .then(closeModal)
-        .catch(async (res) => {
-          const data = await res.json();
-          if (parseInt(res.status) === 401) {
-            setErrors({ error: "The provided credientials are invalid" });
-          }
-          if (data && data.errors) {
-            setErrors(data.errors);
-          }
-        });
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.message) {
+          setValidations({error: data.message});
+        }
+      });
     }
   };
-
-  return (
-    <>
+    return (
+    <div id='login-popup-container'>
       <h1 className="login-text">Log In</h1>
-      <form onSubmit={handleSubmit} className="login-modal" autoComplete="off">
-      {Object.keys(errors).length >= 1 && (
-          <p className="login-error">{errors.error}</p>
-        )}
-        {errors.credential && (
-          <p className="login-error">{errors.credential}</p>
-        )}
-        <label className='credentials-container'>
+      <form onSubmit={handleSubmit} className="login-modal">
           <input
             className='credentials-input-box'
             type="text"
@@ -86,8 +65,7 @@ function LoginFormModal() {
             placeholder='Username or Email'
             required
           />
-        </label>
-        <label className='password-modal'>
+          {credential in validations && <span id='invalid-credentials'>{validations.credential}</span>}
           <input
             className='password-input-box'
             type="password"
@@ -96,20 +74,19 @@ function LoginFormModal() {
             placeholder="Password"
             required
           />
-        </label>
-        {errors.credential && <p>{errors.credential}</p>}
+          {password in validations && <span id='invalid-password'>{validations.password}</span>}
+          {validations.error && <span id='error-message'>{validations.error}</span>}
         <button
         type="submit"
-        disabled={Object.values(errors).length >= 1}
+        disabled={Object.keys(validations).length > 0}
         className='login-button'>Log In
         </button>
-        <div className='demo-user-container'>
-          <a href={createDemoUser} className="demo-user-link">
-          Demo User
-          </a>
-        </div>
+        <button className='demo-user-container'
+          type='submit'
+          onClick={(e) => handleSubmit(e, true)}
+          >Log in as Demo User</button>
       </form>
-    </>
+    </div>
   );
 }
 

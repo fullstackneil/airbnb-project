@@ -48,18 +48,14 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      {showMenu === false ?  (
-        <ul className={ulClassName} ref={ulRef}>
-          {/* <li>{user.username}</li> */}
-          <li id='profile-first-name'>Hello, {user.firstName}</li>
-          <li id='profile-email'>{user.email}</li>
-          <li>
-            <button id='profile-log-out' onClick={logout}>Log Out</button>
-          </li>
-        </ul>
-      ) : (
-        <></>
-      )}
+      <ul className={ulClassName} ref={ulRef}>
+        {/* <li>{user.username}</li> */}
+        <li id='profile-first-name'>Hello, {user.firstName}</li>
+        <li id='profile-email'>{user.email}</li>
+        <li>
+          <button id='profile-log-out' onClick={logout}>Log Out</button>
+        </li>
+      </ul>
     </>
   );
 }

@@ -30,6 +30,31 @@
     height: 25px;
   }
 
+  #invalid-credentials {
+    font: var(--primary-font);
+    size: 12px;
+    color: red;
+  }
+
+  #invalid-password {
+    font: var(--primary-font);
+    size: 12px;
+    color: red;
+  }
+
+  #error-message {
+    font: var(--primary-font);
+    padding-top: 8px;
+    size: 12px;
+    color: red;
+  }
+
+  #invalid-credentials {
+    font: var(--primary-font);
+    size: 12px;
+    color: red;
+  }
+
   .password-modal {
     display: flex;
     flex-direction: column;

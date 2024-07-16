@@ -230,6 +230,13 @@ module.exports = {
         email: "bo.katan@mandalore.com",
         username: "boKatan",
         hashedPassword: bcrypt.hashSync("darkSaber")
+      },
+      {
+        firstName: "Demo User",
+        lastName: "Demo User",
+        email: "demouser@demo.com",
+        username: "Demo-User",
+        hashedPassword: bcrypt.hashSync("password")
       }
     ], {});
   },

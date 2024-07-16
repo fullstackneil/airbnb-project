@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 import "./SpotsIndex.css";
 import { FaStar } from "react-icons/fa";
-// import { sendPreviewImage } from "./CreateSpot";
 
+const arr = [];
 const SpotIndexItem = ({ spot }) => {
+  arr.push(spot);
   return (
     <div className="spot-container">
       <Link to={`/spots/${spot.id}`}>
         <div className="spot-image-container">
-          <img src={spot.previewImage ? spot.previewImage : sendPreviewImage} />
+          <img src={spot.previewImage} />
         </div>
         <div className="tooltip">
           <span className="tooltiptext">{spot.name}</span>
@@ -20,7 +21,8 @@ const SpotIndexItem = ({ spot }) => {
               {spot.city}, {spot.state}
             </p>
             <p>
-              <FaStar /> {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
+              <FaStar />{" "}
+              {spot.avgRating ? Number(spot.avgRating).toFixed(2) : "New"}
             </p>
           </div>
           <p>${spot.price} night</p>

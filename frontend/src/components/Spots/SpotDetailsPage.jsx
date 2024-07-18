@@ -82,7 +82,7 @@ const SpotDetailsPage = () => {
             <div className="info-box-container">
               <div className="stay-info-container">
                 <h2 id='spot-price'>${spot.price}</h2>
-                <h3 id='night-text'>night</h3>
+                <h3 id='night-text'> /night</h3>
                 <p id='star-rating-container'>
                   <FaStar />
                   {reviewCount === 0

@@ -66,41 +66,50 @@
 
 .owner-description-container {
   width: 700px;
-  margin-left: 50px;
 }
 
 .info-box-container {
   display: flex;
   flex-direction: column;
-  width: 400px;
-  gap: 15px;
+  width: 420px;
   margin-right: 80px;
   border: 3px solid white;
   border-radius: 20px;
-  padding: 25px;
 }
 
 .stay-info-container {
   display: flex;
   align-items: center;
+  justify-content: space-around;
 }
 
 #spot-price {
-  justify-content: left;
+  margin-left: 30px;
+  color: var(--star-wars-lightsaber-green);
+  font-size: 32px;
 }
 
-/* #night-text {
+#night-text {
+  margin-right: 140px;
+  color: var(--star-wars-lightsaber-green);
+}
 
-} */
+#star-rating-container {
+  margin-right: 45px;
+  color: white;
+  font-size: 18px;
+}
 
 .btn-container {
-  width: 300px;
+  width: 250px;
   justify-content: center;
+  margin-left: 30px;
+  margin-bottom: 25px;
 }
 
 .btn-container > button {
-  width: 280px;
-  height: 50px;
+  width: 350px;
+  height: 40px;
   box-shadow: 2px 2px 2px var(--star-wars-gray);
   background-color: var(--star-wars-yellow);
   font: var(--primary-font);

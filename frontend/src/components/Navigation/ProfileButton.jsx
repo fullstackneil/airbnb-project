@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
-
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -49,9 +49,11 @@ function ProfileButton({ user }) {
   return (
     <>
       <ul className={ulClassName} ref={ulRef}>
-        {/* <li>{user.username}</li> */}
         <li id='profile-first-name'>Hello, {user.firstName}</li>
         <li id='profile-email'>{user.email}</li>
+        <li>
+          <Link id='manage-spots' to='/spots/myspots'>Manage Spots</Link>
+        </li>
         <li>
           <button id='profile-log-out' onClick={logout}>Log Out</button>
         </li>

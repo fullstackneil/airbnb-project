@@ -10,6 +10,7 @@ import SpotsIndex from "./components/Spots/SpotsIndex.jsx";
 import SpotDetailsPage from './components/Spots/SpotDetailsPage.jsx';
 import CreateSpot from './components/Spots/CreateSpot.jsx';
 import ManageSpots from './components/Spots/ManageSpots.jsx';
+import UpdateSpot from './components/Spots/UpdateSpot.jsx';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -50,10 +51,10 @@ const router = createBrowserRouter([
         path: "/spots/myspots",
         element: <ManageSpots />,
       },
-      // {
-      //   path: "/spots/:spotId/edit",
-      //   element: <UpdateSpot />
-      // }
+      {
+        path: "/spots/myspots/spots/:spotId/edit",
+        element: <UpdateSpot />
+      }
       // {
       //   path: 'login',
       //   element: <LoginFormPage />

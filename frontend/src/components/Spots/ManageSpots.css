@@ -1,0 +1,25 @@
+:root {
+    --star-wars-yellow: #FFE81F;
+    --star-wars-gray: #9ba0a8;
+    --star-wars-orange: #ffab00;
+    --star-wars-lightsaber-green: #2FF923;
+    --primary-font: 'Nunito', sans-serif;
+    --error-message-red: #FF0000;
+}
+
+.button {
+    margin: auto;
+    width: 180px;
+    height: 50px;
+    box-shadow: 2px 2px 2px white;
+    background-color: var(--star-wars-yellow);
+    font: var(--primary-font);
+}
+
+.manage-text-btn {
+    padding-left: 350px;
+}
+
+.manage-spots-text {
+    color: white;
+}

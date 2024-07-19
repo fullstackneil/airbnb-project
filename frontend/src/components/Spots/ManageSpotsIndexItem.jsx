@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./ManageSpotsIndexItem.css";
 import { FaStar } from "react-icons/fa";
 import OpenModalButton from "../OpenModalButton";
+import DeleteSpot from "./DeleteSpot";
+import './ManageSpotsIndexItem.css'
 
 
 const ManageSpotsIndexItem = ({ spot }) => {
@@ -34,7 +36,7 @@ const ManageSpotsIndexItem = ({ spot }) => {
             <button id='update-button' onClick={() => navigate(`spots/${spot.id}/edit`)}>Update</button>
             <OpenModalButton id='delete-button'
             buttonText="Delete"
-            // modalComponent={<DeleteSpot spot={spot} />}
+            modalComponent={<DeleteSpot spot={spot} />}
             />
         </div>
     </div>

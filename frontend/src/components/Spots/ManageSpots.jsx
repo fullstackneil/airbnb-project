@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { addSpot } from "../../store/spotReducer";
 import { useSelector, useDispatch } from "react-redux";
 import ManageSpotsIndexItem from "./ManageSpotsIndexItem";
+import './ManageSpots.css'
 
 const ManageSpots = () => {
     const userSpots = useSelector((state) => state.spots.currentUserSpots.Spots)
@@ -27,8 +28,8 @@ const ManageSpots = () => {
           {isLoaded ? (
             <>
               <div className="manage-text-btn">
-                <h2>Manage Spots</h2>
-                <button onClick={createSpot}>Create a New Spot</button>
+                <h2 className='manage-spots-text'>Manage Spots</h2>
+                <button className='button' onClick={createSpot}>Create a New Spot</button>
               </div>
               <div className="spots-container">
                 {spotsArr === undefined ? (

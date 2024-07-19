@@ -16,8 +16,6 @@ function CreateReview({ spot }) {
   const { closeModal } = useModal();
   const dispatch = useDispatch();
 
-  const StarRating = () =>
-
   useEffect(() => {
     let errors = {};
     if (stars < 1) errors.stars = "Stars can't be empty";
@@ -25,7 +23,7 @@ function CreateReview({ spot }) {
       errors.review = "Review must be at least 10 characters long";
 
     setErrors(errors);
-  }, [review, stars]);
+  }, [review.length, stars]);
 
   const handleMouseEnter = (rating) => {
     setHoveredStars(rating);

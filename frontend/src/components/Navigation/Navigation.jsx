@@ -10,7 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import './Navigation.css';
 
-function Navigation({ isLoaded }) {
+function Navigation() {
   const sessionUser = useSelector(state => state.session.user);
   const [visible, setVisible] = useState(false);
   const dropdownRef = useRef(null);

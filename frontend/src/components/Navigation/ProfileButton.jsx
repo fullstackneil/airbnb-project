@@ -8,11 +8,6 @@ function ProfileButton({ user }) {
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
-  const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
-    setShowMenu(!showMenu);
-  };
-
   const root = document.getElementById("root");
   root.addEventListener("click", () => {
     setShowMenu(true);

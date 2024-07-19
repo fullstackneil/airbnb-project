@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeReview } from "../../store/reviewReducer";
 import { getAllReviewsForSpot } from "../../store/reviewReducer";
-import { getCurrentUserSpots } from "../../store/spotReducer";
 import { useModal } from "../../context/Modal";
-import { getAllSpots } from "../../store/spotReducer";
 import { getSingleSpot } from "../../store/spotReducer";
 import './DeleteReview.css';
 

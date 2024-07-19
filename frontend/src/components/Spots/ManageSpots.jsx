@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCurrentUserSpots } from "../../store/spotReducer";
 import { useNavigate } from "react-router-dom";
-import { addSpot } from "../../store/spotReducer";
 import { useSelector, useDispatch } from "react-redux";
 import ManageSpotsIndexItem from "./ManageSpotsIndexItem";
 import './ManageSpots.css'

@@ -17,14 +17,8 @@ const UpdateSpot = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
-  const [imageUrl1, setImageUrl1] = useState("");
-  const [imageUrl2, setImageUrl2] = useState("");
-  const [imageUrl3, setImageUrl3] = useState("");
-  const [imageUrl4, setImageUrl4] = useState("");
   const [errors, setErrors] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hasChanged, setHasChanged] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

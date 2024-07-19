@@ -10,10 +10,13 @@ import { FaRegStar } from "react-icons/fa";
 
 function CreateReview({ spot }) {
   const [stars, setStars] = useState(0);
+  const [hoveredStars, setHoveredStars] = useState(0);
   const [review, setReview] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const dispatch = useDispatch();
+
+  const StarRating = () =>
 
   useEffect(() => {
     let errors = {};
@@ -23,6 +26,32 @@ function CreateReview({ spot }) {
 
     setErrors(errors);
   }, [review, stars]);
+
+  const handleMouseEnter = (rating) => {
+    setHoveredStars(rating);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredStars(0);
+  };
+
+  const handleClick = (rating) => {
+    setStars(rating);
+  };
+
+  const renderStars = () => {
+    return [1, 2, 3, 4, 5].map((rating) => (
+      <div
+        key={rating}
+        onMouseEnter={() => handleMouseEnter(rating)}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => handleClick(rating)}
+        className="star"
+      >
+        {rating <= (hoveredStars || stars) ? <FaStar /> : <FaRegStar />}
+      </div>
+    ));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,120 +91,10 @@ function CreateReview({ spot }) {
       <label className="review-label">
         Stars:
         <div className="rating-input">
-          {stars === 0 ? (
-            <div className="star-ratings-container">
-              <div onClick={() => setStars(1)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(2)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(3)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(4)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(5)}>
-                <FaRegStar />
-              </div>
-            </div>
-          ) : stars === 1 ? (
-            <div className="star-ratings-container">
-              <div onClick={() => setStars(1)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(2)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(3)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(4)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(5)}>
-                <FaRegStar />
-              </div>
-            </div>
-          ) : stars === 2 ? (
-            <div className="star-ratings-container">
-              <div onClick={() => setStars(1)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(2)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(3)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(4)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(5)}>
-                <FaRegStar />
-              </div>
-            </div>
-          ) : stars === 3 ? (
-            <div className="star-ratings-container">
-              <div onClick={() => setStars(1)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(2)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(3)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(4)}>
-                <FaRegStar />
-              </div>
-              <div onClick={() => setStars(5)}>
-                <FaRegStar />
-              </div>
-            </div>
-          ) : stars === 4 ? (
-            <div className="star-ratings-container">
-              <div onClick={() => setStars(1)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(2)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(3)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(4)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(5)}>
-                <FaRegStar />
-              </div>
-            </div>
-          ) : stars === 5 ? (
-            <div className="star-ratings-container">
-              <div onClick={() => setStars(1)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(2)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(3)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(4)}>
-                <FaStar />
-              </div>
-              <div onClick={() => setStars(5)}>
-                <FaStar />
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
+          <div className="star-ratings-container">{renderStars()}</div>
         </div>
       </label>
-      <button disabled={Object.values(errors).length > 0} type="submit">
+      <button id='submit-button' disabled={Object.values(errors).length > 0} type="submit">
         Submit Your Review
       </button>
     </form>

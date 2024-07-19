@@ -1,26 +1,39 @@
+:root {
+  --star-wars-yellow: #FFE81F;
+  --star-wars-gray: #9ba0a8;
+  --star-wars-orange: #ffab00;
+  --star-wars-lightsaber-green: #2FF923;
+  --primary-font: 'Nunito', sans-serif;
+  --error-message-red: #FF0000;
+}
+
 h2 {
-    font-family: "Manjari", sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-weight: bold;
-    color: #51636d;
+    color: var(--star-wars-yellow);
+    font-size: 28px;
   }
 
   .review-form {
     display: flex;
+    background-color: black;
     flex-direction: column;
     width: 30rem;
     box-sizing: border-box;
     padding: 0 25px 25px 25px;
     gap: 20px;
     border-radius: 30px;
+    border: 5px solid white;
   }
 
   .review-label {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-    font-family: "Manjari", sans-serif;
-    color: #51636d;
-    gap: 15px;
+    font-family: var(--primary-font);
+    color: white;
+    gap: 5px;
+    font-size: 24px;
   }
 
   .review-button {
@@ -28,7 +41,7 @@ h2 {
     background-color: #ff5a5f;
     color: white;
     box-shadow: 4px 3px 5px rgb(133, 117, 117);
-    font-family: "Comfortaa", cursive;
+    font-family: var(--primary-font);
     font-size: 16px;
     font-weight: bold;
     border-radius: 15px;
@@ -42,29 +55,42 @@ h2 {
     border: #51636d71 1px solid;
     height: 25px;
     font-size: 14px;
-    font-family: "Manjari", sans-serif;
+    font-family: var(--primary-font);
     letter-spacing: 1.5px;
     padding-top: 8px;
   }
 
   .long-text {
-    height: 80px;
+    height: 120px;
+    font: var(--primary-font);
+    font-size: 16px;
   }
 
   .rating-input {
     display: flex;
     justify-content: center;
-    column-gap: 10px;
+    column-gap: 5px;
     margin: 10px 0;
   }
 
   .rating-input div {
     cursor: pointer;
+    color: var(--star-wars-yellow);
   }
+
 
   .star-ratings-container {
     display: flex;
-    gap: 15px;
+    gap: 5px;
+  }
+
+  #submit-button {
+    margin: auto;
+    width: 400px;
+    height: 50px;
+    box-shadow: 2px 2px 2px white;
+    background-color: var(--star-wars-yellow);
+    font: var(--primary-font);
   }
 
   @media (max-width: 740px) {

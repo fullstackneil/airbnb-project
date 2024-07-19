@@ -1,5 +1,6 @@
 import DeleteReview from "./DeleteReview";
 import OpenModalButton from "../OpenModalButton";
+import './ReviewIndexItem.css'
 
 const ReviewIndexItem = ({ review, spot, user }) => {
   return (
@@ -13,6 +14,7 @@ const ReviewIndexItem = ({ review, spot, user }) => {
             <></>
           ) : user.id === review.userId ? (
             <OpenModalButton
+              id='delete-button'
               buttonText="Delete"
               modalComponent={<DeleteReview review={review} />}
             />

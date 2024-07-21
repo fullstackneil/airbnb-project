@@ -171,7 +171,7 @@ export const createSpotImage = (spotId, spotImageObj) => async (dispatch) => {
   }
 };
 
-const initialState = { allSpots: {}, currentUserSpots: {}, currentSpot: {} };
+const initialState = { allSpots: {}, currentUserSpots: {}, currentSpot: {}, createdSpot: {}, updatedSpot: {}, createdSpotImage: {} };
 
 export const spotReducer = (state = initialState, action) => {
   switch (action.type) {

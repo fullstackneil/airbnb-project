@@ -118,7 +118,7 @@ const SpotDetailsPage = () => {
               {reviewCount === 0 && spot.ownerId !== userSession?.id && (
                 <p>Be the first to post a review!</p>
               )}
-              {!isReviewPresent && userSession && (
+              {!isReviewPresent && userSession && spot.ownerId !== userSession.id && (
                 <OpenModalButton
                   buttonText="Post Your Review"
                   modalComponent={<CreateReview spot={spot} user={userSession} />}

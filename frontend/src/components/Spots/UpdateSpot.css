@@ -1,0 +1,31 @@
+:root {
+    --star-wars-yellow: #FFE81F;
+    --star-wars-gray: #9ba0a8;
+    --star-wars-orange: #ffab00;
+    --star-wars-lightsaber-green: #2FF923;
+    --primary-font: 'Nunito', sans-serif;
+    --error-message-red: #FF0000;
+}
+
+.spot-button {
+    margin: auto;
+    width: 400px;
+    height: 50px;
+    box-shadow: 2px 2px 2px var(--star-wars-gray);
+    background-color: var(--star-wars-yellow);
+    font: var(--primary-font)
+}
+
+.input-area-spots {
+    background-color: white;
+    border-radius: 7px;
+    border: #51636d71 1px solid;
+    height: 25px;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+}
+
+#price-box {
+    width: 700px;
+}

@@ -69,7 +69,7 @@ function SignupFormModal() {
   };
 
   const isButtonDisabled = () => {
-    return !email || !username || !firstName || !lastName || !password || !confirmPassword
+    return !email || username.length < 4 || !firstName || !lastName || password.length < 6 || confirmPassword.length < 6
   };
 
   return (

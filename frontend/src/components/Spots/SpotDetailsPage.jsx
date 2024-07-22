@@ -31,7 +31,16 @@ const SpotDetailsPage = () => {
   );
 
   const reviewCount = reviewsArray.length;
-  const avgRating = spot?.avgRating ? Number(spot.avgRating).toFixed(2) : "New";
+
+  // Calculate the average rating based on reviewsArray
+  const calculateAvgRating = (reviews) => {
+    if (reviews.length === 0) return "New";
+
+    const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+    return (totalStars / reviews.length).toFixed(2);
+  };
+
+  const avgRating = calculateAvgRating(reviewsArray);
 
   const isReviewPresent = reviewsArray.some(
     (review) => review.User.id === userSession?.id
@@ -94,7 +103,7 @@ const SpotDetailsPage = () => {
               <p>{spot.description}</p>
             </div>
             <div className="info-box-container">
-              <div className="stay-info-container">
+            <div className={`stay-info-container ${reviewCount === 0 ? 'new-review' : 'has-reviews'}`}>
                 <h2 id="spot-price">${spot.price}</h2>
                 <h3 id="night-text"> /night</h3>
                 <p id="star-rating-container">
@@ -115,16 +124,6 @@ const SpotDetailsPage = () => {
               {renderReviewCount()}
             </div>
             <div className="reviews-container">
-              {reviewCount === 0 && spot.ownerId !== userSession?.id && (
-                <p>Be the first to post a review!</p>
-              )}
-              {!isReviewPresent && userSession && spot.ownerId !== userSession.id && (
-                <OpenModalButton
-                  buttonText="Post Your Review"
-                  modalComponent={<CreateReview spot={spot} user={userSession} />}
-                  id="review-button"
-                />
-              )}
               {reviewsArray
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((review) => (
@@ -135,6 +134,14 @@ const SpotDetailsPage = () => {
                     key={review.id}
                   />
                 ))}
+              {!isReviewPresent && userSession && spot.ownerId !== userSession.id && (
+                <OpenModalButton
+                  buttonText="Post Your Review"
+                  modalComponent={<CreateReview spot={spot} user={userSession} />}
+                  id="review-button"
+                />
+              )}
+              {reviewCount === 0 && !userSession && <p>Be the first to post a review!</p>}
             </div>
           </div>
         </>

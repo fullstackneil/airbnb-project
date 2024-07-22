@@ -65,34 +65,6 @@ const CreateSpot = () => {
         lng: lng ? parseFloat(lng) : null,
       };
 
-      // dispatch(createSpot(spotObj))
-      // .then(() => {
-      //   if (newSpot === undefined) {
-      //     // createdSpotId++;
-      //     createdSpotId =
-      //     Object.values(allSpots)[Object.values(allSpots).length - 1].id +
-      //     1;
-      //   } else {
-      //     // createdSpotId = newSpot.id;
-      //     createdSpotId =
-      //     Object.values(allSpots)[Object.values(allSpots).length - 1].id +
-      //     1;
-      //   }
-      // })
-      // .then(() => {
-      //   handleImages(createdSpotId);
-      // })
-      // .then(() => dispatch(getAllSpots()))
-      // .then(() => {
-      //   if (newSpot === undefined) {
-      //     navigate(`/spots/${createdSpotId}`);
-      //   } else {
-      //     navigate(`/spots/${createdSpotId}`);
-      //   }
-      // })
-      // .then(() => {
-
-
       const createdSpot = await dispatch(createSpot(spotObj));
 
       if (createdSpot) {
@@ -281,7 +253,8 @@ const CreateSpot = () => {
             <span>$  </span>
             <input
               className="input-area-spots"
-              type="text"
+              type="number"
+              inputMode="numberic"
               placeholder="Price per night (USD)"
               value={price}
               onChange={handlePriceChange}

@@ -56,7 +56,7 @@
     color: #ffffff; /* White text color when disabled */
     border-color: #6c757d; /* Gray border color when disabled */
     cursor: not-allowed; /* Change cursor to indicate disabled state */
-  }
+}
 
 .validation-msg {
     color: red;

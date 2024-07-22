@@ -8,93 +8,100 @@
 }
 
 h2 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: bold;
-    color: var(--star-wars-yellow);
-    font-size: 28px;
-  }
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+  color: var(--star-wars-yellow);
+  font-size: 28px;
+}
 
+.review-form {
+  display: flex;
+  background-color: black;
+  flex-direction: column;
+  width: 30rem;
+  box-sizing: border-box;
+  padding: 0 25px 25px 25px;
+  gap: 20px;
+  border-radius: 30px;
+  border: 5px solid white;
+}
+
+.review-label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-family: var(--primary-font);
+  color: white;
+  gap: 5px;
+  font-size: 24px;
+}
+
+.review-button {
+  height: 3rem;
+  background-color: #ff5a5f;
+  color: white;
+  box-shadow: 4px 3px 5px rgb(133, 117, 117);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.review-input {
+  background-color: white;
+  border-radius: 7px;
+  border: #51636d71 1px solid;
+  height: 25px;
+  font-size: 14px;
+  font-family: var(--primary-font);
+  letter-spacing: 1.5px;
+  padding-top: 8px;
+}
+
+.long-text {
+  height: 120px;
+  font: var(--primary-font);
+  font-size: 16px;
+}
+
+.rating-input {
+  display: flex;
+  justify-content: center;
+  column-gap: 5px;
+  margin: 10px 0;
+}
+
+.rating-input div {
+  cursor: pointer;
+  color: var(--star-wars-yellow);
+}
+
+
+.star-ratings-container {
+  display: flex;
+  gap: 5px;
+}
+
+#submit-button {
+  margin: auto;
+  width: 400px;
+  height: 50px;
+  box-shadow: 2px 2px 2px white;
+  background-color: var(--star-wars-yellow);
+  font: var(--primary-font);
+}
+
+#submit-button:disabled {
+  background-color: #6c757d; /* Gray background color when disabled */
+  color: #ffffff; /* White text color when disabled */
+  border-color: #6c757d; /* Gray border color when disabled */
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+@media (max-width: 740px) {
   .review-form {
-    display: flex;
-    background-color: black;
-    flex-direction: column;
-    width: 30rem;
-    box-sizing: border-box;
-    padding: 0 25px 25px 25px;
-    gap: 20px;
-    border-radius: 30px;
-    border: 5px solid white;
+    width: 20rem;
   }
-
-  .review-label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-    font-family: var(--primary-font);
-    color: white;
-    gap: 5px;
-    font-size: 24px;
-  }
-
-  .review-button {
-    height: 3rem;
-    background-color: #ff5a5f;
-    color: white;
-    box-shadow: 4px 3px 5px rgb(133, 117, 117);
-    font-family: var(--primary-font);
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .review-input {
-    background-color: white;
-    border-radius: 7px;
-    border: #51636d71 1px solid;
-    height: 25px;
-    font-size: 14px;
-    font-family: var(--primary-font);
-    letter-spacing: 1.5px;
-    padding-top: 8px;
-  }
-
-  .long-text {
-    height: 120px;
-    font: var(--primary-font);
-    font-size: 16px;
-  }
-
-  .rating-input {
-    display: flex;
-    justify-content: center;
-    column-gap: 5px;
-    margin: 10px 0;
-  }
-
-  .rating-input div {
-    cursor: pointer;
-    color: var(--star-wars-yellow);
-  }
-
-
-  .star-ratings-container {
-    display: flex;
-    gap: 5px;
-  }
-
-  #submit-button {
-    margin: auto;
-    width: 400px;
-    height: 50px;
-    box-shadow: 2px 2px 2px white;
-    background-color: var(--star-wars-yellow);
-    font: var(--primary-font);
-  }
-
-  @media (max-width: 740px) {
-    .review-form {
-      width: 20rem;
-    }
-  }
+}

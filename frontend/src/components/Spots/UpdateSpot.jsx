@@ -1,128 +1,120 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUpdatedSpot } from "../../store/spotReducer";
+import { createUpdatedSpot, getSingleSpot } from "../../store/spotReducer";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSingleSpot } from "../../store/spotReducer";
+import './UpdateSpot.css';
 
 const UpdateSpot = () => {
-    const spot = useSelector((state) => state.spots.currentSpot);
-    const { spotId } = useParams();
-
-  const [country, setCountry] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [errors, setErrors] = useState({});
-  const [isLoaded, setIsLoaded] = useState(false);
+  const spot = useSelector((state) => state.spots.currentSpot);
+  const { spotId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    country: "",
+    address: "",
+    city: "",
+    state: "",
+    lat: "",
+    lng: "",
+    description: "",
+    name: "",
+    price: ""
+  });
+
+  const [validations, setValidations] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showValidations, setShowValidations] = useState(false);
+
   useEffect(() => {
-    dispatch(getSingleSpot(spotId))
-      .then((spot) => {
-        setCountry(spot.country);
-        setAddress(spot.address);
-        setCity(spot.city);
-        setState(spot.state);
-        setLat(spot.lat);
-        setLng(spot.lng);
-        setDescription(spot.description);
-        setName(spot.name);
-        setPrice(spot.price);
-      })
-      .then(() => setIsLoaded(true));
+    dispatch(getSingleSpot(spotId)).then((spot) => {
+      setFormData({
+        country: spot.country || "",
+        address: spot.address || "",
+        city: spot.city || "",
+        state: spot.state || "",
+        lat: spot.lat || "",
+        lng: spot.lng || "",
+        description: spot.description || "",
+        name: spot.name || "",
+        price: spot.price || ""
+      });
+      setIsLoaded(true);
+    });
   }, [dispatch, spotId]);
 
+  const validateFields = useCallback(() => {
+    const errors = {};
+    const { country, address, city, state, lat, lng, description, name, price } = formData;
+
+    if (!country) errors.country = "Country is required";
+    if (!address) errors.address = "Address is required";
+    if (!city) errors.city = "City is required";
+    if (!state) errors.state = "State is required";
+    if (!lat || isNaN(lat)) errors.lat = "Latitude is required and must be a number";
+    if (!lng || isNaN(lng)) errors.lng = "Longitude is required and must be a number";
+    if (!description || description.length < 30) errors.description = "Description must be 30 or more characters";
+    if (!name) errors.name = "Name is required";
+    if (!price || isNaN(price)) errors.price = "Price is required and must be a number";
+
+    return errors;
+  }, [formData]);
 
   useEffect(() => {
-    const errors = {};
+    if (showValidations) {
+      setValidations(validateFields());
+    }
+  }, [formData, showValidations, validateFields]);
 
-    if (country.length < 1) {
-      errors.country = "Country is required";
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    if (address.length < 1) {
-      errors.address = "Address is required";
+  const handleLatitudeChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setFormData({ ...formData, lat: value });
     }
-    if (city.length < 1) {
-      errors.city = "City is required";
-    }
-    if (state.length < 1) {
-      errors.state = "State is required";
-    }
-    if (isNaN(lat) || lat === "") {
-      errors.lat = "Latitude is required and must be a number";
-    }
-    if (isNaN(lng) || lng === "") {
-      errors.lng = "Longitude is required and must be a number";
-    }
-    if (description.length < 1) {
-      errors.description = "Description must be 30 or more characters";
-    }
-    if (name.length < 1) {
-      errors.name = "Name is required";
-    }
-    if (isNaN(price) || price === "") {
-      errors.price = "Price is required and must be a number";
-    }
+  };
 
-    setErrors(errors);
-  }, [
-    country,
-    address,
-    city,
-    state,
-    lat,
-    lng,
-    description,
-    name,
-    price,
-  ]);
+  const handleLongitudeChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setFormData({ ...formData, lng: value });
+    }
+  };
+
+  const handlePriceChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setFormData({ ...formData, price: value });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const errors = validateFields();
+    setValidations(errors);
+    setShowValidations(true);
 
-    if (Object.values(errors).length < 1) {
+    if (Object.keys(errors).length === 0) {
       const spotObj = {
-        address,
-        city,
-        state,
-        country,
-        lat: parseInt(lat),
-        lng: parseInt(lng),
-        name,
-        description,
-        price: parseInt(price),
+        ...formData,
+        lat: parseFloat(formData.lat),
+        lng: parseFloat(formData.lng),
+        price: parseFloat(formData.price)
       };
 
       try {
-        dispatch(createUpdatedSpot(spot.id, spotObj)).then(() =>
-          navigate(`/spots/${spot.id}`)
-        );
-
-        setCountry("");
-        setAddress("");
-        setCity("");
-        setState("");
-        setLat("");
-        setLng("");
-        setDescription("");
-        setName("");
-        setPrice("");
-      } catch {
-        // console.log("Uncaught in promise");
+        await dispatch(createUpdatedSpot(spot.id, spotObj));
+        navigate(`/spots/${spot.id}`);
+      } catch (err) {
+        console.error("Error updating spot:", err);
       }
-    } else {
-      alert(
-        "Please fix your errors before updating a spot. Address must be unique"
-      );
     }
   };
+
   return (
     <div className="create-spot-container">
       {isLoaded ? (
@@ -130,8 +122,7 @@ const UpdateSpot = () => {
           <h1 className="form-header" id="form-title">Update Your Spot</h1>
           <h2 className="title" id="form-subtitle">Where&apos;s your place located?</h2>
           <h3 className="subtitle" id="form-info">
-            Guests will only get your exact address once they book a
-            reservation.
+            Guests will only get your exact address once they book a reservation.
           </h3>
 
           <label className="signup-label">
@@ -142,17 +133,10 @@ const UpdateSpot = () => {
               id="country"
               name="country"
               placeholder="Country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              value={formData.country}
+              onChange={handleInputChange}
             />
-            {/* {Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.country}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )} */}
+            {showValidations && validations.country && <p className="error-message">{validations.country}</p>}
           </label>
 
           <label className="signup-label">
@@ -161,17 +145,14 @@ const UpdateSpot = () => {
               className="input-area-spots"
               type="text"
               id="street-address"
-              name="street-address"
+              name="address"
               placeholder="Street Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              value={formData.address}
+              onChange={handleInputChange}
             />
-            {Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.address}</p>
-              ) : (
-                <></>
-              )}
+            {showValidations && validations.address && <p className="error-message">{validations.address}</p>}
           </label>
+
           <div className="city-state">
             <div className="city">
               <label className="signup-label">
@@ -182,14 +163,10 @@ const UpdateSpot = () => {
                   id="city"
                   name="city"
                   placeholder="City"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  value={formData.city}
+                  onChange={handleInputChange}
                 />
-                { Object.keys(errors).length >= 1 ? (
-                    <p className="error-message">{errors.city}</p>
-                  ) : (
-                    <></>
-                  )}
+                {showValidations && validations.city && <p className="error-message">{validations.city}</p>}
               </label>
             </div>
             <div className="city">
@@ -201,35 +178,29 @@ const UpdateSpot = () => {
                   id="state"
                   name="state"
                   placeholder="State"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  value={formData.state}
+                  onChange={handleInputChange}
                 />
-                {Object.keys(errors).length >= 1 ? (
-                    <p className="error-message">{errors.state}</p>
-                  ) : (
-                    <></>
-                  )}
+                {showValidations && validations.state && <p className="error-message">{validations.state}</p>}
               </label>
             </div>
           </div>
+
           <div className="city-state">
             <div className="city">
               <label className="signup-label">
                 Latitude:
                 <input
                   className="input-area-spots"
-                  type="text"
+                  type="number"
+                  inputMode="numeric"
                   id="lat"
                   name="lat"
-                  placeholder="Lat"
-                  value={lat}
-                  onChange={(e) => setLat(e.target.value)}
+                  placeholder="Latitude (optional)"
+                  value={formData.lat}
+                  onChange={handleLatitudeChange}
                 />
-                {Object.keys(errors).length >= 1 ? (
-                    <p className="error-message">{errors.lat}</p>
-                  ) : (
-                    <></>
-                  )}
+                {showValidations && validations.lat && <p className="error-message">{validations.lat}</p>}
               </label>
             </div>
             <div className="city">
@@ -237,29 +208,23 @@ const UpdateSpot = () => {
                 Longitude:
                 <input
                   className="input-area-spots"
-                  type="text"
+                  type="number"
+                  inputMode="numeric"
                   id="lng"
                   name="lng"
-                  placeholder="Lng"
-                  value={lng}
-                  onChange={(e) => setLng(e.target.value)}
+                  placeholder="Longitude (optional)"
+                  value={formData.lng}
+                  onChange={handleLongitudeChange}
                 />
-                {Object.keys(errors).length >= 1 ? (
-                    <p className="error-message">{errors.lng}</p>
-                  ) : (
-                    <></>
-                  )}
+                {showValidations && validations.lng && <p className="error-message">{validations.lng}</p>}
               </label>
             </div>
           </div>
+
           <div className="added-text">
-            <h2 className="title" id="description-title">
-              Describe your place to your guests
-            </h2>
+            <h2 className="title" id="description-title">Describe your place to your guests</h2>
             <p className="subtitle" id="description-info">
-              Mention the best features of your space, any special amenities
-              like fast wifi or parking, and what you love about the
-              neighborhood
+              Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood
             </p>
             <label className="signup-label">
               Description:
@@ -268,21 +233,17 @@ const UpdateSpot = () => {
                 id="description"
                 name="description"
                 placeholder="Please write at least 30 characters"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={formData.description}
+                onChange={handleInputChange}
               ></textarea>
-              {Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.description}</p>
-                ) : (
-                  <></>
-                )}
+              {showValidations && validations.description && <p className="error-message">{validations.description}</p>}
             </label>
           </div>
+
           <div className="added-text">
             <h2 className="title" id="spot-title">Create a title for your spot</h2>
             <p className="subtitle" id="title-info">
-              Catch guests&apos; attention with a spot title that highlights
-              what makes your place special.
+              Catch guests&apos; attention with a spot title that highlights what makes your place special.
             </p>
             <label className="signup-label">
               Name of Spot:
@@ -290,39 +251,34 @@ const UpdateSpot = () => {
                 className="input-area-spots"
                 type="text"
                 id="name-of-spot"
-                name="name-of-spot"
+                name="name"
                 placeholder="Name your spot"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={handleInputChange}
               />
-              {Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.name}</p>
-                ) : (
-                  <></>
-                )}
+              {showValidations && validations.name && <p className="error-message">{validations.name}</p>}
             </label>
           </div>
+
           <div className="added-text">
             <h2 className="title" id="price-title">Set a price for your spot</h2>
             <p className="subtitle" id="price-info">
-              Competitive pricing can help your listing stand out and rank
-              higher in search results
+              Competitive pricing can help your listing stand out and rank higher in search results
             </p>
             <label className="signup-label">
-              <input
-                className="input-area-spots"
-                type="text"
-                id="price"
-                name="price"
-                placeholder="Price per night($USD)"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-              {Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.price}</p>
-                ) : (
-                  <></>
-                )}
+              <div className="money-box">
+                <span className="currency-sign">$  </span>
+                <input
+                  className="input-area-spots"
+                  type="number"
+                  inputMode="numeric"
+                  id="price-box"
+                  placeholder="Price per night (USD)"
+                  value={formData.price}
+                  onChange={handlePriceChange}
+                />
+              </div>
+              {showValidations && validations.price && <p className="error-message">{validations.price}</p>}
             </label>
           </div>
 

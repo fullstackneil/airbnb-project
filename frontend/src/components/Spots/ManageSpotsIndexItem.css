@@ -21,4 +21,5 @@
   background-color: var(--star-wars-yellow);
   font: var(--primary-font);
   color: black;
+  margin-left: 10px;
 }

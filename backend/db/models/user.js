@@ -46,8 +46,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        len: [3, 256],
-        isEmail: true
+        len: {
+          args: [3, 256],
+          msg: "Email length must be between 3 and 256 characters"
+        },
+        isEmail: {
+          args: true,
+          msg: "Please enter a valid email address"
+        }
       }
     },
     hashedPassword: {

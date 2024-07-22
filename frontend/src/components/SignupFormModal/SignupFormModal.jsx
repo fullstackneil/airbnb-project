@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
@@ -15,52 +15,61 @@ function SignupFormModal() {
   const [validations, setValidations] = useState({});
   const { closeModal } = useModal();
 
-  useEffect(() => {
+  // Clear validations when the modal is first opened
+  const initializeForm = () => {
+    setEmail("");
+    setUsername("");
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setConfirmPassword("");
+    setValidations({});
+  };
+
+  const validate = () => {
     const validationsObj = {};
 
-    if (email.length < 1) {
-      validationsObj.email = "Email is required";
-    } else if (username.length < 4) {
-      validationsObj.username = "Username must be more than four characters";
-    } else if (firstName.length < 1) {
-      validationsObj.firstName = "First Name is required";
-    } else if (lastName.length < 1) {
-      validationsObj.lastName = "Last Name is required";
-    } else if (password.length < 6) {
-      validationsObj.password = "Password must be more than six characters";
-    } else if (confirmPassword.length < 6) {
-      validationsObj.confirmPassword =
-        "Confirm Password must be more than six characters";
-    }
+    if (!email) validationsObj.email = "Email is required";
+    if (username.length < 5) validationsObj.username = "Username must be more than four characters";
+    if (!firstName) validationsObj.firstName = "First Name is required";
+    if (!lastName) validationsObj.lastName = "Last Name is required";
+    if (password.length < 7) validationsObj.password = "Password must be more than six characters";
+    if (confirmPassword.length < 7) validationsObj.confirmPassword = "Confirm Password must be more than six characters";
+    if (password !== confirmPassword) validationsObj.confirmPassword = "Confirm Password field must be the same as the Password field";
 
-    setValidations(validationsObj);
-
-  }, [email, username, firstName, lastName, password, confirmPassword]);
+    return validationsObj;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      setValidations({});
-      return dispatch(
-        sessionActions.signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password
-        })
-      )
-        .then(closeModal)
-        .catch(async (res) => {
-          const data = await res.json();
-          if (data?.errors) {
-            setValidations(data.errors);
-          }
-        });
+    const validationsObj = validate();
+    if (Object.keys(validationsObj).length > 0) {
+      setValidations(validationsObj);
+      return;
     }
-    return setValidations({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+
+    setValidations({});
+    dispatch(sessionActions.signup({
+      email,
+      username,
+      firstName,
+      lastName,
+      password
+    }))
+    .then(() => {
+      closeModal();
+      initializeForm(); // Clear form on successful submission
+    })
+    .catch(async (res) => {
+      const data = await res.json();
+      if (data?.errors) {
+        setValidations(data.errors);
+      }
     });
+  };
+
+  const isButtonDisabled = () => {
+    return !email || !username || !firstName || !lastName || !password || !confirmPassword
   };
 
   return (
@@ -74,10 +83,9 @@ function SignupFormModal() {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
-            // placeholder="First Name"
           />
         </label>
-        {validations.firstName && <p>{validations.firstName}</p>}
+        {'firstName' in validations && <p className='validation-msg'>{validations.firstName}</p>}
         <label className="sign-up-field">
           Last Name
           <input
@@ -85,10 +93,9 @@ function SignupFormModal() {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
-            // placeholder="Last Name"
           />
         </label>
-        {validations.lastName && <p>{validations.lastName}</p>}
+        {'lastName' in validations && <p className='validation-msg'>{validations.lastName}</p>}
         <label className="sign-up-field">
           Email
           <input
@@ -96,10 +103,9 @@ function SignupFormModal() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            // placeholder="Email"
           />
         </label>
-        {validations.email && <p>{validations.email}</p>}
+        {'email' in validations && <p className='validation-msg'>{validations.email}</p>}
         <label className="sign-up-field">
           Username
           <input
@@ -107,10 +113,9 @@ function SignupFormModal() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            // placeholder="Username"
           />
         </label>
-        {validations.username && <p>{validations.username}</p>}
+        {'username' in validations && <p className='validation-msg'>{validations.username}</p>}
         <label className="sign-up-field">
           Password
           <input
@@ -118,10 +123,9 @@ function SignupFormModal() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            // placeholder="Password"
           />
         </label>
-        {validations.password && <p>{validations.password}</p>}
+        {'password' in validations && <p className='validation-msg'>{validations.password}</p>}
         <label className="sign-up-field">
           Confirm Password
           <input
@@ -129,14 +133,13 @@ function SignupFormModal() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            // placeholder="Confirm Password"
           />
         </label>
-        {validations.confirmPassword && <p>{validations.confirmPassword}</p>}
+        {'confirmPassword' in validations && <p className='validation-msg'>{validations.confirmPassword}</p>}
         <button
-        type="submit"
-        className='signup-button'
-        disabled={Object.keys(validations).length > 0}
+          type="submit"
+          className='signup-button'
+          disabled={isButtonDisabled()}
         >Sign Up</button>
       </form>
     </div>

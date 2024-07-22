@@ -28,10 +28,12 @@ const ManageSpots = () => {
             <>
               <div className="manage-text-btn">
                 <h2 className='manage-spots-text'>Manage Spots</h2>
-                <button className='button' onClick={createSpot}>Create a New Spot</button>
+                {spotsArr.length === 0 && (
+                  <button className='button' onClick={createSpot}>Create a New Spot</button>
+                )}
               </div>
               <div className="spots-container">
-                {spotsArr === undefined ? (
+                {spotsArr.length === 0 ? (
                   <></>
                 ) : (
                   spotsArr.map((spot) => {

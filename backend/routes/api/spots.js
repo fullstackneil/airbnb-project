@@ -124,8 +124,6 @@ router.post("/", async (req, res) => {
       city &&
       state &&
       country &&
-      lat &&
-      lng &&
       name &&
       description &&
       price
@@ -332,8 +330,6 @@ router.put("/:spotId", async (req, res) => {
           city &&
           state &&
           country &&
-          lat &&
-          lng &&
           name &&
           description &&
           price

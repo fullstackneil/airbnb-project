@@ -41,6 +41,19 @@ export function validateName(name) {
   return {};
 }
 
+// Photo links: http(s) URLs to a common image type. Matches the server rule.
+export const IMAGE_URL = /^https?:\/\/[^\s]+\.(png|jpe?g|gif|webp|avif)(\?[^\s]*)?$/i;
+export const IMAGE_URL_MESSAGE =
+  "Image URL must start with http(s):// and end in .png, .jpg, .jpeg, .gif, .webp or .avif";
+
+// Returns an error message, or "" when the link is fine (blank is fine
+// unless the photo is required).
+export function imageUrlError(url, { required = false } = {}) {
+  const trimmed = String(url ?? "").trim();
+  if (!trimmed) return required ? "Preview image is required" : "";
+  return IMAGE_URL.test(trimmed) ? "" : IMAGE_URL_MESSAGE;
+}
+
 // Optional coordinates are sent as null when left blank.
 export const toCoordinate = (value) =>
   String(value ?? "").trim() === "" ? null : parseFloat(value);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -8,25 +8,17 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [validations, setValidations] = useState({});
+  const [serverError, setServerError] = useState("");
   const { closeModal } = useModal();
 
-  useEffect(() => {
-    const validationsObj = {};
-
-    if (credential.length < 4) {
-      validationsObj.credential = "Username must be 4 characters or more";
-    }
-
-    if (password.length < 6) {
-      validationsObj.password = "Password must be 6 characters or more";
-    }
-    setValidations(validationsObj);
-  }, [credential, password]);
+  // Derived from the inputs on every render (no effect needed).
+  const fieldErrors = {};
+  if (credential.length < 4) fieldErrors.credential = "Username must be 4 characters or more";
+  if (password.length < 6) fieldErrors.password = "Password must be 6 characters or more";
 
   const handleSubmit = async (e, isDemoUser = false) => {
     e.preventDefault();
-    setValidations({});
+    setServerError("");
 
     if (isDemoUser) {
       const demoCredentials = {
@@ -38,7 +30,7 @@ function LoginFormModal() {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.message) {
-          setValidations({error: data.message});
+          setServerError(data.message);
         }
       });
 
@@ -48,7 +40,7 @@ function LoginFormModal() {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.message) {
-          setValidations({error: data.message});
+          setServerError(data.message);
         }
       });
     }
@@ -64,12 +56,12 @@ function LoginFormModal() {
             type="text"
             autoComplete='username'
             value={credential}
-            onChange={(e) => setCredential(e.target.value)}
+            onChange={(e) => { setCredential(e.target.value); setServerError(""); }}
             placeholder='Username or Email'
             required
           />
           {/* Only show a field's message once the user has typed in it. */}
-          {credential && 'credential' in validations && <span className={styles.fieldError}>{validations.credential}</span>}
+          {credential && fieldErrors.credential && <span className={styles.fieldError}>{fieldErrors.credential}</span>}
           <label htmlFor='login-password' className='visually-hidden'>Password</label>
           <input
             id='login-password'
@@ -77,15 +69,15 @@ function LoginFormModal() {
             type="password"
             autoComplete='current-password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value); setServerError(""); }}
             placeholder="Password"
             required
           />
-          {password && 'password' in validations && <span className={styles.fieldError}>{validations.password}</span>}
-          {validations.error && <span className={styles.formError} role='alert'>{validations.error}</span>}
+          {password && fieldErrors.password && <span className={styles.fieldError}>{fieldErrors.password}</span>}
+          {serverError && <span className={styles.formError} role='alert'>{serverError}</span>}
         <button
         type="submit"
-        disabled={'credential' in validations || 'password' in validations}
+        disabled={Object.keys(fieldErrors).length > 0}
         className={styles.loginButton}>Log In
         </button>
         <button className={styles.demoButton}

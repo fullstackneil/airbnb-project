@@ -8,7 +8,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-!dist
+# Build output. Render builds it on every deploy (root `npm run build`),
+# so it isn't committed.
+dist
 dist-ssr
 *.local
 

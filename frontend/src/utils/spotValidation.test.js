@@ -56,3 +56,15 @@ describe("validatePrice / validateName", () => {
     expect(toCoordinate(0)).toBe(0);
   });
 });
+
+describe("imageUrlError", () => {
+  test("accepts http(s) image links, including CDN query strings", async () => {
+    const { imageUrlError } = await import("./spotValidation");
+    expect(imageUrlError("https://res.cloudinary.com/x/image/upload/v1/a.jpg")).toBe("");
+    expect(imageUrlError("https://x.io/a.webp?w=800")).toBe("");
+    expect(imageUrlError("")).toBe("");
+    expect(imageUrlError("", { required: true })).toBe("Preview image is required");
+    expect(imageUrlError("https://x.io/page.html")).toMatch(/must start with/);
+    expect(imageUrlError("javascript:alert(1)//.png")).toMatch(/must start with/);
+  });
+});

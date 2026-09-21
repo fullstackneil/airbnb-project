@@ -164,3 +164,37 @@ describe('reviews', () => {
     assert.equal((await client.delete(`/api/reviews/${first.body.id}`)).status, 200);
   });
 });
+
+describe('spot photos', () => {
+  const PHOTO = 'https://res.cloudinary.com/demo/image/upload/v1/photo.jpg';
+
+  test('rejects links that are not http(s) image URLs', async () => {
+    const client = await newClient();
+    await client.login();
+    const { body: spot } = await client.post('/api/spots', validSpot());
+    for (const url of ['https://example.com/page.html', 'ftp://example.com/a.jpg', 'javascript:alert(1)//.png']) {
+      const res = await client.post(`/api/spots/${spot.id}/images`, { url, preview: true });
+      assert.equal(res.status, 400, url);
+      assert.match(res.body.errors.url, /must start with http\(s\):\/\//);
+    }
+  });
+
+  test("non-owners can't add photos, and nothing is created", async () => {
+    const client = await newClient();
+    await client.login();
+    const before = (await client.get('/api/spots/1')).body.SpotImages.length;
+    const res = await client.post('/api/spots/1/images', { url: PHOTO, preview: false });
+    assert.equal(res.status, 403);
+    const after = (await client.get('/api/spots/1')).body.SpotImages.length;
+    assert.equal(after, before, 'the image must not be saved for a non-owner');
+  });
+
+  test('owners can add a valid photo', async () => {
+    const client = await newClient();
+    await client.login();
+    const { body: spot } = await client.post('/api/spots', validSpot());
+    const res = await client.post(`/api/spots/${spot.id}/images`, { url: `${PHOTO}?w=800`, preview: true });
+    assert.equal(res.status, 200);
+    assert.equal(res.body.url, `${PHOTO}?w=800`);
+  });
+});

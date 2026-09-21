@@ -34,6 +34,21 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
+// Photo links must be http(s) URLs to a common image type (query strings are
+// allowed, e.g. CDN resize parameters).
+const IMAGE_URL = /^https?:\/\/[^\s]+\.(png|jpe?g|gif|webp|avif)(\?[^\s]*)?$/i;
+
+const validateSpotImage = [
+  body('url')
+    .exists({ checkNull: true }).withMessage('Image URL is required').bail()
+    .isString().withMessage('Image URL is required').bail()
+    .trim()
+    .matches(IMAGE_URL)
+    .withMessage('Image URL must start with http(s):// and end in .png, .jpg, .jpeg, .gif, .webp or .avif'),
+  body('preview').isBoolean({ strict: true }).withMessage('Preview must be true or false'),
+  handleValidationErrors,
+];
+
 const validateReview = [
   requiredText('review', 'Review text is required'),
   body('stars')
@@ -42,4 +57,4 @@ const validateReview = [
   handleValidationErrors,
 ];
 
-module.exports = { validateSpot, validateReview };
+module.exports = { validateSpot, validateSpotImage, validateReview, IMAGE_URL };

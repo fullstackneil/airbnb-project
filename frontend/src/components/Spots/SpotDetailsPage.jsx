@@ -75,7 +75,12 @@ const SpotDetailsPage = () => {
             </p>
           </div>
           <div className="details-page-image-container">
-            <div className="spot-images-container">
+            <div
+              className={`spot-images-container gallery-count-${Math.min(
+                Math.max(spot.SpotImages?.length || 1, 1),
+                5
+              )}`}
+            >
               {spot.SpotImages && (
                 <>
                   <img

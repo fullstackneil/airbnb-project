@@ -17,6 +17,8 @@
   margin: auto;
   justify-content: center;
   margin-top: 15px;
+  padding-left: clamp(0px, 4vw, 60px);
+  padding-right: clamp(0px, 4vw, 60px);
 }
 
 .spot-name-location {
@@ -30,38 +32,75 @@
   color: var(--star-wars-yellow);
 }
 
+/* Gallery: a 2:1 box split into fractional tracks so images fill their cells
+   without stretching. gallery-count-N adapts the layout to 1-5 photos. */
 .spot-images-container {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: repeat(2, auto);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   grid-template-areas:
-    "big small small2"
+    "big small1 small2"
     "big small3 small4";
   gap: 5px;
   width: 100%;
-  max-width: 1665px;
+  max-width: 1600px;
+  aspect-ratio: 2 / 1;
+  /* Without this, aspect-ratio lets a large photo's natural height grow the box. */
+  min-height: 0;
   margin-bottom: 20px;
-  padding-left: clamp(0px, 4vw, 60px);
-  padding-right: clamp(0px, 4vw, 60px);
+}
+
+.spot-images-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: cover;
 }
 
 .big-image {
   grid-area: big;
-  width: 100%;
-  height: 100%;
   border: 2px solid white;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
 }
 
 .small-image {
-  width: 100%;
-  height: 100%;
   border: 2px solid white;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
+}
+
+.small-image-1 { grid-area: small1; }
+.small-image-2 { grid-area: small2; }
+.small-image-3 { grid-area: small3; }
+.small-image-4 { grid-area: small4; }
+
+.gallery-count-1 {
+  grid-template-areas:
+    "big big big"
+    "big big big";
+}
+
+.gallery-count-1 .big-image {
+  border-radius: 15px;
+}
+
+.gallery-count-2 {
+  grid-template-areas:
+    "big small1 small1"
+    "big small1 small1";
+}
+
+.gallery-count-3 {
+  grid-template-areas:
+    "big small1 small1"
+    "big small2 small2";
+}
+
+.gallery-count-4 {
+  grid-template-areas:
+    "big small1 small2"
+    "big small3 small3";
 }
 
 .spot-info-container {
@@ -205,16 +244,54 @@
 
 @media (max-width: 600px) {
   .spot-images-container {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
     grid-template-areas:
       "big big"
-      "small small2"
+      "small1 small2"
       "small3 small4";
+    aspect-ratio: auto;
   }
 
-  .big-image {
+  .spot-images-container img {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .spot-images-container .big-image {
     aspect-ratio: 4 / 3;
     border-radius: 15px 15px 0 0;
+  }
+
+  .gallery-count-1 {
+    grid-template-areas: "big big";
+  }
+
+  .gallery-count-1 .big-image {
+    border-radius: 15px;
+  }
+
+  .gallery-count-2 {
+    grid-template-areas:
+      "big big"
+      "small1 small1";
+  }
+
+  .gallery-count-3 {
+    grid-template-areas:
+      "big big"
+      "small1 small2";
+  }
+
+  .gallery-count-4 {
+    grid-template-areas:
+      "big big"
+      "small1 small2"
+      "small3 small3";
+  }
+
+  .gallery-count-2 .small-image-1,
+  .gallery-count-4 .small-image-3 {
+    aspect-ratio: 2 / 1;
   }
 }

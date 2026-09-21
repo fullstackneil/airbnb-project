@@ -14,7 +14,7 @@ const ReviewIndexItem = ({ review, spot, user }) => {
             <></>
           ) : user.id === review.userId ? (
             <OpenModalButton
-              id='delete-button'
+              className='review-delete-button'
               buttonText="Delete"
               modalComponent={<DeleteReview review={review} />}
             />

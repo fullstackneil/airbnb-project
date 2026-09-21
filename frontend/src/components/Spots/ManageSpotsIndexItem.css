@@ -1,4 +1,4 @@
-#update-button {
+.manage-update-button {
   margin: auto;
     width: 180px;
     height: 50px;
@@ -9,7 +9,7 @@
     cursor: pointer;
 }
 
-#delete-button {
+.manage-delete-button {
   margin: auto;
   width: 180px;
   height: 50px;
@@ -21,15 +21,15 @@
   cursor: pointer;
 }
 
-#button-container {
+.manage-button-container {
   display: flex;
   gap: 10px;
   width: 370px;
   max-width: 100%;
 }
 
-#button-container #update-button,
-#button-container #delete-button {
+.manage-button-container .manage-update-button,
+.manage-button-container .manage-delete-button {
   flex: 1 1 0;
   width: auto;
   min-width: 0;

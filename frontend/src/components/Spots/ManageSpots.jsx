@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import { getCurrentUserSpots } from "../../store/spotReducer";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ManageSpotsIndexItem from "./ManageSpotsIndexItem";
 import './ManageSpots.css'
 
 const ManageSpots = () => {
     const userSpots = useSelector((state) => state.spots.currentUserSpots.Spots)
+    const sessionUser = useSelector((state) => state.session.user);
     const [isLoaded, setIsLoaded] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(getCurrentUserSpots()).then(() => setIsLoaded(true));
-        }, [dispatch]);
+        if (!sessionUser) return;
+        dispatch(getCurrentUserSpots())
+          .catch(() => {})
+          .finally(() => setIsLoaded(true));
+        }, [dispatch, sessionUser]);
 
     const spotsArr = userSpots ? Object.values(userSpots) : [];
 
@@ -22,6 +26,8 @@ const ManageSpots = () => {
         navigate('/spots');
     };
 
+    if (!sessionUser) return <Navigate to="/" replace />;
+
     return (
         <div className="manage-spots-container">
           {isLoaded ? (
@@ -29,7 +35,10 @@ const ManageSpots = () => {
               <div className="manage-text-btn">
                 <h2 className='manage-spots-text'>Manage Spots</h2>
                 {spotsArr.length === 0 && (
-                  <button className='button' onClick={createSpot}>Create a New Spot</button>
+                  <>
+                    <p className="manage-spots-empty">You haven&apos;t listed any spots yet.</p>
+                    <button className='button' onClick={createSpot}>Create a New Spot</button>
+                  </>
                 )}
               </div>
               <div className="spots-container">
@@ -43,7 +52,7 @@ const ManageSpots = () => {
               </div>
             </>
           ) : (
-            <>Loading</>
+            <p className="status-message" role="status">Loading your spots…</p>
           )}
         </div>
       );

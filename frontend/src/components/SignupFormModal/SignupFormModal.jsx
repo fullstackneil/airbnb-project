@@ -4,6 +4,8 @@ import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
 import './SignupForm.css';
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -29,12 +31,13 @@ function SignupFormModal() {
   const validate = () => {
     const validationsObj = {};
 
-    if (!email) validationsObj.email = "Email is required";
-    if (username.length < 5) validationsObj.username = "Username must be more than four characters";
-    if (!firstName) validationsObj.firstName = "First Name is required";
-    if (!lastName) validationsObj.lastName = "Last Name is required";
-    if (password.length < 7) validationsObj.password = "Password must be more than six characters";
-    if (confirmPassword.length < 7) validationsObj.confirmPassword = "Confirm Password must be more than six characters";
+    // These match the server's rules in backend/routes/api/users.js.
+    if (firstName.trim().length < 3) validationsObj.firstName = "First name must be 3 characters or more";
+    if (lastName.trim().length < 3) validationsObj.lastName = "Last name must be 3 characters or more";
+    if (!EMAIL_PATTERN.test(email.trim())) validationsObj.email = "Please provide a valid email";
+    if (username.trim().length < 4) validationsObj.username = "Username must be 4 characters or more";
+    else if (EMAIL_PATTERN.test(username.trim())) validationsObj.username = "Username cannot be an email";
+    if (password.length < 6) validationsObj.password = "Password must be 6 characters or more";
     if (password !== confirmPassword) validationsObj.confirmPassword = "Confirm Password field must be the same as the Password field";
 
     return validationsObj;
@@ -68,13 +71,15 @@ function SignupFormModal() {
     });
   };
 
+  // Enable once every field has something in it; submitting then explains
+  // exactly what (if anything) still needs fixing.
   const isButtonDisabled = () => {
-    return !email || username.length < 4 || !firstName || !lastName || password.length < 6 || confirmPassword.length < 6
+    return !email || !username || !firstName || !lastName || !password || !confirmPassword;
   };
 
   return (
     <div className="signup-form-container">
-      <form onSubmit={handleSubmit} className='sign-up-modal'>
+      <form onSubmit={handleSubmit} className='sign-up-modal' noValidate>
         <h1 className='signup-text'>Sign Up</h1>
         <label className="sign-up-field">
           First Name
@@ -85,7 +90,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'firstName' in validations && <p className='validation-msg'>{validations.firstName}</p>}
+        {'firstName' in validations && <p className='validation-msg' role='alert'>{validations.firstName}</p>}
         <label className="sign-up-field">
           Last Name
           <input
@@ -95,17 +100,18 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'lastName' in validations && <p className='validation-msg'>{validations.lastName}</p>}
+        {'lastName' in validations && <p className='validation-msg' role='alert'>{validations.lastName}</p>}
         <label className="sign-up-field">
           Email
           <input
-            type="text"
+            type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </label>
-        {'email' in validations && <p className='validation-msg'>{validations.email}</p>}
+        {'email' in validations && <p className='validation-msg' role='alert'>{validations.email}</p>}
         <label className="sign-up-field">
           Username
           <input
@@ -115,7 +121,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'username' in validations && <p className='validation-msg'>{validations.username}</p>}
+        {'username' in validations && <p className='validation-msg' role='alert'>{validations.username}</p>}
         <label className="sign-up-field">
           Password
           <input
@@ -125,7 +131,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'password' in validations && <p className='validation-msg'>{validations.password}</p>}
+        {'password' in validations && <p className='validation-msg' role='alert'>{validations.password}</p>}
         <label className="sign-up-field">
           Confirm Password
           <input
@@ -135,7 +141,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'confirmPassword' in validations && <p className='validation-msg'>{validations.confirmPassword}</p>}
+        {'confirmPassword' in validations && <p className='validation-msg' role='alert'>{validations.confirmPassword}</p>}
         <button
           type="submit"
           className='signup-button'

@@ -1,11 +1,20 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUpdatedSpot, getSingleSpot } from "../../store/spotReducer";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  COORDINATE_INPUT,
+  PRICE_INPUT,
+  validateCoordinates,
+  validatePrice,
+  toCoordinate,
+  describeSpotSaveError,
+} from "../../utils/spotValidation";
 import './UpdateSpot.css';
 
 const UpdateSpot = () => {
   const spot = useSelector((state) => state.spots.currentSpot);
+  const sessionUser = useSelector((state) => state.session.user);
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,22 +34,27 @@ const UpdateSpot = () => {
   const [validations, setValidations] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [showValidations, setShowValidations] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    dispatch(getSingleSpot(spotId)).then((spot) => {
-      setFormData({
-        country: spot.country || "",
-        address: spot.address || "",
-        city: spot.city || "",
-        state: spot.state || "",
-        lat: spot.lat || "",
-        lng: spot.lng || "",
-        description: spot.description || "",
-        name: spot.name || "",
-        price: spot.price || ""
-      });
-      setIsLoaded(true);
-    });
+    dispatch(getSingleSpot(spotId))
+      .then((spot) => {
+        setFormData({
+          country: spot.country || "",
+          address: spot.address || "",
+          city: spot.city || "",
+          state: spot.state || "",
+          // ?? keeps a real coordinate of 0 instead of blanking it
+          lat: spot.lat ?? "",
+          lng: spot.lng ?? "",
+          description: spot.description || "",
+          name: spot.name || "",
+          price: spot.price ?? ""
+        });
+        setIsLoaded(true);
+      })
+      .catch(() => setNotFound(true));
   }, [dispatch, spotId]);
 
   const validateFields = useCallback(() => {
@@ -51,11 +65,10 @@ const UpdateSpot = () => {
     if (!address) errors.address = "Address is required";
     if (!city) errors.city = "City is required";
     if (!state) errors.state = "State is required";
-    if (!lat || isNaN(lat)) errors.lat = "Latitude is required and must be a number";
-    if (!lng || isNaN(lng)) errors.lng = "Longitude is required and must be a number";
+    Object.assign(errors, validateCoordinates(lat, lng));
     if (!description || description.length < 30) errors.description = "Description must be 30 or more characters";
     if (!name) errors.name = "Name is required";
-    if (!price || isNaN(price)) errors.price = "Price is required and must be a number";
+    Object.assign(errors, validatePrice(price));
 
     return errors;
   }, [formData]);
@@ -73,21 +86,21 @@ const UpdateSpot = () => {
 
   const handleLatitudeChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (COORDINATE_INPUT.test(value)) {
       setFormData({ ...formData, lat: value });
     }
   };
 
   const handleLongitudeChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (COORDINATE_INPUT.test(value)) {
       setFormData({ ...formData, lng: value });
     }
   };
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (PRICE_INPUT.test(value)) {
       setFormData({ ...formData, price: value });
     }
   };
@@ -101,19 +114,35 @@ const UpdateSpot = () => {
     if (Object.keys(errors).length === 0) {
       const spotObj = {
         ...formData,
-        lat: parseFloat(formData.lat),
-        lng: parseFloat(formData.lng),
+        lat: toCoordinate(formData.lat),
+        lng: toCoordinate(formData.lng),
         price: parseFloat(formData.price)
       };
 
+      setSubmitError("");
       try {
         await dispatch(createUpdatedSpot(spot.id, spotObj));
         navigate(`/spots/${spot.id}`);
-      } catch (err) {
-        console.error("Error updating spot:", err);
+      } catch (res) {
+        setSubmitError(await describeSpotSaveError(res, "update"));
       }
     }
   };
+
+  if (!sessionUser) return <Navigate to="/" replace />;
+
+  if (notFound) {
+    return (
+      <p className="status-message">
+        We couldn&apos;t find that spot. <Link to="/spots/myspots">Back to Manage Spots</Link>
+      </p>
+    );
+  }
+
+  // Only the owner may edit; the server enforces this too.
+  if (isLoaded && spot.ownerId !== sessionUser.id) {
+    return <Navigate to={`/spots/${spotId}`} replace />;
+  }
 
   return (
     <div className="create-spot-container">
@@ -192,8 +221,8 @@ const UpdateSpot = () => {
                 Latitude:
                 <input
                   className="input-area-spots"
-                  type="number"
-                  inputMode="numeric"
+                  type="text"
+                  inputMode="decimal"
                   id="lat"
                   name="lat"
                   placeholder="Latitude (optional)"
@@ -208,8 +237,8 @@ const UpdateSpot = () => {
                 Longitude:
                 <input
                   className="input-area-spots"
-                  type="number"
-                  inputMode="numeric"
+                  type="text"
+                  inputMode="decimal"
                   id="lng"
                   name="lng"
                   placeholder="Longitude (optional)"
@@ -270,9 +299,10 @@ const UpdateSpot = () => {
                 <span className="currency-sign">$  </span>
                 <input
                   className="input-area-spots"
-                  type="number"
-                  inputMode="numeric"
+                  type="text"
+                  inputMode="decimal"
                   id="price-box"
+                  aria-label="Price per night in US dollars"
                   placeholder="Price per night (USD)"
                   value={formData.price}
                   onChange={handlePriceChange}
@@ -282,12 +312,13 @@ const UpdateSpot = () => {
             </label>
           </div>
 
+          {submitError && <p className="error-message" role="alert">{submitError}</p>}
           <button className="spot-button" type="submit">
             Update Your Spot
           </button>
         </form>
       ) : (
-        <>Loading</>
+        <p className="status-message" role="status">Loading spot…</p>
       )}
     </div>
   );

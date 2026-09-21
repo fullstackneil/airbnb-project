@@ -5,10 +5,12 @@ import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import logo from '../../../public/assets/logo.png';
 import { CgProfile } from "react-icons/cg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import './Navigation.css';
+
+// Served from frontend/public, so reference it by URL rather than importing it.
+const logo = '/assets/logo.png';
 
 function Navigation() {
   const sessionUser = useSelector(state => state.session.user);
@@ -65,6 +67,7 @@ function Navigation() {
             aria-label='Open user menu'
             aria-haspopup='true'
             aria-expanded={visible}
+            data-modal-return-focus
           >
             <GiHamburgerMenu className="hamburger-menu" aria-hidden='true'/>
             <CgProfile className='profile-icon' aria-hidden='true'/>

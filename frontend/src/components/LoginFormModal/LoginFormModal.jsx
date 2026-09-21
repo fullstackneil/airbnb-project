@@ -57,28 +57,35 @@ function LoginFormModal() {
     <div id='login-popup-container'>
       <h1 className="login-text">Log In</h1>
       <form onSubmit={handleSubmit} className="login-modal">
+          <label htmlFor='login-credential' className='visually-hidden'>Username or Email</label>
           <input
+            id='login-credential'
             className='credentials-input-box'
             type="text"
+            autoComplete='username'
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             placeholder='Username or Email'
             required
           />
-          {credential in validations && <span id='invalid-credentials'>{validations.credential}</span>}
+          {/* Only show a field's message once the user has typed in it. */}
+          {credential && 'credential' in validations && <span id='invalid-credentials'>{validations.credential}</span>}
+          <label htmlFor='login-password' className='visually-hidden'>Password</label>
           <input
+            id='login-password'
             className='password-input-box'
             type="password"
+            autoComplete='current-password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
           />
-          {password in validations && <span id='invalid-password'>{validations.password}</span>}
-          {validations.error && <span id='error-message'>{validations.error}</span>}
+          {password && 'password' in validations && <span id='invalid-password'>{validations.password}</span>}
+          {validations.error && <span id='error-message' role='alert'>{validations.error}</span>}
         <button
         type="submit"
-        disabled={Object.keys(validations).length > 0}
+        disabled={'credential' in validations || 'password' in validations}
         className='login-button'>Log In
         </button>
         <button className='demo-user-container'

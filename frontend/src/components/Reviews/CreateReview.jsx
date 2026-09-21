@@ -39,15 +39,21 @@ function CreateReview({ spot }) {
 
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map((rating) => (
-      <div
+      <button
+        type="button"
+        role="radio"
+        aria-checked={stars === rating}
+        aria-label={`${rating} star${rating > 1 ? "s" : ""}`}
         key={rating}
         onMouseEnter={() => handleMouseEnter(rating)}
         onMouseLeave={handleMouseLeave}
+        onFocus={() => handleMouseEnter(rating)}
+        onBlur={handleMouseLeave}
         onClick={() => handleClick(rating)}
         className="star"
       >
-        {rating <= (hoveredStars || stars) ? <FaStar /> : <FaRegStar />}
-      </div>
+        {rating <= (hoveredStars || stars) ? <FaStar aria-hidden="true" /> : <FaRegStar aria-hidden="true" />}
+      </button>
     ));
   };
 
@@ -86,12 +92,18 @@ function CreateReview({ spot }) {
           onChange={(e) => setReview(e.target.value)}
         />
       </label>
-      <label className="review-label">
-        Stars:
+      <div className="review-label">
+        <span id="review-stars-label">Stars:</span>
         <div className="rating-input">
-          <div className="star-ratings-container">{renderStars()}</div>
+          <div
+            className="star-ratings-container"
+            role="radiogroup"
+            aria-labelledby="review-stars-label"
+          >
+            {renderStars()}
+          </div>
         </div>
-      </label>
+      </div>
       <button id='submit-button' disabled={Object.values(errors).length > 0} type="submit">
         Submit Your Review
       </button>

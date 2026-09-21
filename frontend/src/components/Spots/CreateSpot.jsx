@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSpot, getAllSpots, createSpotImage } from "../../store/spotReducer";
 import "./CreateSpot.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import {
+  COORDINATE_INPUT,
+  PRICE_INPUT,
+  validateCoordinates,
+  validatePrice,
+  toCoordinate,
+  describeSpotSaveError,
+} from "../../utils/spotValidation";
 
 const CreateSpot = () => {
   const [country, setCountry] = useState("");
@@ -20,6 +28,9 @@ const CreateSpot = () => {
   const [imageUrl3, setImageUrl3] = useState("");
   const [imageUrl4, setImageUrl4] = useState("");
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const sessionUser = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // const newSpot = useSelector((state) => state.spots.createdSpot);
@@ -35,11 +46,10 @@ const CreateSpot = () => {
     if (address.trim() === "") errors.address = "Address is required";
     if (city.trim() === "") errors.city = "City is required";
     if (state.trim() === "") errors.state = "State is required";
-    if (lat && isNaN(lat)) errors.lat = "Latitude must be a number";
-    if (lng && isNaN(lng)) errors.lng = "Longitude must be a number";
+    Object.assign(errors, validateCoordinates(lat, lng));
     if (description.length < 30) errors.description = "Description must be 30 or more characters";
     if (name.trim() === "") errors.name = "Name is required";
-    if (isNaN(price) || price.trim() === "") errors.price = "Price is required and must be a number";
+    Object.assign(errors, validatePrice(price));
     if (previewImage.trim() === "") errors.previewImage = "Preview image is required";
 
     setErrors(errors);
@@ -51,6 +61,7 @@ const CreateSpot = () => {
     e.preventDefault();
 
     setIsSubmitted(true);
+    setSubmitError("");
 
     if (Object.keys(errors).length === 0) {
       const spotObj = {
@@ -61,15 +72,27 @@ const CreateSpot = () => {
         name,
         description,
         price: parseFloat(price),
-        lat: lat ? parseFloat(lat) : null,
-        lng: lng ? parseFloat(lng) : null,
+        lat: toCoordinate(lat),
+        lng: toCoordinate(lng),
       };
 
-      const createdSpot = await dispatch(createSpot(spotObj));
+      let createdSpot;
+      setIsSaving(true);
+      try {
+        createdSpot = await dispatch(createSpot(spotObj));
+      } catch (res) {
+        setSubmitError(await describeSpotSaveError(res, "create"));
+        setIsSaving(false);
+        return;
+      }
 
       if (createdSpot) {
         const createdSpotId = createdSpot.id;
-        await handleImages(createdSpotId);
+        try {
+          await handleImages(createdSpotId);
+        } catch {
+          // The spot exists; send the owner to it even if a photo failed.
+        }
         await dispatch(getAllSpots());
         navigate(`/spots/${createdSpotId}`);
 
@@ -93,36 +116,40 @@ const CreateSpot = () => {
     }
   };
 
+  if (!sessionUser) return <Navigate to="/" replace />;
+
   // Handle image uploads
   const handleImages = async (newSpotId) => {
     const spotImages = [previewImage, imageUrl1, imageUrl2, imageUrl3, imageUrl4].filter(Boolean);
 
+    // Save photos in order and wait for each, so the spot page never opens
+    // before its images exist.
     for (let index = 0; index < spotImages.length; index++) {
       const spotImageObj = {
         url: spotImages[index],
         preview: index === 0,
       };
-      dispatch(createSpotImage(newSpotId, spotImageObj));
+      await dispatch(createSpotImage(newSpotId, spotImageObj));
     }
   };
 
   const handleLatitudeChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (COORDINATE_INPUT.test(value)) {
       setLat(value);
     }
   };
 
   const handleLongitudeChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (COORDINATE_INPUT.test(value)) {
       setLng(value);
     }
   };
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (PRICE_INPUT.test(value)) {
       setPrice(value);
     }
   };
@@ -193,8 +220,8 @@ const CreateSpot = () => {
               Latitude:
               <input
                 className="input-area-spots"
-                type="number"
-                inputMode="numeric"
+                type="text"
+                inputMode="decimal"
                 placeholder="Latitude (optional)"
                 value={lat}
                 onChange={handleLatitudeChange}
@@ -207,8 +234,8 @@ const CreateSpot = () => {
               Longitude:
               <input
                 className="input-area-spots"
-                type="number"
-                inputMode="numeric"
+                type="text"
+                inputMode="decimal"
                 placeholder="Longitude (optional)"
                 value={lng}
                 onChange={handleLongitudeChange}
@@ -224,6 +251,7 @@ const CreateSpot = () => {
           </p>
           <textarea
             className="description-input"
+            aria-label="Description"
             placeholder="Please write at least 30 characters"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -238,6 +266,7 @@ const CreateSpot = () => {
           <input
             className="input-area-spots"
             type="text"
+            aria-label="Name of your spot"
             placeholder="Name of your spot"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -253,8 +282,9 @@ const CreateSpot = () => {
             <span>$  </span>
             <input
               className="input-area-spots"
-              type="number"
-              inputMode="numberic"
+              type="text"
+              inputMode="decimal"
+              aria-label="Price per night in US dollars"
               placeholder="Price per night (USD)"
               value={price}
               onChange={handlePriceChange}
@@ -270,6 +300,7 @@ const CreateSpot = () => {
           <input
             className="input-area-spots"
             type="text"
+            aria-label="Preview image URL"
             placeholder="Preview Image URL"
             value={previewImage}
             onChange={(e) => setPreviewImage(e.target.value)}
@@ -278,6 +309,7 @@ const CreateSpot = () => {
           <input
             className="input-area-spots"
             type="text"
+            aria-label="Additional image URL 1"
             placeholder="Image URL"
             value={imageUrl1}
             onChange={(e) => setImageUrl1(e.target.value)}
@@ -285,6 +317,7 @@ const CreateSpot = () => {
           <input
             className="input-area-spots"
             type="text"
+            aria-label="Additional image URL 2"
             placeholder="Image URL"
             value={imageUrl2}
             onChange={(e) => setImageUrl2(e.target.value)}
@@ -292,6 +325,7 @@ const CreateSpot = () => {
           <input
             className="input-area-spots"
             type="text"
+            aria-label="Additional image URL 3"
             placeholder="Image URL"
             value={imageUrl3}
             onChange={(e) => setImageUrl3(e.target.value)}
@@ -299,12 +333,16 @@ const CreateSpot = () => {
           <input
             className="input-area-spots"
             type="text"
+            aria-label="Additional image URL 4"
             placeholder="Image URL"
             value={imageUrl4}
             onChange={(e) => setImageUrl4(e.target.value)}
           />
         </div>
-        <button className="submit-button">Create Spot</button>
+        {submitError && <p className="error-message" role="alert">{submitError}</p>}
+        <button className="submit-button" disabled={isSaving}>
+          {isSaving ? "Creating…" : "Create Spot"}
+        </button>
       </form>
     </div>
   );

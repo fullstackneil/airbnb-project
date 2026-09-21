@@ -7,12 +7,15 @@
     --error-message-red: #FF0000;
   }
 
-#delete-button {
-    margin: auto;
-    width: 400px;
+.review-delete-button {
+    margin: 0 auto 0 10px;
+    width: 180px;
     max-width: 100%;
     height: 50px;
     box-shadow: 2px 2px 2px white;
     background-color: var(--star-wars-yellow);
-    font: var(--primary-font);
+    color: black;
+    font-family: var(--primary-font);
+    font-size: 16px;
+    cursor: pointer;
 }

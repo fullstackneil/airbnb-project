@@ -64,8 +64,12 @@
   flex-shrink: 0;
 }
 
-.spot-container:hover .tooltip .tooltiptext {
-  visibility: visible;
+/* Only show the name tooltip on devices that can hover; on touch screens a
+   tap would leave it stuck on. */
+@media (hover: hover) {
+  .spot-container:hover .tooltip .tooltiptext {
+    visibility: visible;
+  }
 }
 
 .tooltip {
@@ -87,12 +91,4 @@
   left: 20px;
   margin: 0 auto;
   justify-content: center;
-}
-
-#update-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
@@ -13,34 +13,38 @@ import './Navigation.css';
 function Navigation() {
   const sessionUser = useSelector(state => state.session.user);
   const [visible, setVisible] = useState(false);
-  const dropdownRef = useRef(null);
+  const menuRef = useRef(null);
+  const location = useLocation();
 
-  const handleIconClick = () => {
-    setVisible(!visible);
-  };
+  const closeMenu = () => setVisible(false);
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setVisible(false);
-    }
-  };
-
+  // Close the menu on clicks outside the toggle + dropdown, and on Escape.
   useEffect(() => {
-    if (visible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
+    if (!visible) return;
+
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setVisible(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setVisible(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [visible]);
 
-  const handleInternalClick = (event) => {
-    event.stopPropagation();
-  };
-
+  // Close the menu whenever the route changes.
+  useEffect(() => {
+    setVisible(false);
+  }, [location.pathname]);
 
   return (
     <nav className='nav-bar'>
@@ -53,31 +57,41 @@ function Navigation() {
       </NavLink>
       <div className='profile-container'>
         {sessionUser && <Link className='create-new-spot-button' to='/spots'>Create a New Spot</Link>}
-        <GiHamburgerMenu className="hamburger-menu" onClick={handleIconClick}/>
-        <CgProfile
-          className='profile-icon'
-          onClick={handleIconClick}
-        />
-        {visible && (
-          <div className="dropdown-menu" ref={dropdownRef} onClick={handleInternalClick}>
-            {sessionUser ? (
-              <ProfileButton user={sessionUser} className="profile-button-menu" />
-            ) : (
-              <div className="dropdown-link-container">
-                <OpenModalButton
-                  buttonText="Sign Up"
-                  modalComponent={<SignupFormModal />}
-                  className='dropdown-link'
-                />
-                <OpenModalButton
-                  buttonText="Log In"
-                  modalComponent={<LoginFormModal />}
-                  className='dropdown-link'
-                />
-              </div>
-            )}
-          </div>
-        )}
+        <div className='menu-wrapper' ref={menuRef}>
+          <button
+            type='button'
+            className='menu-toggle'
+            onClick={() => setVisible(!visible)}
+            aria-label='Open user menu'
+            aria-haspopup='true'
+            aria-expanded={visible}
+          >
+            <GiHamburgerMenu className="hamburger-menu" aria-hidden='true'/>
+            <CgProfile className='profile-icon' aria-hidden='true'/>
+          </button>
+          {visible && (
+            <div className="dropdown-menu">
+              {sessionUser ? (
+                <ProfileButton user={sessionUser} onItemClick={closeMenu} />
+              ) : (
+                <div className="dropdown-link-container">
+                  <OpenModalButton
+                    buttonText="Sign Up"
+                    modalComponent={<SignupFormModal />}
+                    onButtonClick={closeMenu}
+                    className='dropdown-link'
+                  />
+                  <OpenModalButton
+                    buttonText="Log In"
+                    modalComponent={<LoginFormModal />}
+                    onButtonClick={closeMenu}
+                    className='dropdown-link'
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );

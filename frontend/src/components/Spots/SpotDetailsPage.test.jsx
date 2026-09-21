@@ -21,8 +21,8 @@ describe("SpotDetailsPage", () => {
     renderSpot();
     const title = await screen.findByRole("heading", { name: "Hoth Rebel Base" });
     expect(title).toBeInTheDocument();
-    const gallery = document.querySelector(".spot-images-container");
-    expect(gallery).toHaveClass(`gallery-count-${count}`);
+    const gallery = document.querySelector("[data-photo-count]");
+    expect(gallery).toHaveAttribute("data-photo-count", String(count));
     const images = screen.getAllByRole("img", { name: /Hoth Rebel Base/ });
     expect(images).toHaveLength(count);
     expect(images[0].src).toContain("f_auto,q_auto,w_1600");

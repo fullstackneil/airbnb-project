@@ -4,7 +4,7 @@ import { createReview } from "../../store/reviewReducer";
 import { getSingleSpot } from "../../store/spotReducer";
 import { getAllReviewsForSpot } from "../../store/reviewReducer";
 import { useModal } from "../../context/Modal";
-import "./CreateReview.css";
+import styles from "./CreateReview.module.css";
 import { FaStar } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
 
@@ -50,7 +50,7 @@ function CreateReview({ spot }) {
         onFocus={() => handleMouseEnter(rating)}
         onBlur={handleMouseLeave}
         onClick={() => handleClick(rating)}
-        className="star"
+        className={styles.star}
       >
         {rating <= (hoveredStars || stars) ? <FaStar aria-hidden="true" /> : <FaRegStar aria-hidden="true" />}
       </button>
@@ -81,22 +81,22 @@ function CreateReview({ spot }) {
   };
 
   return (
-    <form className="review-form" onSubmit={handleSubmit}>
-      <h2 className="review-title">How was your stay?</h2>
-      <label className="review-label">
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h2>How was your stay?</h2>
+      <label className={styles.label}>
         Review:
         <textarea
           placeholder="Leave your review here..."
-          className="review-input long-text"
+          className={`${styles.input} ${styles.longText}`}
           value={review}
           onChange={(e) => setReview(e.target.value)}
         />
       </label>
-      <div className="review-label">
+      <div className={styles.label}>
         <span id="review-stars-label">Stars:</span>
-        <div className="rating-input">
+        <div className={styles.ratingInput}>
           <div
-            className="star-ratings-container"
+            className={styles.stars}
             role="radiogroup"
             aria-labelledby="review-stars-label"
           >
@@ -104,7 +104,7 @@ function CreateReview({ spot }) {
           </div>
         </div>
       </div>
-      <button id='submit-button' disabled={Object.values(errors).length > 0} type="submit">
+      <button className={styles.submitButton} disabled={Object.values(errors).length > 0} type="submit">
         Submit Your Review
       </button>
     </form>

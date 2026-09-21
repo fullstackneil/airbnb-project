@@ -1,0 +1,32 @@
+.header {
+  padding-left: clamp(16px, 24vw, 350px);
+  padding-right: 16px;
+}
+
+.title {
+  color: white;
+}
+
+.empty {
+  color: var(--star-wars-gray);
+}
+
+/* Update / Delete under each of the owner's spot cards. */
+.cardActions {
+  display: flex;
+  gap: 10px;
+  width: 370px;
+  max-width: 100%;
+}
+
+.cardActions .actionButton {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 50px;
+  margin: 0;
+  box-shadow: 2px 2px 2px white;
+  background-color: var(--star-wars-yellow);
+  font: inherit;
+  color: black;
+  cursor: pointer;
+}

@@ -3,7 +3,8 @@ import { removeReview } from "../../store/reviewReducer";
 import { getAllReviewsForSpot } from "../../store/reviewReducer";
 import { useModal } from "../../context/Modal";
 import { getSingleSpot } from "../../store/spotReducer";
-import './DeleteReview.css';
+import buttons from '../../styles/buttons.module.css';
+import dialog from '../../styles/confirmDialog.module.css';
 
 function DeleteReview({ review }) {
   const { closeModal } = useModal();
@@ -19,12 +20,12 @@ function DeleteReview({ review }) {
   };
 
   return (
-    <div className='delete-review-container'>
-      <h2 className='header-text'>Confirm Delete</h2>
+    <div className={dialog.dialog}>
+      <h2>Confirm Delete</h2>
       <p>Are you sure you want to delete this review?</p>
-      <div>
-        <button className='button' id='delete-review' onClick={handleDelete}>Yes (Delete Review)</button>
-        <button className='button' id='keep-review' onClick={closeModal}>No (Keep Review)</button>
+      <div className={dialog.actions}>
+        <button className={`${buttons.actionButton} ${dialog.choice} ${dialog.confirm}`} onClick={handleDelete}>Yes (Delete Review)</button>
+        <button className={`${buttons.actionButton} ${dialog.choice} ${dialog.cancel}`} onClick={closeModal}>No (Keep Review)</button>
       </div>
     </div>
   );

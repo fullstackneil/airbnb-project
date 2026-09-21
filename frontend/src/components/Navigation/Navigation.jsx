@@ -7,7 +7,7 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import { CgProfile } from "react-icons/cg";
 import { GiHamburgerMenu } from "react-icons/gi";
-import './Navigation.css';
+import styles from './Navigation.module.css';
 
 // Served from frontend/public, so reference it by URL rather than importing it.
 const logo = '/assets/logo.png';
@@ -49,46 +49,46 @@ function Navigation() {
   }, [location.pathname]);
 
   return (
-    <nav className='nav-bar'>
+    <nav className={styles.navBar}>
       <NavLink to='/'>
         <img
           src={logo}
-          className='logo'
+          className={styles.logo}
           alt='Galactic Getaways home'
         />
       </NavLink>
-      <div className='profile-container'>
-        {sessionUser && <Link className='create-new-spot-button' to='/spots'>Create a New Spot</Link>}
-        <div className='menu-wrapper' ref={menuRef}>
+      <div className={styles.profileContainer}>
+        {sessionUser && <Link className={styles.createSpotLink} to='/spots'>Create a New Spot</Link>}
+        <div className={styles.menuWrapper} ref={menuRef}>
           <button
             type='button'
-            className='menu-toggle'
+            className={styles.menuToggle}
             onClick={() => setVisible(!visible)}
             aria-label='Open user menu'
             aria-haspopup='true'
             aria-expanded={visible}
             data-modal-return-focus
           >
-            <GiHamburgerMenu className="hamburger-menu" aria-hidden='true'/>
-            <CgProfile className='profile-icon' aria-hidden='true'/>
+            <GiHamburgerMenu className={styles.hamburgerIcon} aria-hidden='true'/>
+            <CgProfile className={styles.profileIcon} aria-hidden='true'/>
           </button>
           {visible && (
-            <div className="dropdown-menu">
+            <div className={styles.dropdownMenu}>
               {sessionUser ? (
                 <ProfileButton user={sessionUser} onItemClick={closeMenu} />
               ) : (
-                <div className="dropdown-link-container">
+                <div className={styles.dropdownLinks}>
                   <OpenModalButton
                     buttonText="Sign Up"
                     modalComponent={<SignupFormModal />}
                     onButtonClick={closeMenu}
-                    className='dropdown-link'
+                    className={styles.dropdownLink}
                   />
                   <OpenModalButton
                     buttonText="Log In"
                     modalComponent={<LoginFormModal />}
                     onButtonClick={closeMenu}
-                    className='dropdown-link'
+                    className={styles.dropdownLink}
                   />
                 </div>
               )}

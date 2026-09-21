@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import styles from './Navigation.module.css';
 
 function ProfileButton({ user, onItemClick }) {
   const dispatch = useDispatch();
@@ -13,14 +14,14 @@ function ProfileButton({ user, onItemClick }) {
 
   return (
     <>
-      <ul className="profile-dropdown">
-        <li id='profile-first-name'>Hello, {user.firstName}</li>
-        <li id='profile-email'>{user.email}</li>
+      <ul className={styles.profileDropdown}>
+        <li className={styles.profileName}>Hello, {user.firstName}</li>
+        <li className={styles.profileEmail}>{user.email}</li>
         <li>
-          <Link id='manage-spots' to='/spots/myspots' onClick={onItemClick}>Manage Spots</Link>
+          <Link to='/spots/myspots' onClick={onItemClick}>Manage Spots</Link>
         </li>
         <li>
-          <button id='profile-log-out' onClick={logout}>Log Out</button>
+          <button className={styles.logoutButton} onClick={logout}>Log Out</button>
         </li>
       </ul>
     </>

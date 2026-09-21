@@ -1,20 +1,4 @@
-:root {
-  --star-wars-yellow: #FFE81F;
-  --star-wars-gray: #9ba0a8;
-  --star-wars-orange: #ffab00;
-  --star-wars-lightsaber-green: #2FF923;
-  --primary-font: 'Nunito', sans-serif;
-  --error-message-red: #FF0000;
-}
-
-h2 {
-  font-family: 'Nunito', sans-serif;
-  font-weight: bold;
-  color: var(--star-wars-yellow);
-  font-size: 28px;
-}
-
-.review-form {
+.form {
   display: flex;
   background-color: black;
   flex-direction: column;
@@ -27,7 +11,7 @@ h2 {
   border: 5px solid white;
 }
 
-.review-label {
+.label {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
@@ -37,20 +21,8 @@ h2 {
   font-size: 24px;
 }
 
-.review-button {
-  height: 3rem;
-  background-color: #ff5a5f;
-  color: white;
-  box-shadow: 4px 3px 5px rgb(133, 117, 117);
-  font-family: var(--primary-font);
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-}
-
-.review-input {
+/* The review textarea: base input style, then the taller text-box size. */
+.input {
   background-color: white;
   border-radius: 7px;
   border: #51636d71 1px solid;
@@ -61,25 +33,25 @@ h2 {
   padding-top: 8px;
 }
 
-.long-text {
+.longText {
   height: 120px;
-  font: var(--primary-font);
+  font: inherit;
   font-size: 16px;
 }
 
-.rating-input {
+.ratingInput {
   display: flex;
   justify-content: center;
   column-gap: 5px;
   margin: 10px 0;
 }
 
-.rating-input div {
+.ratingInput div {
   cursor: pointer;
   color: var(--star-wars-yellow);
 }
 
-.rating-input .star {
+.ratingInput .star {
   display: flex;
   padding: 2px;
   background: transparent;
@@ -93,49 +65,44 @@ h2 {
    pointer is replaced between mousedown and mouseup, the browser drops the
    click - common with quick taps on phones. Letting clicks pass through the
    icon means they always land on the button, which is never replaced. */
-.rating-input .star svg {
+.ratingInput .star svg {
   pointer-events: none;
 }
 
-.rating-input .star:focus-visible {
+.ratingInput .star:focus-visible {
   outline: 2px solid var(--star-wars-yellow);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-
-.star-ratings-container {
+.stars {
   display: flex;
   gap: 5px;
 }
 
-#submit-button {
+.submitButton {
   margin: auto;
   width: 400px;
   max-width: 100%;
   height: 50px;
   box-shadow: 2px 2px 2px white;
   background-color: var(--star-wars-yellow);
-  font: var(--primary-font);
+  font: inherit;
 }
 
-#submit-button:disabled {
-  background-color: #6c757d; /* Gray background color when disabled */
-  color: #ffffff; /* White text color when disabled */
-  border-color: #6c757d; /* Gray border color when disabled */
-  cursor: not-allowed; /* Change cursor to indicate disabled state */
+.submitButton:disabled {
+  background-color: var(--disabled-gray);
+  color: #ffffff;
+  border-color: var(--disabled-gray);
+  cursor: not-allowed;
 }
 
 @media (max-width: 480px) {
-  h2 {
-    font-size: 24px;
-  }
-
-  .review-form {
+  .form {
     padding: 0 16px 20px 16px;
   }
 
-  .review-label {
+  .label {
     font-size: 20px;
   }
 }

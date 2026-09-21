@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSpot, getAllSpots, createSpotImage } from "../../store/spotReducer";
-import "./CreateSpot.css";
+import styles from "./SpotForm.module.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import {
   COORDINATE_INPUT,
@@ -156,133 +156,133 @@ const CreateSpot = () => {
   };
 
   return (
-    <div className="create-spot-container">
-      <form className="create-spot-form" onSubmit={handleSubmit}>
-        <h1 className="form-header" id="form-title">Create a new Spot</h1>
-        <h2 className="title" id="form-subtitle">Where&apos;s your place located?</h2>
-        <h3 className="subtitle" id="form-info">
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <h1 className={styles.formTitle}>Create a new Spot</h1>
+        <h2 className={styles.title} id="form-subtitle">Where&apos;s your place located?</h2>
+        <h3 className={styles.subtitle} id="form-info">
           Guests will only get your exact address once they book a reservation.
         </h3>
 
-        <label className="signup-label">
+        <label className={styles.label}>
           Country:
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             placeholder="Country"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
-          {isSubmitted && errors.country && <p className="error-message">{errors.country}</p>}
+          {isSubmitted && errors.country && <p className={styles.errorMessage}>{errors.country}</p>}
         </label>
 
-        <label className="signup-label">
+        <label className={styles.label}>
           Street Address:
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             placeholder="Street Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          {isSubmitted && errors.address && <p className="error-message">{errors.address}</p>}
+          {isSubmitted && errors.address && <p className={styles.errorMessage}>{errors.address}</p>}
         </label>
-        <div className="city-state">
-          <div className="city">
-            <label className="signup-label">
+        <div>
+          <div>
+            <label className={styles.label}>
               City:
               <input
-                className="input-area-spots"
+                className={styles.input}
                 type="text"
                 placeholder="City"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-              {isSubmitted && errors.city && <p className="error-message">{errors.city}</p>}
+              {isSubmitted && errors.city && <p className={styles.errorMessage}>{errors.city}</p>}
             </label>
           </div>
-          <div className="city">
-            <label className="signup-label">
+          <div>
+            <label className={styles.label}>
               State:
               <input
-                className="input-area-spots"
+                className={styles.input}
                 type="text"
                 placeholder="State"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
               />
-              {isSubmitted && errors.state && <p className="error-message">{errors.state}</p>}
+              {isSubmitted && errors.state && <p className={styles.errorMessage}>{errors.state}</p>}
             </label>
           </div>
         </div>
-        <div className="city-state">
-          <div className="city">
-            <label className="signup-label">
+        <div>
+          <div>
+            <label className={styles.label}>
               Latitude:
               <input
-                className="input-area-spots"
+                className={styles.input}
                 type="text"
                 inputMode="decimal"
                 placeholder="Latitude (optional)"
                 value={lat}
                 onChange={handleLatitudeChange}
               />
-              {isSubmitted && errors.lat && <p className="error-message">{errors.lat}</p>}
+              {isSubmitted && errors.lat && <p className={styles.errorMessage}>{errors.lat}</p>}
             </label>
           </div>
-          <div className="city">
-            <label className="signup-label">
+          <div>
+            <label className={styles.label}>
               Longitude:
               <input
-                className="input-area-spots"
+                className={styles.input}
                 type="text"
                 inputMode="decimal"
                 placeholder="Longitude (optional)"
                 value={lng}
                 onChange={handleLongitudeChange}
               />
-              {isSubmitted && errors.lng && <p className="error-message">{errors.lng}</p>}
+              {isSubmitted && errors.lng && <p className={styles.errorMessage}>{errors.lng}</p>}
             </label>
           </div>
         </div>
-        <div className="added-text">
-          <h2 className="title" id="description-title">Describe your place to your guests</h2>
-          <p className="subtitle" id="description-info">
+        <div className={styles.section}>
+          <h2 className={styles.title} id="description-title">Describe your place to your guests</h2>
+          <p className={styles.subtitle} id="description-info">
             Mention the best features of your space, any special amenities like fast WiFi or parking, and what you love about the neighborhood.
           </p>
           <textarea
-            className="description-input"
+            className={styles.descriptionInput}
             aria-label="Description"
             placeholder="Please write at least 30 characters"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          {isSubmitted && errors.description && <p className="error-message">{errors.description}</p>}
+          {isSubmitted && errors.description && <p className={styles.errorMessage}>{errors.description}</p>}
         </div>
-        <div className="added-text">
-          <h2 className="title">Create a title for your spot</h2>
-          <p className="subtitle">
+        <div className={styles.section}>
+          <h2 className={styles.title}>Create a title for your spot</h2>
+          <p className={styles.subtitle}>
             Catch guests&apos; attention with a spot title that highlights what makes your place special.
           </p>
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             aria-label="Name of your spot"
             placeholder="Name of your spot"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          {isSubmitted && errors.name && <p className="error-message">{errors.name}</p>}
+          {isSubmitted && errors.name && <p className={styles.errorMessage}>{errors.name}</p>}
         </div>
-        <div className="added-text">
-          <h2 className="title">Set a base price for your spot</h2>
-          <p className="subtitle">
+        <div className={styles.section}>
+          <h2 className={styles.title}>Set a base price for your spot</h2>
+          <p className={styles.subtitle}>
             Competitive pricing can help your listing stand out and rank higher in search results.
           </p>
-          <div className="money-box">
+          <div className={styles.moneyBox}>
             <span>$  </span>
             <input
-              className="input-area-spots"
+              className={styles.input}
               type="text"
               inputMode="decimal"
               aria-label="Price per night in US dollars"
@@ -291,24 +291,24 @@ const CreateSpot = () => {
               onChange={handlePriceChange}
             />
           </div>
-          {isSubmitted && errors.price && <p className="error-message">{errors.price}</p>}
+          {isSubmitted && errors.price && <p className={styles.errorMessage}>{errors.price}</p>}
         </div>
-        <div className="added-text">
-          <h2 className="title">Liven up your spot with photos</h2>
-          <p className="subtitle">
+        <div className={styles.section}>
+          <h2 className={styles.title}>Liven up your spot with photos</h2>
+          <p className={styles.subtitle}>
             Submit a link to at least one photo to publish your spot.
           </p>
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             aria-label="Preview image URL"
             placeholder="Preview Image URL"
             value={previewImage}
             onChange={(e) => setPreviewImage(e.target.value)}
           />
-          {isSubmitted && errors.previewImage && <p className="error-message">{errors.previewImage}</p>}
+          {isSubmitted && errors.previewImage && <p className={styles.errorMessage}>{errors.previewImage}</p>}
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             aria-label="Additional image URL 1"
             placeholder="Image URL"
@@ -316,7 +316,7 @@ const CreateSpot = () => {
             onChange={(e) => setImageUrl1(e.target.value)}
           />
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             aria-label="Additional image URL 2"
             placeholder="Image URL"
@@ -324,7 +324,7 @@ const CreateSpot = () => {
             onChange={(e) => setImageUrl2(e.target.value)}
           />
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             aria-label="Additional image URL 3"
             placeholder="Image URL"
@@ -332,7 +332,7 @@ const CreateSpot = () => {
             onChange={(e) => setImageUrl3(e.target.value)}
           />
           <input
-            className="input-area-spots"
+            className={styles.input}
             type="text"
             aria-label="Additional image URL 4"
             placeholder="Image URL"
@@ -340,8 +340,8 @@ const CreateSpot = () => {
             onChange={(e) => setImageUrl4(e.target.value)}
           />
         </div>
-        {submitError && <p className="error-message" role="alert">{submitError}</p>}
-        <button className="submit-button" disabled={isSaving}>
+        {submitError && <p className={styles.errorMessage} role="alert">{submitError}</p>}
+        <button className={styles.submitButton} disabled={isSaving}>
           {isSaving ? "Creating…" : "Create Spot"}
         </button>
       </form>

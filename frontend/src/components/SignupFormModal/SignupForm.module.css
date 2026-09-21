@@ -1,0 +1,56 @@
+.container {
+  background-color: white;
+  font-family: var(--primary-font);
+  color: black;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  width: 350px;
+  max-width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  gap: 8px;
+  width: 300px;
+  max-width: calc(100% - 32px);
+  padding-bottom: 20px;
+}
+
+.heading {
+  justify-content: center;
+  align-items: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.submitButton {
+  border: 2px solid black;
+  box-shadow: 2px 2px 2px black;
+  color: black;
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-weight: bold;
+  background-color: var(--star-wars-yellow);
+  justify-content: center;
+  height: 55px;
+  width: 100%;
+}
+
+.submitButton:disabled {
+  background-color: var(--disabled-gray);
+  color: #ffffff;
+  border-color: var(--disabled-gray);
+  cursor: not-allowed;
+}
+
+.validationMessage {
+  color: red;
+}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
-import './SignupForm.css';
+import styles from './SignupForm.module.css';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -78,10 +78,10 @@ function SignupFormModal() {
   };
 
   return (
-    <div className="signup-form-container">
-      <form onSubmit={handleSubmit} className='sign-up-modal' noValidate>
-        <h1 className='signup-text'>Sign Up</h1>
-        <label className="sign-up-field">
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form} noValidate>
+        <h1 className={styles.heading}>Sign Up</h1>
+        <label className={styles.field}>
           First Name
           <input
             type="text"
@@ -90,8 +90,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'firstName' in validations && <p className='validation-msg' role='alert'>{validations.firstName}</p>}
-        <label className="sign-up-field">
+        {'firstName' in validations && <p className={styles.validationMessage} role='alert'>{validations.firstName}</p>}
+        <label className={styles.field}>
           Last Name
           <input
             type="text"
@@ -100,8 +100,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'lastName' in validations && <p className='validation-msg' role='alert'>{validations.lastName}</p>}
-        <label className="sign-up-field">
+        {'lastName' in validations && <p className={styles.validationMessage} role='alert'>{validations.lastName}</p>}
+        <label className={styles.field}>
           Email
           <input
             type="email"
@@ -111,8 +111,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'email' in validations && <p className='validation-msg' role='alert'>{validations.email}</p>}
-        <label className="sign-up-field">
+        {'email' in validations && <p className={styles.validationMessage} role='alert'>{validations.email}</p>}
+        <label className={styles.field}>
           Username
           <input
             type="text"
@@ -121,8 +121,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'username' in validations && <p className='validation-msg' role='alert'>{validations.username}</p>}
-        <label className="sign-up-field">
+        {'username' in validations && <p className={styles.validationMessage} role='alert'>{validations.username}</p>}
+        <label className={styles.field}>
           Password
           <input
             type="password"
@@ -131,8 +131,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'password' in validations && <p className='validation-msg' role='alert'>{validations.password}</p>}
-        <label className="sign-up-field">
+        {'password' in validations && <p className={styles.validationMessage} role='alert'>{validations.password}</p>}
+        <label className={styles.field}>
           Confirm Password
           <input
             type="password"
@@ -141,10 +141,10 @@ function SignupFormModal() {
             required
           />
         </label>
-        {'confirmPassword' in validations && <p className='validation-msg' role='alert'>{validations.confirmPassword}</p>}
+        {'confirmPassword' in validations && <p className={styles.validationMessage} role='alert'>{validations.confirmPassword}</p>}
         <button
           type="submit"
-          className='signup-button'
+          className={styles.submitButton}
           disabled={isButtonDisabled()}
         >Sign Up</button>
       </form>

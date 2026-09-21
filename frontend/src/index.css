@@ -1,4 +1,16 @@
-/* TODO: Add sitewide styles */
+/* Site-wide styles. Everything component-specific lives in that component's
+   *.module.css file, which scopes its class names to the component. */
+
+/* Design tokens, shared by every stylesheet. */
+:root {
+  --star-wars-yellow: #FFE81F;
+  --star-wars-gray: #9ba0a8;
+  --star-wars-lightsaber-green: #2FF923;
+  --primary-font: 'Nunito', sans-serif;
+  --error-message-red: #FF0000;
+  --disabled-gray: #6c757d;
+}
+
 *,
 *::before,
 *::after {
@@ -6,11 +18,11 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
-    color: white;
-    background: black;
-    overflow-wrap: break-word;
-  }
+  font-family: var(--primary-font);
+  color: white;
+  background: black;
+  overflow-wrap: break-word;
+}
 
 img {
   max-width: 100%;
@@ -22,15 +34,30 @@ button {
   max-width: 100%;
 }
 
+/* Section headings are yellow and bold across the whole site. */
+h2 {
+  font-family: var(--primary-font);
+  font-weight: bold;
+  color: var(--star-wars-yellow);
+  font-size: 28px;
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 24px;
+  }
+}
+
+/* Loading, empty and not-found messages. */
 .status-message {
   padding: 40px 16px;
   text-align: center;
   font-size: 18px;
-  color: #9ba0a8;
+  color: var(--star-wars-gray);
 }
 
 .status-message a {
-  color: #FFE81F;
+  color: var(--star-wars-yellow);
 }
 
 /* Hide content visually but keep it available to screen readers. */

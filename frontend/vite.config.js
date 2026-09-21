@@ -1,17 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import eslint from 'vite-plugin-eslint';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  plugins: [
-    react(),
-    // Lint during dev/build; tests run ESLint separately (npm run lint).
-    mode !== "test" && eslint({
-      lintOnStart: true,
-      failOnError: mode === "production"
-    })
-  ],
+export default defineConfig(() => ({
+  // Linting runs as its own step (npm run lint, and in CI).
+  plugins: [react()],
   css: {
     modules: {
       // Keep the original class name visible (e.g. "gallery_x1Y2z") so

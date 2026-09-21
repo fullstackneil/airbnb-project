@@ -43,10 +43,13 @@ function Navigation() {
     };
   }, [visible]);
 
-  // Close the menu whenever the route changes.
-  useEffect(() => {
+  // Close the menu whenever the route changes (adjusting state during
+  // render when a value changes, per the React docs, instead of an effect).
+  const [menuPath, setMenuPath] = useState(location.pathname);
+  if (menuPath !== location.pathname) {
+    setMenuPath(location.pathname);
     setVisible(false);
-  }, [location.pathname]);
+  }
 
   return (
     <nav className={styles.navBar}>

@@ -19,16 +19,22 @@ const SpotDetailsPage = () => {
   const spotReviews = useSelector((state) => state.reviews.spot);
   const userSession = useSelector((state) => state.session.user);
 
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [notFound, setNotFound] = useState(false);
+  // Which spot finished loading (or failed). Status only counts when it
+  // matches the spot in the URL, so switching spots shows "Loading" again
+  // without resetting state inside the effect.
+  const [result, setResult] = useState({ spotId: null, status: "loading" });
+  const isLoaded = result.spotId === spotId && result.status === "loaded";
+  const notFound = result.spotId === spotId && result.status === "notFound";
 
   useEffect(() => {
-    setIsLoaded(false);
-    setNotFound(false);
+    let current = true; // ignore responses for a spot we've navigated away from
     dispatch(getSingleSpot(spotId))
       .then(() => dispatch(getAllReviewsForSpot(spotId)))
-      .then(() => setIsLoaded(true))
-      .catch(() => setNotFound(true));
+      .then(() => current && setResult({ spotId, status: "loaded" }))
+      .catch(() => current && setResult({ spotId, status: "notFound" }));
+    return () => {
+      current = false;
+    };
   }, [dispatch, spotId]);
 
   const reviewsArray = Object.values(spotReviews).filter(

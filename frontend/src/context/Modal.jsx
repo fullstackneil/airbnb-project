@@ -1,4 +1,4 @@
-import { useRef, useState, useContext, useEffect, createContext } from 'react';
+import { useRef, useState, useContext, useEffect, useLayoutEffect, createContext } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './Modal.module.css';
 
@@ -8,7 +8,9 @@ const FOCUSABLE =
   'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])';
 
 export function ModalProvider({ children }) {
-  const modalRef = useRef();
+  // The portal target, held in state (via a callback ref) so the modal
+  // re-renders once it exists instead of reading a ref during render.
+  const [modalNode, setModalNode] = useState(null);
   const [modalContent, setModalContent] = useState(null);
   // callback function that will be called when modal is closing
   const [onModalClose, setOnModalClose] = useState(null);
@@ -24,7 +26,7 @@ export function ModalProvider({ children }) {
   };
 
   const contextValue = {
-    modalRef, // reference to modal div
+    modalNode, // the div modals are rendered into
     modalContent, // React component to render inside modal
     setModalContent, // function to set the React component to render inside modal
     setOnModalClose, // function to set the callback function called when modal is closing
@@ -36,16 +38,19 @@ export function ModalProvider({ children }) {
       <ModalContext.Provider value={contextValue}>
         {children}
       </ModalContext.Provider>
-      <div ref={modalRef} />
+      <div ref={setModalNode} />
     </>
   );
 }
 
 export function Modal() {
-  const { modalRef, modalContent, closeModal } = useContext(ModalContext);
+  const { modalNode, modalContent, closeModal } = useContext(ModalContext);
   const contentRef = useRef(null);
+  // Latest closeModal for the keyboard handler, updated after each render.
   const closeRef = useRef(closeModal);
-  closeRef.current = closeModal;
+  useLayoutEffect(() => {
+    closeRef.current = closeModal;
+  });
   const isOpen = Boolean(modalContent);
 
   // Keyboard support while open: move focus into the modal, keep Tab inside
@@ -96,11 +101,10 @@ export function Modal() {
     };
   }, [isOpen]);
 
-  // If there is no div referenced by the modalRef or modalContent is not a
-  // truthy value, render nothing:
-  if (!modalRef || !modalRef.current || !modalContent) return null;
+  // Nothing to show, or the portal target isn't mounted yet.
+  if (!modalNode || !modalContent) return null;
 
-  // Render the following component to the div referenced by the modalRef
+  // Render the modal into the portal target
   return ReactDOM.createPortal(
     <div className={styles.overlay}>
       <div className={styles.background} onClick={closeModal} />
@@ -108,7 +112,7 @@ export function Modal() {
         {modalContent}
       </div>
     </div>,
-    modalRef.current
+    modalNode
   );
 }
 

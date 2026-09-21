@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSpot, getAllSpots, createSpotImage } from "../../store/spotReducer";
 import styles from "./SpotForm.module.css";
@@ -9,6 +9,7 @@ import {
   validateCoordinates,
   validatePrice,
   validateName,
+  imageUrlError,
   toCoordinate,
   describeSpotSaveError,
 } from "../../utils/spotValidation";
@@ -28,7 +29,6 @@ const CreateSpot = () => {
   const [imageUrl2, setImageUrl2] = useState("");
   const [imageUrl3, setImageUrl3] = useState("");
   const [imageUrl4, setImageUrl4] = useState("");
-  const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const sessionUser = useSelector((state) => state.session.user);
@@ -39,23 +39,23 @@ const CreateSpot = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   // let createdSpotId = Object.values(allSpots).length;
 
-  // Validation logic
-  useEffect(() => {
-    const errors = {};
+  // Validation errors, derived from the current input on every render.
+  const errors = {};
 
-    if (country.trim() === "") errors.country = "Country is required";
-    if (address.trim() === "") errors.address = "Address is required";
-    if (city.trim() === "") errors.city = "City is required";
-    if (state.trim() === "") errors.state = "State is required";
-    Object.assign(errors, validateCoordinates(lat, lng));
-    if (description.length < 30) errors.description = "Description must be 30 or more characters";
-    Object.assign(errors, validateName(name));
-    Object.assign(errors, validatePrice(price));
-    if (previewImage.trim() === "") errors.previewImage = "Preview image is required";
-
-    setErrors(errors);
-  }, [country, address, city, state, lat, lng, description, name, price, previewImage]);
-
+  if (country.trim() === "") errors.country = "Country is required";
+  if (address.trim() === "") errors.address = "Address is required";
+  if (city.trim() === "") errors.city = "City is required";
+  if (state.trim() === "") errors.state = "State is required";
+  Object.assign(errors, validateCoordinates(lat, lng));
+  if (description.length < 30) errors.description = "Description must be 30 or more characters";
+  Object.assign(errors, validateName(name));
+  Object.assign(errors, validatePrice(price));
+  const previewError = imageUrlError(previewImage, { required: true });
+  if (previewError) errors.previewImage = previewError;
+  [imageUrl1, imageUrl2, imageUrl3, imageUrl4].forEach((url, i) => {
+    const message = imageUrlError(url);
+    if (message) errors[`imageUrl${i + 1}`] = message;
+  });
 
   // Handle image uploads
   const handleSubmit = async (e) => {
@@ -307,38 +307,26 @@ const CreateSpot = () => {
             onChange={(e) => setPreviewImage(e.target.value)}
           />
           {isSubmitted && errors.previewImage && <p className={styles.errorMessage}>{errors.previewImage}</p>}
-          <input
-            className={styles.input}
-            type="text"
-            aria-label="Additional image URL 1"
-            placeholder="Image URL"
-            value={imageUrl1}
-            onChange={(e) => setImageUrl1(e.target.value)}
-          />
-          <input
-            className={styles.input}
-            type="text"
-            aria-label="Additional image URL 2"
-            placeholder="Image URL"
-            value={imageUrl2}
-            onChange={(e) => setImageUrl2(e.target.value)}
-          />
-          <input
-            className={styles.input}
-            type="text"
-            aria-label="Additional image URL 3"
-            placeholder="Image URL"
-            value={imageUrl3}
-            onChange={(e) => setImageUrl3(e.target.value)}
-          />
-          <input
-            className={styles.input}
-            type="text"
-            aria-label="Additional image URL 4"
-            placeholder="Image URL"
-            value={imageUrl4}
-            onChange={(e) => setImageUrl4(e.target.value)}
-          />
+          {[
+            [imageUrl1, setImageUrl1],
+            [imageUrl2, setImageUrl2],
+            [imageUrl3, setImageUrl3],
+            [imageUrl4, setImageUrl4],
+          ].map(([value, setValue], i) => (
+            <Fragment key={i}>
+              <input
+                className={styles.input}
+                type="text"
+                aria-label={`Additional image URL ${i + 1}`}
+                placeholder="Image URL"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              {isSubmitted && errors[`imageUrl${i + 1}`] && (
+                <p className={styles.errorMessage}>{errors[`imageUrl${i + 1}`]}</p>
+              )}
+            </Fragment>
+          ))}
         </div>
         {submitError && <p className={styles.errorMessage} role="alert">{submitError}</p>}
         <button className={styles.submitButton} disabled={isSaving}>

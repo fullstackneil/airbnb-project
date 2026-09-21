@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUpdatedSpot, getSingleSpot } from "../../store/spotReducer";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
@@ -32,7 +32,6 @@ const UpdateSpot = () => {
     price: ""
   });
 
-  const [validations, setValidations] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [showValidations, setShowValidations] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -58,7 +57,7 @@ const UpdateSpot = () => {
       .catch(() => setNotFound(true));
   }, [dispatch, spotId]);
 
-  const validateFields = useCallback(() => {
+  const validateFields = () => {
     const errors = {};
     const { country, address, city, state, lat, lng, description, name, price } = formData;
 
@@ -72,13 +71,10 @@ const UpdateSpot = () => {
     Object.assign(errors, validatePrice(price));
 
     return errors;
-  }, [formData]);
+  };
 
-  useEffect(() => {
-    if (showValidations) {
-      setValidations(validateFields());
-    }
-  }, [formData, showValidations, validateFields]);
+  // Errors appear once the user has tried to submit, and update as they type.
+  const validations = showValidations ? validateFields() : {};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -109,7 +105,6 @@ const UpdateSpot = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateFields();
-    setValidations(errors);
     setShowValidations(true);
 
     if (Object.keys(errors).length === 0) {

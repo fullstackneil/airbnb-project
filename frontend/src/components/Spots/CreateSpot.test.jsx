@@ -20,3 +20,17 @@ describe("CreateSpot", () => {
     expect(price).toHaveValue("99.99");
   });
 });
+
+describe("CreateSpot photo links", () => {
+  test("explains bad photo links on submit instead of saving", async () => {
+    const { vi } = await import("vitest");
+    vi.spyOn(window, "alert").mockImplementation(() => {});
+    const fetchSpy = vi.spyOn(window, "fetch");
+    renderApp(<CreateSpot />, { path: "/spots", user: DEMO_USER });
+    await userEvent.type(screen.getByLabelText("Preview image URL"), "https://example.com/page.html");
+    await userEvent.type(screen.getByLabelText("Additional image URL 2"), "not a link");
+    await userEvent.click(screen.getByRole("button", { name: "Create Spot" }));
+    expect(screen.getAllByText(/must start with http\(s\):\/\//)).toHaveLength(2);
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+});

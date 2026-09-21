@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createReview } from "../../store/reviewReducer";
 import { getSingleSpot } from "../../store/spotReducer";
@@ -12,18 +12,13 @@ function CreateReview({ spot }) {
   const [stars, setStars] = useState(0);
   const [hoveredStars, setHoveredStars] = useState(0);
   const [review, setReview] = useState("");
-  const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    let errors = {};
-    if (stars < 1) errors.stars = "Stars can't be empty";
-    if (review.length < 10)
-      errors.review = "Review must be at least 10 characters long";
-
-    setErrors(errors);
-  }, [review.length, stars]);
+  // Derived from the current input on every render.
+  const errors = {};
+  if (stars < 1) errors.stars = "Stars can't be empty";
+  if (review.length < 10) errors.review = "Review must be at least 10 characters long";
 
   const handleMouseEnter = (rating) => {
     setHoveredStars(rating);
@@ -76,7 +71,6 @@ function CreateReview({ spot }) {
 
       setStars(0);
       setReview("");
-      setErrors({});
     }
   };
 

@@ -4,7 +4,7 @@ const { User, Spot, SpotImage, Booking, Review, ReviewImage } = require('../../d
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { validateSpot, validateReview } = require('../../utils/validators');
+const { validateSpot, validateSpotImage, validateReview } = require('../../utils/validators');
 
 const router = express.Router();
 
@@ -176,7 +176,7 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
 });
 
 // POST SPOT IMAGES
-router.post("/:spotId/images", async (req, res) => {
+router.post("/:spotId/images", requireAuth, validateSpotImage, async (req, res) => {
   const { user } = req;
   const error = {
     message: {},
@@ -199,7 +199,8 @@ router.post("/:spotId/images", async (req, res) => {
 
       if (!userSpot) {
         res.statusCode = 403;
-        res.json({ message: "Forbidden" });
+        // Return here: without it the image was still created for non-owners.
+        return res.json({ message: "Forbidden" });
       }
 
       const { url, preview } = req.body;

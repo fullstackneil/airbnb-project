@@ -1,6 +1,23 @@
 /* TODO: Add sitewide styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
     font-family: 'Nunito', sans-serif;
     color: white;
     background: black;
+    overflow-wrap: break-word;
   }
+
+img {
+  max-width: 100%;
+}
+
+input,
+textarea,
+button {
+  max-width: 100%;
+}

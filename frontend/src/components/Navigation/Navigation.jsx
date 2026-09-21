@@ -47,13 +47,13 @@ function Navigation() {
       <NavLink to='/'>
         <img
           src={logo}
-          style={{ width: '150px', height: 'auto' }}
           className='logo'
+          alt='Galactic Getaways home'
         />
       </NavLink>
       <div className='profile-container'>
         {sessionUser && <Link className='create-new-spot-button' to='/spots'>Create a New Spot</Link>}
-        <GiHamburgerMenu className="hamburger-menu"/>
+        <GiHamburgerMenu className="hamburger-menu" onClick={handleIconClick}/>
         <CgProfile
           className='profile-icon'
           onClick={handleIconClick}

@@ -8,6 +8,7 @@ import {
   PRICE_INPUT,
   validateCoordinates,
   validatePrice,
+  validateName,
   toCoordinate,
   describeSpotSaveError,
 } from "../../utils/spotValidation";
@@ -48,7 +49,7 @@ const CreateSpot = () => {
     if (state.trim() === "") errors.state = "State is required";
     Object.assign(errors, validateCoordinates(lat, lng));
     if (description.length < 30) errors.description = "Description must be 30 or more characters";
-    if (name.trim() === "") errors.name = "Name is required";
+    Object.assign(errors, validateName(name));
     Object.assign(errors, validatePrice(price));
     if (previewImage.trim() === "") errors.previewImage = "Preview image is required";
 

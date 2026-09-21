@@ -2,15 +2,19 @@ const express = require('express');
 require('express-async-errors');
 const morgan = require('morgan');
 const cors = require('cors');
-const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 const { ValidationError } = require('sequelize');
+const { doubleCsrfProtection, ensureAnonId } = require('./utils/csrf');
 
 //intialize express
 const app = express();
+
+// Number of reverse proxies in front of the app (Render's load balancer).
+// Needed so req.ip is the visitor's address, which the rate limiter keys on.
+app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS || 0));
 
 //connect Morgan middleware
 app.use(morgan('dev'));
@@ -35,16 +39,9 @@ if (!isProduction) {
     })
   );
 
-  // Set the _csrf token and create req.csrfToken method
-  app.use(
-    csurf({
-      cookie: {
-        secure: isProduction,
-        sameSite: isProduction && "Lax",
-        httpOnly: true
-      }
-    })
-  );
+  // CSRF protection for every state-changing request (see utils/csrf.js)
+  app.use(ensureAnonId);
+  app.use(doubleCsrfProtection);
 
 
   // backend/app.js

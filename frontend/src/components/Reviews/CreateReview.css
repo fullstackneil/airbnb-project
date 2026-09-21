@@ -89,6 +89,14 @@ h2 {
   cursor: pointer;
 }
 
+/* Hovering swaps each star's icon (outline -> filled). If the icon under the
+   pointer is replaced between mousedown and mouseup, the browser drops the
+   click - common with quick taps on phones. Letting clicks pass through the
+   icon means they always land on the button, which is never replaced. */
+.rating-input .star svg {
+  pointer-events: none;
+}
+
 .rating-input .star:focus-visible {
   outline: 2px solid var(--star-wars-yellow);
   outline-offset: 2px;

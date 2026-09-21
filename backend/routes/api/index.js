@@ -28,6 +28,13 @@ router.use('/review-images', reviewImagesRouter);
 
 router.use('/bookings', bookingsRouter);
 
+// TEMPORARY: reports how the app sees the caller's IP so the proxy hop count
+// (TRUST_PROXY_HOPS) can be measured on Render. Remove once configured.
+router.get('/ip', (req, res) => {
+  const forwarded = (req.headers['x-forwarded-for'] || '').split(',').map((s) => s.trim()).filter(Boolean);
+  res.json({ ip: req.ip, trustProxyHops: req.app.get('trust proxy'), forwardedFor: forwarded });
+});
+
 router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });
 });

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllReviewsForSpot } from "../../store/reviewReducer";
@@ -9,6 +9,7 @@ import { GoDotFill } from "react-icons/go";
 import ReviewIndexItem from "../Reviews/ReviewIndexItem";
 import OpenModalButton from "../OpenModalButton";
 import CreateReview from "../Reviews/CreateReview";
+import { sizedImage, fallbackToOriginal } from "../../utils/images";
 
 const SpotDetailsPage = () => {
   const { spotId } = useParams();
@@ -19,11 +20,15 @@ const SpotDetailsPage = () => {
   const userSession = useSelector((state) => state.session.user);
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    setIsLoaded(false);
+    setNotFound(false);
     dispatch(getSingleSpot(spotId))
       .then(() => dispatch(getAllReviewsForSpot(spotId)))
-      .then(() => setIsLoaded(true));
+      .then(() => setIsLoaded(true))
+      .catch(() => setNotFound(true));
   }, [dispatch, spotId]);
 
   const reviewsArray = Object.values(spotReviews).filter(
@@ -47,6 +52,17 @@ const SpotDetailsPage = () => {
   );
 
   const handleReserveClick = () => alert("Feature coming soon");
+
+  if (notFound) {
+    return (
+      <div className="details-page-container">
+        <p className="status-message">
+          We couldn&apos;t find that spot. It may have been removed.{" "}
+          <Link to="/">Browse all spots</Link>
+        </p>
+      </div>
+    );
+  }
 
   const renderStarRating = () => (
     <div className="star-rating-review-summary">
@@ -85,15 +101,18 @@ const SpotDetailsPage = () => {
                 <>
                   <img
                     className="big-image"
-                    src={spot.SpotImages[0]?.url}
-                    alt="Main spot"
+                    src={sizedImage(spot.SpotImages[0]?.url, 1600)}
+                    onError={fallbackToOriginal(spot.SpotImages[0]?.url)}
+                    alt={`${spot.name} main photo`}
                   />
                   {spot.SpotImages.slice(1, 5).map((image, index) => (
                     <img
                       key={image.id}
                       className={`small-image small-image-${index + 1}`}
-                      src={image.url}
-                      alt={`Spot image ${index + 2}`}
+                      src={sizedImage(image.url, 800)}
+                      onError={fallbackToOriginal(image.url)}
+                      alt={`${spot.name} photo ${index + 2}`}
+                      loading="lazy"
                     />
                   ))}
                 </>
@@ -151,7 +170,7 @@ const SpotDetailsPage = () => {
           </div>
         </>
       ) : (
-        <>Loading</>
+        <p className="status-message" role="status">Loading spot…</p>
       )}
     </div>
   );

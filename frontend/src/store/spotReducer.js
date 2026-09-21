@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { REMOVE_USER } from "./session";
 
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const RECEIVE_SPOT = "spots/RECEIVE_SPOT";
@@ -206,6 +207,10 @@ export const spotReducer = (state = initialState, action) => {
     case CREATE_SPOT_IMAGE: {
       const newState = { ...state, createdSpotImage: action.spotImage };
       return newState;
+    }
+    // Drop the previous user's listings when they log out.
+    case REMOVE_USER: {
+      return { ...state, currentUserSpots: {}, createdSpot: {}, updatedSpot: {}, createdSpotImage: {} };
     }
     default: {
       return state;

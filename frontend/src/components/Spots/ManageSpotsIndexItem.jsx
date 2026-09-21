@@ -3,7 +3,7 @@ import "./ManageSpotsIndexItem.css";
 import { FaStar } from "react-icons/fa";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpot from "./DeleteSpot";
-import './ManageSpotsIndexItem.css'
+import { sizedImage, fallbackToOriginal } from "../../utils/images";
 
 
 const ManageSpotsIndexItem = ({ spot }) => {
@@ -13,7 +13,12 @@ const ManageSpotsIndexItem = ({ spot }) => {
     <div className="spot-container">
         <Link to={`/spots/${spot.id}`}>
             <div className="spot-image-container">
-            <img src={spot.previewImage} />
+            <img
+              src={sizedImage(spot.previewImage, 800)}
+              onError={fallbackToOriginal(spot.previewImage)}
+              alt={spot.name}
+              loading="lazy"
+            />
             </div>
             <div className="tooltip">
             <span className="tooltiptext">{spot.name}</span>
@@ -32,9 +37,9 @@ const ManageSpotsIndexItem = ({ spot }) => {
             <p>${spot.price} night</p>
             </div>
         </Link>
-        <div id='button-container'>
-            <button id='update-button' onClick={() => navigate(`spots/${spot.id}/edit`)}>Update</button>
-            <OpenModalButton id='delete-button'
+        <div className='manage-button-container'>
+            <button className='manage-update-button' onClick={() => navigate(`spots/${spot.id}/edit`)}>Update</button>
+            <OpenModalButton className='manage-delete-button'
             buttonText="Delete"
             modalComponent={<DeleteSpot spot={spot} />}
             />

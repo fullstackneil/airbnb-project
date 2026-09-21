@@ -8,13 +8,7 @@ import "./SpotsIndex.css";
 const SpotsIndex = () => {
   const spotsObj = useSelector((state) => state.spots.allSpots);
   const [isLoaded, setIsLoaded] = useState(false);
-  let spots;
-
-  if (spotsObj === undefined) {
-    // do nothing
-  } else {
-    spots = Object.values(spotsObj);
-  }
+  const spots = spotsObj ? Object.values(spotsObj) : [];
 
   const dispatch = useDispatch();
 
@@ -24,14 +18,16 @@ const SpotsIndex = () => {
 
   return (
     <div>
-      {isLoaded ? (
+      {!isLoaded ? (
+        <p className="status-message" role="status">Loading spots…</p>
+      ) : spots.length === 0 ? (
+        <p className="status-message">No spots have been listed yet.</p>
+      ) : (
         <div className="spots-container">
           {spots.map((spot) => {
             return <SpotIndexItem spot={spot} key={spot.id} />;
           })}
         </div>
-      ) : (
-        <>Loading</>
       )}
     </div>
   );

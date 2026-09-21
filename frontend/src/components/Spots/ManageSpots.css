@@ -24,3 +24,7 @@
 .manage-spots-text {
     color: white;
 }
+
+.manage-spots-empty {
+    color: var(--star-wars-gray);
+}

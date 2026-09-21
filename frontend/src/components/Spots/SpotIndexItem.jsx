@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import "./SpotsIndex.css";
 import { FaStar } from "react-icons/fa";
+import { sizedImage, fallbackToOriginal } from "../../utils/images";
 
-const arr = [];
 const SpotIndexItem = ({ spot }) => {
-  arr.push(spot);
   return (
     <div className="spot-container">
       <Link to={`/spots/${spot.id}`}>
         <div className="spot-image-container">
-          <img src={spot.previewImage} />
+          <img
+            src={sizedImage(spot.previewImage, 800)}
+            onError={fallbackToOriginal(spot.previewImage)}
+            alt={spot.name}
+            loading="lazy"
+          />
         </div>
         <div className="tooltip">
           <span className="tooltiptext">{spot.name}</span>

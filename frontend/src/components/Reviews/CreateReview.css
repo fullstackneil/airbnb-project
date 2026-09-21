@@ -79,6 +79,22 @@ h2 {
   color: var(--star-wars-yellow);
 }
 
+.rating-input .star {
+  display: flex;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  color: var(--star-wars-yellow);
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.rating-input .star:focus-visible {
+  outline: 2px solid var(--star-wars-yellow);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 
 .star-ratings-container {
   display: flex;

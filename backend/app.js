@@ -12,8 +12,10 @@ const { doubleCsrfProtection, ensureAnonId } = require('./utils/csrf');
 //intialize express
 const app = express();
 
-// Number of reverse proxies in front of the app (Render's load balancer).
-// Needed so req.ip is the visitor's address, which the rate limiter keys on.
+// Number of reverse proxies in front of the app, so req.ip is the visitor's
+// address (the rate limiter keys on it). Measured on Render as 3: Cloudflare
+// edge -> Render router -> local proxy. Set via TRUST_PROXY_HOPS; forged
+// X-Forwarded-For entries land beyond these hops and are ignored.
 app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS || 0));
 
 //connect Morgan middleware

@@ -10,6 +10,7 @@
 .delete-review-container {
     background-color: black;
     width: 30rem;
+    max-width: 100%;
     box-sizing: border-box;
     padding: 0 25px 25px 25px;
     gap: 20px;
@@ -34,4 +35,15 @@
 #keep-review {
     background-color: darkgray;
     color: white;
+}
+
+.delete-review-container > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.delete-review-container .button {
+    flex: 1 1 160px;
+    max-width: 180px;
 }

@@ -17,7 +17,8 @@
 }
 
 .manage-text-btn {
-    padding-left: 350px;
+    padding-left: clamp(16px, 24vw, 350px);
+    padding-right: 16px;
 }
 
 .manage-spots-text {

@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     width: 350px;
+    max-width: 100%;
 }
 
 .login-text {
@@ -24,6 +25,7 @@
     margin: auto;
     gap: 8px;
     width: 300px;
+    max-width: calc(100% - 32px);
     padding-bottom: 20px;
 }
 
@@ -48,7 +50,7 @@
     background-color: var(--star-wars-yellow);
     justify-content: center;
     height: 55px;
-    width: 300px;
+    width: 100%;
 }
 
 .signup-button:disabled {

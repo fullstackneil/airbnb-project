@@ -8,12 +8,16 @@
     flex-wrap: wrap;
     margin-top: 50px;
     justify-content: space-around;
+    column-gap: 16px;
+    padding: 0 clamp(0px, 2vw, 16px);
 }
 
 .spot-container {
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 380px;
+  max-width: 100%;
   margin-bottom: 3rem;
 }
 
@@ -26,7 +30,8 @@
 
 .spot-image-container {
   width: 370px;
-  height: 370px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .spot-image-container img {
@@ -52,6 +57,11 @@
 .spot-location-rating-container {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.spot-location-rating-container p:last-child {
+  flex-shrink: 0;
 }
 
 .spot-container:hover .tooltip .tooltiptext {
@@ -59,7 +69,6 @@
 }
 
 .tooltip {
-  position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
 }
@@ -67,13 +76,14 @@
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 250px;
+  max-width: calc(100% - 40px);
   background-color: transparent;
   color: var(--star-wars-yellow);
   padding: 5px 0;
   border-radius: 6px;
   position: absolute;
   z-index: 100;
-  bottom: 335px;;
+  top: 5px;
   left: 20px;
   margin: 0 auto;
   justify-content: center;

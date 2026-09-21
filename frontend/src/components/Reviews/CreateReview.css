@@ -19,6 +19,7 @@ h2 {
   background-color: black;
   flex-direction: column;
   width: 30rem;
+  max-width: 100%;
   box-sizing: border-box;
   padding: 0 25px 25px 25px;
   gap: 20px;
@@ -87,6 +88,7 @@ h2 {
 #submit-button {
   margin: auto;
   width: 400px;
+  max-width: 100%;
   height: 50px;
   box-shadow: 2px 2px 2px white;
   background-color: var(--star-wars-yellow);
@@ -100,8 +102,16 @@ h2 {
   cursor: not-allowed; /* Change cursor to indicate disabled state */
 }
 
-@media (max-width: 740px) {
+@media (max-width: 480px) {
+  h2 {
+    font-size: 24px;
+  }
+
   .review-form {
-    width: 20rem;
+    padding: 0 16px 20px 16px;
+  }
+
+  .review-label {
+    font-size: 20px;
   }
 }

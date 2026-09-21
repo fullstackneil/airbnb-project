@@ -2,7 +2,8 @@ import { useDispatch } from "react-redux";
 import { removeSpot } from "../../store/spotReducer";
 import { getCurrentUserSpots } from "../../store/spotReducer";
 import { useModal } from "../../context/Modal";
-import './DeleteSpot.css';
+import buttons from '../../styles/buttons.module.css';
+import dialog from '../../styles/confirmDialog.module.css';
 
 function DeleteSpot({ spot }) {
   const { closeModal } = useModal();
@@ -15,13 +16,13 @@ function DeleteSpot({ spot }) {
   };
 
   return (
-    <div className='delete-spot-container'>
+    <div className={dialog.dialog}>
       <h2>Confirm Delete</h2>
       <p>Are you sure you want to remove this spot from the listings?</p>
 
-      <div>
-        <button className='button' id='delete-spot' onClick={handleDelete}>Yes (Delete Spot)</button>
-        <button className='button' id='keep-spot' onClick={closeModal}>
+      <div className={dialog.actions}>
+        <button className={`${buttons.actionButton} ${dialog.choice} ${dialog.confirm}`} onClick={handleDelete}>Yes (Delete Spot)</button>
+        <button className={`${buttons.actionButton} ${dialog.choice} ${dialog.cancel}`} onClick={closeModal}>
           No (Keep Spot)
         </button>
       </div>

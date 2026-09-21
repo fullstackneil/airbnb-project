@@ -1,4 +1,4 @@
-#modal {
+.overlay {
   position: fixed;
   top: 0;
   right: 0;
@@ -11,7 +11,7 @@
   z-index: 1000;
 }
 
-#modal-background {
+.background {
   position: fixed;
   top: 0;
   right: 0;
@@ -20,9 +20,9 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-#modal-content {
+.content {
   position: relative;
-  background-color:white;
+  background-color: white;
   border-radius: 12px;
   max-width: 100%;
   max-height: 100%;

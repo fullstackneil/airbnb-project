@@ -3,7 +3,9 @@ import { getCurrentUserSpots } from "../../store/spotReducer";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ManageSpotsIndexItem from "./ManageSpotsIndexItem";
-import './ManageSpots.css'
+import card from './SpotCard.module.css';
+import styles from './ManageSpots.module.css';
+import buttons from '../../styles/buttons.module.css';
 
 const ManageSpots = () => {
     const userSpots = useSelector((state) => state.spots.currentUserSpots.Spots)
@@ -29,19 +31,19 @@ const ManageSpots = () => {
     if (!sessionUser) return <Navigate to="/" replace />;
 
     return (
-        <div className="manage-spots-container">
+        <div>
           {isLoaded ? (
             <>
-              <div className="manage-text-btn">
-                <h2 className='manage-spots-text'>Manage Spots</h2>
+              <div className={styles.header}>
+                <h2 className={styles.title}>Manage Spots</h2>
                 {spotsArr.length === 0 && (
                   <>
-                    <p className="manage-spots-empty">You haven&apos;t listed any spots yet.</p>
-                    <button className='button' onClick={createSpot}>Create a New Spot</button>
+                    <p className={styles.empty}>You haven&apos;t listed any spots yet.</p>
+                    <button className={buttons.actionButton} onClick={createSpot}>Create a New Spot</button>
                   </>
                 )}
               </div>
-              <div className="spots-container">
+              <div className={card.grid}>
                 {spotsArr.length === 0 ? (
                   <></>
                 ) : (

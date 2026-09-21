@@ -1,0 +1,34 @@
+/* "Are you sure?" dialogs for deleting a spot or a review. */
+.dialog {
+  background-color: black;
+  width: 30rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 25px 25px 25px;
+  gap: 20px;
+  border-radius: 30px;
+  border: 5px solid white;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dialog .choice {
+  flex: 1 1 160px;
+  max-width: 180px;
+}
+
+/* Scoped under .dialog so these colors beat .actionButton's yellow no matter
+   which stylesheet loads first. */
+.dialog .confirm {
+  background-color: darkred;
+  color: white;
+}
+
+.dialog .cancel {
+  background-color: darkgray;
+  color: white;
+}

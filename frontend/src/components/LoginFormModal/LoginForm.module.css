@@ -1,0 +1,71 @@
+.heading {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-top: 20px;
+  color: black;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  max-width: 100%;
+  min-height: 225px;
+  gap: 20px;
+}
+
+.credentialInput {
+  font: inherit;
+  height: 25px;
+  width: 90%;
+  margin-left: 18px;
+  margin-top: 15px;
+}
+
+.passwordInput {
+  font: inherit;
+  height: 25px;
+  width: 90%;
+  margin-left: 18px;
+  margin-top: 5px;
+}
+
+.fieldError {
+  font: inherit;
+  color: red;
+}
+
+.formError {
+  font: inherit;
+  padding-top: 8px;
+  color: red;
+}
+
+.loginButton {
+  margin: auto;
+  width: 400px;
+  max-width: calc(100% - 36px);
+  height: 50px;
+  box-shadow: 2px 2px 2px black;
+  background-color: var(--star-wars-yellow);
+  font: inherit;
+}
+
+.loginButton:disabled {
+  background-color: var(--disabled-gray);
+  color: #ffffff;
+  border-color: var(--disabled-gray);
+  cursor: not-allowed;
+}
+
+.demoButton {
+  margin: auto;
+  width: 400px;
+  max-width: calc(100% - 36px);
+  height: 50px;
+  box-shadow: 2px 2px 2px black;
+  background-color: var(--star-wars-yellow);
+  font: inherit;
+  margin-bottom: 10px;
+}

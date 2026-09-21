@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import "./SpotsIndex.css";
+import card from "./SpotCard.module.css";
 import { FaStar } from "react-icons/fa";
 import { sizedImage, fallbackToOriginal } from "../../utils/images";
 
 const SpotIndexItem = ({ spot }) => {
   return (
-    <div className="spot-container">
+    <div className={card.card}>
       <Link to={`/spots/${spot.id}`}>
-        <div className="spot-image-container">
+        <div className={card.imageFrame}>
           <img
             src={sizedImage(spot.previewImage, 800)}
             onError={fallbackToOriginal(spot.previewImage)}
@@ -15,12 +15,12 @@ const SpotIndexItem = ({ spot }) => {
             loading="lazy"
           />
         </div>
-        <div className="tooltip">
-          <span className="tooltiptext">{spot.name}</span>
+        <div className={card.tooltip}>
+          <span className={card.tooltipText}>{spot.name}</span>
         </div>
-        <div className="spot-text-container">
+        <div className={card.details}>
           <h2>{spot.name}</h2>
-          <div className="spot-location-rating-container">
+          <div className={card.locationRating}>
             <p>
               {spot.city}, {spot.state}
             </p>

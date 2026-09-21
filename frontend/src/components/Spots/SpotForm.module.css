@@ -1,0 +1,117 @@
+/* Create Spot and Update Spot forms (CreateSpot.jsx, UpdateSpot.jsx). */
+.container {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  align-items: center;
+  margin-top: 50px;
+  padding: 0 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.formTitle {
+  margin-bottom: 20px;
+  color: var(--star-wars-yellow);
+}
+
+.title {
+  margin-bottom: 5px;
+  color: var(--star-wars-yellow);
+}
+
+.subtitle {
+  color: var(--star-wars-gray);
+  font-size: 18px;
+}
+
+.errorMessage {
+  color: var(--error-message-red);
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.input {
+  background-color: white;
+  border-radius: 7px;
+  border: #51636d71 1px solid;
+  height: 25px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  margin-bottom: 1rem;
+}
+
+.textArea {
+  background-color: white;
+  border-radius: 7px;
+  border: #51636d71 1px solid;
+  height: 70px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  margin-bottom: 1rem;
+}
+
+.descriptionInput {
+  min-height: 70px;
+}
+
+.moneyBox {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.moneyBox .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.priceInput {
+  width: 700px;
+  max-width: 100%;
+}
+
+.submitButton {
+  margin: auto;
+  width: 400px;
+  height: 50px;
+  box-shadow: 2px 2px 2px var(--star-wars-gray);
+  background-color: var(--star-wars-yellow);
+  font: inherit;
+}
+
+.updateButton {
+  margin: auto;
+  width: 400px;
+  max-width: 100%;
+  height: 50px;
+  box-shadow: 2px 2px 2px var(--star-wars-gray);
+  background-color: var(--star-wars-yellow);
+  font: inherit;
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin-top: 24px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+}

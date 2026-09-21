@@ -1,17 +1,8 @@
-:root {
-  --star-wars-yellow: #FFE81F;
-  --star-wars-gray: #9ba0a8;
-  --star-wars-orange: #ffab00;
-  --star-wars-lightsaber-green: #2FF923;
-  --primary-font: 'Nunito', sans-serif;
-  --error-message-red: #FF0000;
-}
-
-.details-page-container {
+.page {
   margin-top: 25px;
 }
 
-.details-page-image-container {
+.imageSection {
   display: flex;
   flex-direction: column;
   margin: auto;
@@ -21,20 +12,20 @@
   padding-right: clamp(0px, 4vw, 60px);
 }
 
-.spot-name-location {
+.nameLocation {
   display: flex;
   flex-direction: column;
   padding-left: clamp(8px, 5vw, 70px);
   padding-right: 16px;
 }
 
-#spot-header {
+.spotName {
   color: var(--star-wars-yellow);
 }
 
 /* Gallery: a 2:1 box split into fractional tracks so images fill their cells
-   without stretching. gallery-count-N adapts the layout to 1-5 photos. */
-.spot-images-container {
+   without stretching. photosN adapts the layout to 1-5 photos. */
+.gallery {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: repeat(2, minmax(0, 1fr));
@@ -50,7 +41,7 @@
   margin-bottom: 20px;
 }
 
-.spot-images-container img {
+.gallery img {
   display: block;
   width: 100%;
   height: 100%;
@@ -59,51 +50,51 @@
   object-fit: cover;
 }
 
-.big-image {
+.bigImage {
   grid-area: big;
   border: 2px solid white;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
 }
 
-.small-image {
+.smallImage {
   border: 2px solid white;
 }
 
-.small-image-1 { grid-area: small1; }
-.small-image-2 { grid-area: small2; }
-.small-image-3 { grid-area: small3; }
-.small-image-4 { grid-area: small4; }
+.small1 { grid-area: small1; }
+.small2 { grid-area: small2; }
+.small3 { grid-area: small3; }
+.small4 { grid-area: small4; }
 
-.gallery-count-1 {
+.photos1 {
   grid-template-areas:
     "big big big"
     "big big big";
 }
 
-.gallery-count-1 .big-image {
+.photos1 .bigImage {
   border-radius: 15px;
 }
 
-.gallery-count-2 {
+.photos2 {
   grid-template-areas:
     "big small1 small1"
     "big small1 small1";
 }
 
-.gallery-count-3 {
+.photos3 {
   grid-template-areas:
     "big small1 small1"
     "big small2 small2";
 }
 
-.gallery-count-4 {
+.photos4 {
   grid-template-areas:
     "big small1 small2"
     "big small3 small3";
 }
 
-.spot-info-container {
+.infoRow {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -114,12 +105,12 @@
   margin-right: clamp(8px, 4vw, 50px);
 }
 
-.owner-description-container {
+.ownerDescription {
   flex: 1 1 320px;
   max-width: 500px;
 }
 
-.info-box-container {
+.infoBox {
   display: flex;
   flex-direction: column;
   flex: 0 1 440px;
@@ -128,59 +119,59 @@
   border-radius: 20px;
 }
 
-.stay-info-container {
+.stayInfo {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
 }
 
-#spot-price {
+.price {
   margin-left: 30px;
   color: var(--star-wars-lightsaber-green);
   font-size: 32px;
 }
 
-#night-text {
+.perNight {
   margin-right: 60px;
   color: var(--star-wars-lightsaber-green);
 }
 
-#star-rating-container {
+.rating {
   color: white;
   font-size: 18px;
 }
 
-.btn-container {
+.reserve {
   justify-content: center;
   margin-left: 30px;
   margin-right: 30px;
   margin-bottom: 25px;
 }
 
-.btn-container > button {
+.reserve > button {
   width: 100%;
   max-width: 370px;
   height: 40px;
   box-shadow: 2px 2px 2px var(--star-wars-gray);
   background-color: var(--star-wars-yellow);
-  font: var(--primary-font);
+  font: inherit;
 }
 
-.line-break {
+.lineBreak {
   display: flex;
   width: min(1200px, calc(100% - 32px));
   margin: auto;
   border: 0.5px solid black;
 }
 
-.star-rating-review-summary {
+.ratingSummary {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.review-summary-container {
+.reviewSummary {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -190,25 +181,25 @@
   color: var(--star-wars-yellow);
 }
 
-.reviews-container {
+.reviews {
   display: flex;
   flex-direction: column;
   justify-content: left;
   gap: 0px;
 }
 
-#review-button {
+.reviewButton {
   margin: auto;
   width: 400px;
   max-width: 100%;
   height: 50px;
   box-shadow: 2px 2px 2px var(--star-wars-gray);
   background-color: var(--star-wars-yellow);
-  font: var(--primary-font);
+  font: inherit;
   margin-bottom: 100px;
 }
 
-.summary-review-container {
+.reviewsSection {
   margin-top: 40px;
   display: flex;
   flex-direction: column;
@@ -216,7 +207,7 @@
   padding-right: clamp(8px, 4vw, 50px);
 }
 
-.center-dot {
+.centerDot {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -224,26 +215,26 @@
 }
 
 @media (max-width: 768px) {
-  #spot-price {
+  .price {
     margin-left: 0;
   }
 
-  #night-text {
+  .perNight {
     margin-right: 0;
   }
 
-  .btn-container {
+  .reserve {
     margin-left: 16px;
     margin-right: 16px;
   }
 
-  .center-dot {
+  .centerDot {
     margin-right: 0;
   }
 }
 
 @media (max-width: 600px) {
-  .spot-images-container {
+  .gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
     grid-template-areas:
@@ -253,45 +244,45 @@
     aspect-ratio: auto;
   }
 
-  .spot-images-container img {
+  .gallery img {
     height: auto;
     aspect-ratio: 1 / 1;
   }
 
-  .spot-images-container .big-image {
+  .gallery .bigImage {
     aspect-ratio: 4 / 3;
     border-radius: 15px 15px 0 0;
   }
 
-  .gallery-count-1 {
+  .photos1 {
     grid-template-areas: "big big";
   }
 
-  .gallery-count-1 .big-image {
+  .photos1 .bigImage {
     border-radius: 15px;
   }
 
-  .gallery-count-2 {
+  .photos2 {
     grid-template-areas:
       "big big"
       "small1 small1";
   }
 
-  .gallery-count-3 {
+  .photos3 {
     grid-template-areas:
       "big big"
       "small1 small2";
   }
 
-  .gallery-count-4 {
+  .photos4 {
     grid-template-areas:
       "big big"
       "small1 small2"
       "small3 small3";
   }
 
-  .gallery-count-2 .small-image-1,
-  .gallery-count-4 .small-image-3 {
+  .photos2 .small1,
+  .photos4 .small3 {
     aspect-ratio: 2 / 1;
   }
 }

@@ -12,6 +12,13 @@ export default defineConfig(({ mode }) => ({
       failOnError: mode === "production"
     })
   ],
+  css: {
+    modules: {
+      // Keep the original class name visible (e.g. "gallery_x1Y2z") so
+      // scoped classes are still easy to find in dev tools.
+      generateScopedName: "[local]_[hash:base64:5]",
+    },
+  },
   test: {
     environment: "jsdom",
     setupFiles: "./src/test/setup.js",

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import './LoginForm.css';
+import styles from './LoginForm.module.css';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -55,12 +55,12 @@ function LoginFormModal() {
   };
     return (
     <div id='login-popup-container'>
-      <h1 className="login-text">Log In</h1>
-      <form onSubmit={handleSubmit} className="login-modal">
+      <h1 className={styles.heading}>Log In</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
           <label htmlFor='login-credential' className='visually-hidden'>Username or Email</label>
           <input
             id='login-credential'
-            className='credentials-input-box'
+            className={styles.credentialInput}
             type="text"
             autoComplete='username'
             value={credential}
@@ -69,11 +69,11 @@ function LoginFormModal() {
             required
           />
           {/* Only show a field's message once the user has typed in it. */}
-          {credential && 'credential' in validations && <span id='invalid-credentials'>{validations.credential}</span>}
+          {credential && 'credential' in validations && <span className={styles.fieldError}>{validations.credential}</span>}
           <label htmlFor='login-password' className='visually-hidden'>Password</label>
           <input
             id='login-password'
-            className='password-input-box'
+            className={styles.passwordInput}
             type="password"
             autoComplete='current-password'
             value={password}
@@ -81,14 +81,14 @@ function LoginFormModal() {
             placeholder="Password"
             required
           />
-          {password && 'password' in validations && <span id='invalid-password'>{validations.password}</span>}
-          {validations.error && <span id='error-message' role='alert'>{validations.error}</span>}
+          {password && 'password' in validations && <span className={styles.fieldError}>{validations.password}</span>}
+          {validations.error && <span className={styles.formError} role='alert'>{validations.error}</span>}
         <button
         type="submit"
         disabled={'credential' in validations || 'password' in validations}
-        className='login-button'>Log In
+        className={styles.loginButton}>Log In
         </button>
-        <button className='demo-user-container'
+        <button className={styles.demoButton}
           type='submit'
           onClick={(e) => handleSubmit(e, true)}
           >Log in as Demo User</button>

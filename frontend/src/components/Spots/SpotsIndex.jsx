@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllSpots } from "../../store/spotReducer";
 import { useState } from "react";
 import SpotIndexItem from "./SpotIndexItem";
-import "./SpotsIndex.css";
+import card from "./SpotCard.module.css";
 
 const SpotsIndex = () => {
   const spotsObj = useSelector((state) => state.spots.allSpots);
@@ -23,7 +23,7 @@ const SpotsIndex = () => {
       ) : spots.length === 0 ? (
         <p className="status-message">No spots have been listed yet.</p>
       ) : (
-        <div className="spots-container">
+        <div className={card.grid}>
           {spots.map((spot) => {
             return <SpotIndexItem spot={spot} key={spot.id} />;
           })}

@@ -11,7 +11,7 @@ import {
   toCoordinate,
   describeSpotSaveError,
 } from "../../utils/spotValidation";
-import './UpdateSpot.css';
+import styles from "./SpotForm.module.css";
 
 const UpdateSpot = () => {
   const spot = useSelector((state) => state.spots.currentSpot);
@@ -146,19 +146,19 @@ const UpdateSpot = () => {
   }
 
   return (
-    <div className="create-spot-container">
+    <div className={styles.container}>
       {isLoaded ? (
-        <form className="create-spot-form" onSubmit={handleSubmit}>
-          <h1 className="form-header" id="form-title">Update Your Spot</h1>
-          <h2 className="title" id="form-subtitle">Where&apos;s your place located?</h2>
-          <h3 className="subtitle" id="form-info">
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <h1 className={styles.formTitle}>Update Your Spot</h1>
+          <h2 className={styles.title} id="form-subtitle">Where&apos;s your place located?</h2>
+          <h3 className={styles.subtitle} id="form-info">
             Guests will only get your exact address once they book a reservation.
           </h3>
 
-          <label className="signup-label">
+          <label className={styles.label}>
             Country:
             <input
-              className="input-area-spots"
+              className={styles.input}
               type="text"
               id="country"
               name="country"
@@ -166,13 +166,13 @@ const UpdateSpot = () => {
               value={formData.country}
               onChange={handleInputChange}
             />
-            {showValidations && validations.country && <p className="error-message">{validations.country}</p>}
+            {showValidations && validations.country && <p className={styles.errorMessage}>{validations.country}</p>}
           </label>
 
-          <label className="signup-label">
+          <label className={styles.label}>
             Street Address:
             <input
-              className="input-area-spots"
+              className={styles.input}
               type="text"
               id="street-address"
               name="address"
@@ -180,15 +180,15 @@ const UpdateSpot = () => {
               value={formData.address}
               onChange={handleInputChange}
             />
-            {showValidations && validations.address && <p className="error-message">{validations.address}</p>}
+            {showValidations && validations.address && <p className={styles.errorMessage}>{validations.address}</p>}
           </label>
 
-          <div className="city-state">
-            <div className="city">
-              <label className="signup-label">
+          <div>
+            <div>
+              <label className={styles.label}>
                 City:
                 <input
-                  className="input-area-spots"
+                  className={styles.input}
                   type="text"
                   id="city"
                   name="city"
@@ -196,14 +196,14 @@ const UpdateSpot = () => {
                   value={formData.city}
                   onChange={handleInputChange}
                 />
-                {showValidations && validations.city && <p className="error-message">{validations.city}</p>}
+                {showValidations && validations.city && <p className={styles.errorMessage}>{validations.city}</p>}
               </label>
             </div>
-            <div className="city">
-              <label className="signup-label">
+            <div>
+              <label className={styles.label}>
                 State:
                 <input
-                  className="input-area-spots"
+                  className={styles.input}
                   type="text"
                   id="state"
                   name="state"
@@ -211,17 +211,17 @@ const UpdateSpot = () => {
                   value={formData.state}
                   onChange={handleInputChange}
                 />
-                {showValidations && validations.state && <p className="error-message">{validations.state}</p>}
+                {showValidations && validations.state && <p className={styles.errorMessage}>{validations.state}</p>}
               </label>
             </div>
           </div>
 
-          <div className="city-state">
-            <div className="city">
-              <label className="signup-label">
+          <div>
+            <div>
+              <label className={styles.label}>
                 Latitude:
                 <input
-                  className="input-area-spots"
+                  className={styles.input}
                   type="text"
                   inputMode="decimal"
                   id="lat"
@@ -230,14 +230,14 @@ const UpdateSpot = () => {
                   value={formData.lat}
                   onChange={handleLatitudeChange}
                 />
-                {showValidations && validations.lat && <p className="error-message">{validations.lat}</p>}
+                {showValidations && validations.lat && <p className={styles.errorMessage}>{validations.lat}</p>}
               </label>
             </div>
-            <div className="city">
-              <label className="signup-label">
+            <div>
+              <label className={styles.label}>
                 Longitude:
                 <input
-                  className="input-area-spots"
+                  className={styles.input}
                   type="text"
                   inputMode="decimal"
                   id="lng"
@@ -246,39 +246,39 @@ const UpdateSpot = () => {
                   value={formData.lng}
                   onChange={handleLongitudeChange}
                 />
-                {showValidations && validations.lng && <p className="error-message">{validations.lng}</p>}
+                {showValidations && validations.lng && <p className={styles.errorMessage}>{validations.lng}</p>}
               </label>
             </div>
           </div>
 
-          <div className="added-text">
-            <h2 className="title" id="description-title">Describe your place to your guests</h2>
-            <p className="subtitle" id="description-info">
+          <div className={styles.section}>
+            <h2 className={styles.title} id="description-title">Describe your place to your guests</h2>
+            <p className={styles.subtitle} id="description-info">
               Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood
             </p>
-            <label className="signup-label">
+            <label className={styles.label}>
               Description:
               <textarea
-                className="input-text-area"
+                className={styles.textArea}
                 id="description"
                 name="description"
                 placeholder="Please write at least 30 characters"
                 value={formData.description}
                 onChange={handleInputChange}
               ></textarea>
-              {showValidations && validations.description && <p className="error-message">{validations.description}</p>}
+              {showValidations && validations.description && <p className={styles.errorMessage}>{validations.description}</p>}
             </label>
           </div>
 
-          <div className="added-text">
-            <h2 className="title" id="spot-title">Create a title for your spot</h2>
-            <p className="subtitle" id="title-info">
+          <div className={styles.section}>
+            <h2 className={styles.title} id="spot-title">Create a title for your spot</h2>
+            <p className={styles.subtitle} id="title-info">
               Catch guests&apos; attention with a spot title that highlights what makes your place special.
             </p>
-            <label className="signup-label">
+            <label className={styles.label}>
               Name of Spot:
               <input
-                className="input-area-spots"
+                className={styles.input}
                 type="text"
                 id="name-of-spot"
                 name="name"
@@ -286,20 +286,20 @@ const UpdateSpot = () => {
                 value={formData.name}
                 onChange={handleInputChange}
               />
-              {showValidations && validations.name && <p className="error-message">{validations.name}</p>}
+              {showValidations && validations.name && <p className={styles.errorMessage}>{validations.name}</p>}
             </label>
           </div>
 
-          <div className="added-text">
-            <h2 className="title" id="price-title">Set a price for your spot</h2>
-            <p className="subtitle" id="price-info">
+          <div className={styles.section}>
+            <h2 className={styles.title} id="price-title">Set a price for your spot</h2>
+            <p className={styles.subtitle} id="price-info">
               Competitive pricing can help your listing stand out and rank higher in search results
             </p>
-            <label className="signup-label">
-              <div className="money-box">
-                <span className="currency-sign">$  </span>
+            <label className={styles.label}>
+              <div className={styles.moneyBox}>
+                <span>$  </span>
                 <input
-                  className="input-area-spots"
+                  className={`${styles.input} ${styles.priceInput}`}
                   type="text"
                   inputMode="decimal"
                   id="price-box"
@@ -309,12 +309,12 @@ const UpdateSpot = () => {
                   onChange={handlePriceChange}
                 />
               </div>
-              {showValidations && validations.price && <p className="error-message">{validations.price}</p>}
+              {showValidations && validations.price && <p className={styles.errorMessage}>{validations.price}</p>}
             </label>
           </div>
 
-          {submitError && <p className="error-message" role="alert">{submitError}</p>}
-          <button className="spot-button" type="submit">
+          {submitError && <p className={styles.errorMessage} role="alert">{submitError}</p>}
+          <button className={styles.updateButton} type="submit">
             Update Your Spot
           </button>
         </form>

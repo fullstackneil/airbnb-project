@@ -5,6 +5,8 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { refreshCsrfToken } = require('../../utils/csrf');
+const { loginLimiter } = require('../../utils/rateLimit');
 const { User } = require('../../db/models');
 
 const router = express.Router();
@@ -22,7 +24,7 @@ const validateLogin = [
 
 
 // Log in
-router.post( '/', validateLogin, async (req, res, next) => {
+router.post( '/', loginLimiter, validateLogin, async (req, res, next) => {
       const { credential, password } = req.body;
 
       const user = await User.unscoped().findOne({
@@ -49,7 +51,9 @@ router.post( '/', validateLogin, async (req, res, next) => {
         username: user.username,
       };
 
-      await setTokenCookie(res, safeUser);
+      const token = await setTokenCookie(res, safeUser);
+      // New session, so issue a CSRF token bound to it.
+      refreshCsrfToken(req, res, token);
 
       return res.json({
         user: safeUser
@@ -60,8 +64,9 @@ router.post( '/', validateLogin, async (req, res, next) => {
 
 
 // Log out
-router.delete( '/', (_req, res) => {
+router.delete( '/', (req, res) => {
       res.clearCookie('token');
+      refreshCsrfToken(req, res, null);
       return res.json({ message: 'Success' });
     }
   );

@@ -17,7 +17,8 @@ const handleValidationErrors = (req, _res, next) => {
       err.errors = errors;
       err.status = 400;
       err.title = "Bad request.";
-      next(err);
+      // Return so the route handler doesn't also run after the error.
+      return next(err);
     }
     next();
   };

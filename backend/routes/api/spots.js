@@ -3,6 +3,8 @@ const express = require('express');
 const { User, Spot, SpotImage, Booking, Review, ReviewImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { requireAuth } = require('../../utils/auth');
+const { validateSpot, validateReview } = require('../../utils/validators');
 
 const router = express.Router();
 
@@ -99,7 +101,7 @@ router.get("/", async (req, res) => {
 });
 
 // POST A NEW SPOT
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, validateSpot, async (req, res) => {
   const { user } = req;
   const error = {
     message: {},
@@ -288,7 +290,7 @@ router.get("/:spotId", async (req, res) => {
 });
 
 // UPDATE A SPOT
-router.put("/:spotId", async (req, res) => {
+router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   const { user } = req;
   const error = {
     message: {},
@@ -412,7 +414,7 @@ router.delete("/:spotId", async (req, res) => {
 });
 
 // POST SPOT REVIEW
-router.post("/:spotId/reviews", async (req, res) => {
+router.post("/:spotId/reviews", requireAuth, validateReview, async (req, res) => {
   const { user } = req;
   const error = {
     message: {},
@@ -426,6 +428,9 @@ router.post("/:spotId/reviews", async (req, res) => {
     if (!spot) {
       res.statusCode = 404;
       res.json({ message: "Spot couldn't be found" });
+    } else if (spot.ownerId === user.id) {
+      res.statusCode = 403;
+      res.json({ message: "You can't review your own spot" });
     } else {
       const reviewCheck = await Review.findOne({
         where: {

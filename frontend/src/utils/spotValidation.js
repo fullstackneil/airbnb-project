@@ -31,6 +31,16 @@ export function validatePrice(price) {
   return {};
 }
 
+// Matches the server rule ("less than 50 characters").
+export const NAME_MAX_LENGTH = 49;
+
+export function validateName(name) {
+  const trimmed = String(name ?? "").trim();
+  if (!trimmed) return { name: "Name is required" };
+  if (trimmed.length > NAME_MAX_LENGTH) return { name: "Name must be less than 50 characters" };
+  return {};
+}
+
 // Optional coordinates are sent as null when left blank.
 export const toCoordinate = (value) =>
   String(value ?? "").trim() === "" ? null : parseFloat(value);

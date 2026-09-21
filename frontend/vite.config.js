@@ -6,11 +6,16 @@ import eslint from 'vite-plugin-eslint';
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    eslint({
+    // Lint during dev/build; tests run ESLint separately (npm run lint).
+    mode !== "test" && eslint({
       lintOnStart: true,
       failOnError: mode === "production"
     })
   ],
+  test: {
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.js",
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:8000'

@@ -5,6 +5,8 @@ const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
+const { refreshCsrfToken } = require("../../utils/csrf");
+const { signupLimiter } = require("../../utils/rateLimit");
 
 const router = express.Router();
 
@@ -33,7 +35,7 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
-router.post("/", async (req, res) => {
+router.post("/", signupLimiter, validateSignup, async (req, res) => {
   const error = {
     message: {},
     errors: {},
@@ -108,7 +110,9 @@ router.post("/", async (req, res) => {
       username: user.username,
     };
 
-    await setTokenCookie(res, safeUser);
+    const token = await setTokenCookie(res, safeUser);
+    // New session, so issue a CSRF token bound to it.
+    refreshCsrfToken(req, res, token);
 
     return res.json({
       user: safeUser,

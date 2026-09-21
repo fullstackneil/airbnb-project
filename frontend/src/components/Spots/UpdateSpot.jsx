@@ -7,6 +7,7 @@ import {
   PRICE_INPUT,
   validateCoordinates,
   validatePrice,
+  validateName,
   toCoordinate,
   describeSpotSaveError,
 } from "../../utils/spotValidation";
@@ -67,7 +68,7 @@ const UpdateSpot = () => {
     if (!state) errors.state = "State is required";
     Object.assign(errors, validateCoordinates(lat, lng));
     if (!description || description.length < 30) errors.description = "Description must be 30 or more characters";
-    if (!name) errors.name = "Name is required";
+    Object.assign(errors, validateName(name));
     Object.assign(errors, validatePrice(price));
 
     return errors;

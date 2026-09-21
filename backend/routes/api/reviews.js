@@ -1,5 +1,7 @@
 const express = require("express");
 const { Spot, User, Review, ReviewImage } = require("../../db/models");
+const { requireAuth } = require("../../utils/auth");
+const { validateReview } = require("../../utils/validators");
 
 const router = express.Router();
 
@@ -95,7 +97,7 @@ router.get("/current", async (req, res) => {
   }
 });
 
-router.put("/:reviewId", async (req, res) => {
+router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
   const { user } = req;
   const { review, stars } = req.body;
   const error = {
